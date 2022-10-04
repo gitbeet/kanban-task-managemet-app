@@ -1,0 +1,4 @@
+.columns-list{
+    display: flex;
+    gap: 2rem;
+}

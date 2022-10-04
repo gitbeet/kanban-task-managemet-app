@@ -1,0 +1,6 @@
+.task-view-window{
+    position: absolute;
+    background-color: white;
+    z-index: 3;
+    width: 80%;
+}

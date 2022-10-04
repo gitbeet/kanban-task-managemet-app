@@ -1,0 +1,19 @@
+.nav{
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.add-task-button{
+    background-color: var(--clr-primary-600);
+    padding: .7rem 1rem; 
+    border-radius: 10rem;
+}
+
+.nav-select-board{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: .4rem;
+}
