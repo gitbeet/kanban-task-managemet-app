@@ -8,7 +8,7 @@ import CurrentStatus from "./CurrentStatus";
 
 export default function TaskViewWindow() {
   const { closeTaskViewWindow, viewedTask } = usePopUp();
-  const { boards, currentBoard } = useBoardData();
+  const { boards, currentBoard, handleChangeTaskStatusClose } = useBoardData();
   const { title, description } = viewedTask[0];
 
   const realsubtasks = boards
@@ -20,6 +20,11 @@ export default function TaskViewWindow() {
     .find((board) => board.name === currentBoard)
     .columns.find((column) => column.name === viewedTask[1])
     .tasks.find((task) => task.title === viewedTask[0]);
+
+  function onClickBackdrop() {
+    closeTaskViewWindow();
+    handleChangeTaskStatusClose();
+  }
 
   return (
     <>
@@ -40,7 +45,7 @@ export default function TaskViewWindow() {
         <div>Current Status</div>
         <CurrentStatus task={currentTask} />
       </div>
-      <Backdrop clickFunction={closeTaskViewWindow} />
+      <Backdrop clickFunction={onClickBackdrop} />
     </>
   );
 }
