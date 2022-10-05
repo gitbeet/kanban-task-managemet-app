@@ -23,7 +23,7 @@ export default function BoardDataProvider({ children }) {
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
 
-  const [boardsv2, setBoardsv2] = useState(
+  console.log(
     data.boards
       .find((board) => board.name === currentBoard)
       .columns.map((column) => column.tasks)
@@ -117,12 +117,17 @@ export default function BoardDataProvider({ children }) {
           }
         : board;
     });
-    duplicateBoards = [...boards].map((board) => {
+    setBoards(duplicateBoards);
+    console.log(boards);
+  }
+
+  function handleChangeTaskStatusClose() {
+    let duplicateBoards = [...boards].map((board) => {
       return board.name === currentBoard
         ? {
             ...board,
             columns: board.columns.map((column) => {
-              return column.name === currentStatus
+              return column.name === viewedTask[1]
                 ? {
                     ...column,
                     tasks: column.tasks.filter(
@@ -135,7 +140,6 @@ export default function BoardDataProvider({ children }) {
         : board;
     });
     setBoards(duplicateBoards);
-    console.log(boards);
   }
 
   function handleChangeNewBoard(changes) {
@@ -164,7 +168,7 @@ export default function BoardDataProvider({ children }) {
         toggleSubtaskCompleted,
         handleChangeTaskStatus,
         statusList,
-        boardsv2,
+        handleChangeTaskStatusClose,
       }}
     >
       {children}
