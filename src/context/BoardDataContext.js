@@ -186,45 +186,68 @@ export default function BoardDataProvider({ children }) {
     setViewedTask((prev) => {
       return { ...prev, status: value };
     });
+    console.log(viewedTask);
   }
 
   function handleChangeTaskStatusClose() {
     console.log(viewedTaskColumn, viewedStatus);
-    if (viewedTaskColumn === viewedStatus) return;
-    let duplicateBoards = [...boards].map((board) => {
-      return board.name === currentBoard
-        ? {
-            ...board,
-            columns: board.columns.map((column) => {
-              return column.name === viewedStatus
-                ? {
-                    ...column,
-                    tasks: [...column.tasks, viewedTask],
-                  }
-                : column;
-            }),
-          }
-        : board;
-    });
-    duplicateBoards = [...duplicateBoards].map((board) => {
-      return board.name === currentBoard
-        ? {
-            ...board,
-            columns: board.columns.map((column) => {
-              return column.name === viewedTaskColumn
-                ? {
-                    ...column,
-                    tasks: column.tasks.filter(
-                      (task) => task.title !== viewedTask.title
-                    ),
-                  }
-                : column;
-            }),
-          }
-        : board;
-    });
-    console.log("Hello");
-    setBoards(duplicateBoards);
+    if (viewedTaskColumn === viewedStatus) {
+      let duplicateBoards = [...boards].map((board) => {
+        return board.name === currentBoard
+          ? {
+              ...board,
+              columns: board.columns.map((column) => {
+                return column.name === viewedStatus
+                  ? {
+                      ...column,
+                      tasks: column.tasks.map((task) => {
+                        return task.title === viewedTask.title
+                          ? viewedTask
+                          : task;
+                      }),
+                    }
+                  : column;
+              }),
+            }
+          : board;
+      });
+      setBoards(duplicateBoards);
+    } else {
+      let duplicateBoards = [...boards].map((board) => {
+        return board.name === currentBoard
+          ? {
+              ...board,
+              columns: board.columns.map((column) => {
+                return column.name === viewedStatus
+                  ? {
+                      ...column,
+                      tasks: [...column.tasks, viewedTask],
+                    }
+                  : column;
+              }),
+            }
+          : board;
+      });
+      duplicateBoards = [...duplicateBoards].map((board) => {
+        return board.name === currentBoard
+          ? {
+              ...board,
+              columns: board.columns.map((column) => {
+                return column.name === viewedTaskColumn
+                  ? {
+                      ...column,
+                      tasks: column.tasks.filter(
+                        (task) => task.title !== viewedTask.title
+                      ),
+                    }
+                  : column;
+              }),
+            }
+          : board;
+      });
+      console.log("Hello");
+      setBoards(duplicateBoards);
+    }
   }
 
   function handleChangeNewBoard(changes) {
