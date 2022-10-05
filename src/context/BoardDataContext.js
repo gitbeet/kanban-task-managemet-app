@@ -38,7 +38,6 @@ export function useBoardData() {
 }
 
 export default function BoardDataProvider({ children }) {
-  const { viewedTask } = usePopUp();
   const [boards, setBoards] = useState(data.boards);
   const [currentBoard, setCurrentBoard] = useState(boards[0].name);
   const [statusList, setStatusList] = useState();
@@ -47,6 +46,10 @@ export default function BoardDataProvider({ children }) {
   const [draggedTaskColumn, setDraggedTaskColumn] = useState();
   const [newTask, setNewTask] = useState(emptyTask);
 
+  const [viewedTask, setViewedTask] = useState(null);
+  const [viewedTaskColumn, setviewedTaskColumn] = useState(null);
+  const [viewedStatus, setViewedStatus] = useState();
+
   useEffect(() => {
     setStatusList(
       boards
@@ -54,6 +57,15 @@ export default function BoardDataProvider({ children }) {
         .columns.map((column) => column.name)
     );
   }, [currentBoard]);
+
+  function assignViewedStatus(status) {
+    setViewedStatus(status);
+  }
+
+  function assignViewedTaskAndColumn(task, column) {
+    setViewedTask(task);
+    setviewedTaskColumn(column);
+  }
 
   function handleCangeNewTask(change) {
     setNewTask((prev) => {
@@ -156,53 +168,38 @@ export default function BoardDataProvider({ children }) {
   }
 
   function toggleSubtaskCompleted(subtaskTitle) {
-    const duplicateBoards = [...boards].map((board) => {
-      return board.name === currentBoard
-        ? {
-            ...board,
-            columns: board.columns.map((column) => {
-              return column.name === viewedTask[1]
-                ? {
-                    ...column,
-                    tasks: column.tasks.map((task) => {
-                      return task.title === viewedTask[0]
-                        ? {
-                            ...task,
-                            subtasks: task.subtasks.map((subtask) => {
-                              return subtask.title === subtaskTitle
-                                ? {
-                                    ...subtask,
-                                    isCompleted: !subtask.isCompleted,
-                                  }
-                                : subtask;
-                            }),
-                          }
-                        : task;
-                    }),
-                  }
-                : column;
-            }),
-          }
-        : board;
+    setViewedTask((prev) => {
+      return {
+        ...prev,
+        subtasks: prev.subtasks.map((subtask) => {
+          return subtask.title === subtaskTitle
+            ? { ...subtask, isCompleted: !subtask.isCompleted }
+            : subtask;
+        }),
+      };
     });
-    setBoards(duplicateBoards);
-    console.log(boards);
+    console.log(viewedTask);
   }
 
-  function handleChangeTaskStatus(value, task) {
+  function handleChangeTaskStatus(value) {
+    setViewedStatus(value);
+    setViewedTask((prev) => {
+      return { ...prev, status: value };
+    });
+  }
+
+  function handleChangeTaskStatusClose() {
+    console.log(viewedTaskColumn, viewedStatus);
+    if (viewedTaskColumn === viewedStatus) return;
     let duplicateBoards = [...boards].map((board) => {
       return board.name === currentBoard
         ? {
             ...board,
             columns: board.columns.map((column) => {
-              return column.name === viewedTask[1]
+              return column.name === viewedStatus
                 ? {
                     ...column,
-                    tasks: column.tasks.map((task) => {
-                      return task.title === viewedTask[0]
-                        ? { ...task, status: value }
-                        : task;
-                    }),
+                    tasks: [...column.tasks, viewedTask],
                   }
                 : column;
             }),
@@ -214,28 +211,11 @@ export default function BoardDataProvider({ children }) {
         ? {
             ...board,
             columns: board.columns.map((column) => {
-              return column.name === value
-                ? { ...column, tasks: [...column.tasks, { ...task }] }
-                : column;
-            }),
-          }
-        : board;
-    });
-    setBoards(duplicateBoards);
-    console.log(boards);
-  }
-
-  function handleChangeTaskStatusClose() {
-    let duplicateBoards = [...boards].map((board) => {
-      return board.name === currentBoard
-        ? {
-            ...board,
-            columns: board.columns.map((column) => {
-              return column.name === viewedTask[1]
+              return column.name === viewedTaskColumn
                 ? {
                     ...column,
                     tasks: column.tasks.filter(
-                      (t) => t.title !== viewedTask[0]
+                      (task) => task.title !== viewedTask.title
                     ),
                   }
                 : column;
@@ -243,6 +223,7 @@ export default function BoardDataProvider({ children }) {
           }
         : board;
     });
+    console.log("Hello");
     setBoards(duplicateBoards);
   }
 
@@ -279,6 +260,10 @@ export default function BoardDataProvider({ children }) {
         handleCangeNewTask,
         handleChangeNewTaskSubtasks,
         createNewTask,
+        assignViewedTaskAndColumn,
+        viewedTaskColumn,
+        viewedTask,
+        assignViewedStatus,
       }}
     >
       {children}

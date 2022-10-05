@@ -1,4 +1,5 @@
 import { createContext, useContext, useState } from "react";
+import { useBoardData } from "./BoardDataContext";
 
 const popUpcontext = createContext();
 
@@ -9,16 +10,16 @@ export function usePopUp() {
 }
 
 export default function PopUpProvider({ children }) {
+  const { assignViewedTaskAndColumn, assignViewedStatus } = useBoardData();
+
   const [showSidebar, setShowSidebar] = useState(false);
   const [showCreateNewBoardWindow, setShowCreateNewBoardWindow] =
     useState(false);
   const [showTaskViewWindow, setShowTaskViewWindow] = useState(false);
-  const [viewedTask, setViewedTask] = useState();
   const [showAddNewTaskWindow, setShowAddNewTaskWindow] = useState(false);
 
   function toggleAddNewTaskWindow() {
     setShowAddNewTaskWindow((prev) => !prev);
-    console.log(showAddNewTaskWindow);
   }
 
   function toggleSidebar() {
@@ -30,7 +31,8 @@ export default function PopUpProvider({ children }) {
   }
 
   function openTaskViewWindow(task, column) {
-    setViewedTask([task, column]);
+    assignViewedTaskAndColumn(task, column);
+    assignViewedStatus(task.status);
     setShowTaskViewWindow(true);
   }
 
@@ -48,7 +50,6 @@ export default function PopUpProvider({ children }) {
         showTaskViewWindow,
         openTaskViewWindow,
         closeTaskViewWindow,
-        viewedTask,
         toggleAddNewTaskWindow,
         showAddNewTaskWindow,
       }}

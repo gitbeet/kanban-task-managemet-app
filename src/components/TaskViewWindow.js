@@ -7,19 +7,10 @@ import { useBoardData } from "../context/BoardDataContext";
 import CurrentStatus from "./CurrentStatus";
 
 export default function TaskViewWindow() {
-  const { closeTaskViewWindow, viewedTask } = usePopUp();
-  const { boards, currentBoard, handleChangeTaskStatusClose } = useBoardData();
-  const { title, description } = viewedTask[0];
-
-  const realsubtasks = boards
-    .find((board) => board.name === currentBoard)
-    .columns.find((column) => column.name === viewedTask[1])
-    .tasks.find((task) => task.title === viewedTask[0]).subtasks;
-
-  const currentTask = boards
-    .find((board) => board.name === currentBoard)
-    .columns.find((column) => column.name === viewedTask[1])
-    .tasks.find((task) => task.title === viewedTask[0]);
+  const { viewedTask, viewedTaskColumn } = useBoardData();
+  const { closeTaskViewWindow } = usePopUp();
+  const { handleChangeTaskStatusClose } = useBoardData();
+  const { title, description } = viewedTask;
 
   function onClickBackdrop() {
     closeTaskViewWindow();
@@ -30,10 +21,10 @@ export default function TaskViewWindow() {
     <>
       {/* test comment */}
       <div className="task-view-window">
-        <header>{currentTask.title}</header>
-        <main>{currentTask.description}</main>
+        <header>{viewedTask.title}</header>
+        <main>{viewedTask.description}</main>
         <section>
-          {realsubtasks.map((subtask) => (
+          {viewedTask.subtasks.map((subtask) => (
             <Subtask
               key={uuid()}
               taskTitle={title}
@@ -43,7 +34,7 @@ export default function TaskViewWindow() {
           ))}
         </section>
         <div>Current Status</div>
-        <CurrentStatus task={currentTask} />
+        <CurrentStatus />
       </div>
       <Backdrop clickFunction={onClickBackdrop} />
     </>

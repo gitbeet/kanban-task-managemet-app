@@ -3,7 +3,6 @@ import "../css/Subtask.css";
 
 export default function Subtask({ subtask }) {
   const { toggleSubtaskCompleted } = useBoardData();
-  console.log(subtask.isCompleted);
   return (
     <div className="subtask">
       <div
