@@ -209,7 +209,7 @@ export default function BoardDataProvider({ children }) {
           }
         : board;
     });
-    duplicateBoards = [...boards].map((board) => {
+    duplicateBoards = [...duplicateBoards].map((board) => {
       return board.name === currentBoard
         ? {
             ...board,
