@@ -1,10 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import { usePopUp } from "../context/PopUpContext";
+import { useDrag } from "react-dnd";
 
 export default function Task({ task, column }) {
+  const [{ isDragging }, drag] = useDrag(() => ({
+    type: "task",
+    collect: (monitor) => ({
+      isDragging: !!monitor.isDragging(),
+    }),
+  }));
+
   const { openTaskViewWindow } = usePopUp();
-  const { boards, currentBoard } = useBoardData();
+  const { boards, currentBoard, toggleDraggedTask } = useBoardData();
 
   const completedSubtasks = boards
     .find((board) => board.name === currentBoard)
@@ -22,9 +30,12 @@ export default function Task({ task, column }) {
     .find((board) => board.name === currentBoard)
     .columns.find((col) => col.name === column)
     .tasks.find((t) => t.title === task.title).subtasks.length;
-
+  console.log(isDragging);
   return (
     <div
+      onDrag={() => toggleDraggedTask(task)}
+      ref={drag}
+      style={{ cursor: "pointer" }}
       onClick={() => openTaskViewWindow(task.title, column)}
       className="task"
     >

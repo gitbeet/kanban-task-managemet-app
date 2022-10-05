@@ -22,13 +22,7 @@ export default function BoardDataProvider({ children }) {
   const [currentBoard, setCurrentBoard] = useState(boards[0].name);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
-
-  console.log(
-    data.boards
-      .find((board) => board.name === currentBoard)
-      .columns.map((column) => column.tasks)
-      .flat()
-  );
+  const [draggedTask, setDraggedTask] = useState();
 
   useEffect(() => {
     setStatusList(
@@ -49,6 +43,46 @@ export default function BoardDataProvider({ children }) {
     );
     updatedBoard[index] = board;
     setBoards(updatedBoard);
+  }
+
+  function dropTask(value, draggedTask) {
+    let duplicateBoards = [...boards].map((board) => {
+      return board.name === currentBoard
+        ? {
+            ...board,
+            columns: board.columns.map((column) => {
+              return column.name === value
+                ? {
+                    ...column,
+                    tasks: column.tasks.map((task) => {
+                      return task.title === draggedTask.title
+                        ? { ...task, status: value }
+                        : task;
+                    }),
+                  }
+                : column;
+            }),
+          }
+        : board;
+    });
+    duplicateBoards = [...boards].map((board) => {
+      return board.name === currentBoard
+        ? {
+            ...board,
+            columns: board.columns.map((column) => {
+              return column.name === value
+                ? { ...column, tasks: [...column.tasks, { ...draggedTask }] }
+                : column;
+            }),
+          }
+        : board;
+    });
+    setBoards(duplicateBoards);
+    toggleDraggedTask(null);
+  }
+
+  function toggleDraggedTask(task) {
+    setDraggedTask(task);
   }
 
   function toggleSubtaskCompleted(subtaskTitle) {
@@ -85,7 +119,7 @@ export default function BoardDataProvider({ children }) {
     console.log(boards);
   }
 
-  function handleChangeTaskStatus(value, task, currentStatus) {
+  function handleChangeTaskStatus(value, task) {
     let duplicateBoards = [...boards].map((board) => {
       return board.name === currentBoard
         ? {
@@ -169,6 +203,9 @@ export default function BoardDataProvider({ children }) {
         handleChangeTaskStatus,
         statusList,
         handleChangeTaskStatusClose,
+        dropTask,
+        toggleDraggedTask,
+        draggedTask,
       }}
     >
       {children}
