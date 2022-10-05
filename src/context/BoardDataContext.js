@@ -44,6 +44,7 @@ export default function BoardDataProvider({ children }) {
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
   const [draggedTask, setDraggedTask] = useState();
+  const [draggedTaskColumn, setDraggedTaskColumn] = useState();
   const [newTask, setNewTask] = useState(emptyTask);
 
   useEffect(() => {
@@ -113,7 +114,8 @@ export default function BoardDataProvider({ children }) {
           }
         : board;
     });
-    duplicateBoards = [...boards].map((board) => {
+
+    duplicateBoards = [...duplicateBoards].map((board) => {
       return board.name === currentBoard
         ? {
             ...board,
@@ -125,12 +127,32 @@ export default function BoardDataProvider({ children }) {
           }
         : board;
     });
+
+    duplicateBoards = [...duplicateBoards].map((board) => {
+      return board.name === currentBoard
+        ? {
+            ...board,
+            columns: board.columns.map((column) => {
+              return column.name === draggedTaskColumn
+                ? {
+                    ...column,
+                    tasks: column.tasks.filter(
+                      (task) => task.title !== draggedTask.title
+                    ),
+                  }
+                : column;
+            }),
+          }
+        : board;
+    });
+
     setBoards(duplicateBoards);
-    toggleDraggedTask(null);
+    // toggleDraggedTask(null);
   }
 
-  function toggleDraggedTask(task) {
+  function toggleDraggedTask(task, column) {
     setDraggedTask(task);
+    setDraggedTaskColumn(column);
   }
 
   function toggleSubtaskCompleted(subtaskTitle) {

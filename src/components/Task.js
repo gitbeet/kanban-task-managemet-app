@@ -33,7 +33,7 @@ export default function Task({ task, column }) {
   console.log(isDragging);
   return (
     <div
-      onDrag={() => toggleDraggedTask(task)}
+      onDrag={() => toggleDraggedTask(task, column)}
       ref={drag}
       style={{ cursor: "pointer" }}
       onClick={() => openTaskViewWindow(task.title, column)}
