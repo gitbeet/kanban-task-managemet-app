@@ -8,6 +8,27 @@ const emptyBoard = {
   columns: [{ id: uuid(), name: "" }],
 };
 
+const emptyTask = {
+  title: "",
+  description: "",
+  status: "",
+  subtasks: [
+    {
+      title: "",
+      isCompleted: false,
+    },
+    {
+      title: "",
+      isCompleted: false,
+    },
+  ],
+};
+
+const emptySubtask = {
+  title: "",
+  isCompleted: false,
+};
+
 const boardsContext = createContext();
 
 export function useBoardData() {
@@ -23,6 +44,7 @@ export default function BoardDataProvider({ children }) {
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
   const [draggedTask, setDraggedTask] = useState();
+  const [newTask, setNewTask] = useState(emptyTask);
 
   useEffect(() => {
     setStatusList(
@@ -32,17 +54,43 @@ export default function BoardDataProvider({ children }) {
     );
   }, [currentBoard]);
 
-  function changeCurrentBoard(board) {
-    setCurrentBoard(board);
+  function handleCangeNewTask(change) {
+    setNewTask((prev) => {
+      return { ...prev, ...change };
+    });
+    console.log(newTask);
   }
 
-  function handleChange(boardIndex, board) {
-    const updatedBoard = [...boards];
-    const index = updatedBoard.findIndex(
-      (board, index) => index === boardIndex
-    );
-    updatedBoard[index] = board;
-    setBoards(updatedBoard);
+  function handleChangeNewTaskSubtasks(id, changes) {
+    setNewTask((prev) => {
+      return {
+        ...prev,
+        subtasks: prev.subtasks.map((subtask, index) => {
+          return index === id ? { ...subtask, ...changes } : subtask;
+        }),
+      };
+    });
+    console.log(newTask);
+  }
+
+  function createNewTask() {
+    const duplicateBoards = [...boards].map((board) => {
+      return board.name === currentBoard
+        ? {
+            ...board,
+            columns: board.columns.map((column) => {
+              return column.name === newTask.status
+                ? { ...column, tasks: [...column.tasks, newTask] }
+                : column;
+            }),
+          }
+        : board;
+    });
+    setBoards(duplicateBoards);
+  }
+
+  function changeCurrentBoard(board) {
+    setCurrentBoard(board);
   }
 
   function dropTask(value, draggedTask) {
@@ -195,7 +243,6 @@ export default function BoardDataProvider({ children }) {
         currentBoard,
         boards,
         newBoard,
-        handleChange,
         changeCurrentBoard,
         handleChangeNewBoard,
         createNewBoard,
@@ -206,6 +253,10 @@ export default function BoardDataProvider({ children }) {
         dropTask,
         toggleDraggedTask,
         draggedTask,
+        newTask,
+        handleCangeNewTask,
+        handleChangeNewTaskSubtasks,
+        createNewTask,
       }}
     >
       {children}

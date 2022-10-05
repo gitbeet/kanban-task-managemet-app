@@ -14,6 +14,12 @@ export default function PopUpProvider({ children }) {
     useState(false);
   const [showTaskViewWindow, setShowTaskViewWindow] = useState(false);
   const [viewedTask, setViewedTask] = useState();
+  const [showAddNewTaskWindow, setShowAddNewTaskWindow] = useState(false);
+
+  function toggleAddNewTaskWindow() {
+    setShowAddNewTaskWindow((prev) => !prev);
+    console.log(showAddNewTaskWindow);
+  }
 
   function toggleSidebar() {
     setShowSidebar((prev) => !prev);
@@ -43,6 +49,8 @@ export default function PopUpProvider({ children }) {
         openTaskViewWindow,
         closeTaskViewWindow,
         viewedTask,
+        toggleAddNewTaskWindow,
+        showAddNewTaskWindow,
       }}
     >
       {children}

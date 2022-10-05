@@ -5,7 +5,7 @@ import { usePopUp } from "../context/PopUpContext";
 
 export default function Nav() {
   const { currentBoard } = useBoardData();
-  const { toggleSidebar } = usePopUp();
+  const { toggleSidebar, toggleAddNewTaskWindow } = usePopUp();
 
   return (
     <div className="fs-heading-600 ">
@@ -28,7 +28,7 @@ export default function Nav() {
             />
           </svg>
         </div>
-        <div className="add-task-button">
+        <div onClick={toggleAddNewTaskWindow} className="add-task-button">
           <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
             <path
               fill="#FFF"
