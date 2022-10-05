@@ -30,13 +30,6 @@ export default function BoardDataProvider({ children }) {
       .flat()
   );
 
-  console.log(
-    data.boards
-      .find((board) => board.name === currentBoard)
-      .columns.map((column) => column.tasks)
-      .flat()
-  );
-
   useEffect(() => {
     setStatusList(
       boards
@@ -171,6 +164,7 @@ export default function BoardDataProvider({ children }) {
         toggleSubtaskCompleted,
         handleChangeTaskStatus,
         statusList,
+        boardsv2,
       }}
     >
       {children}
