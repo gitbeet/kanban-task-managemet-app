@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import data from "../data.json";
 import { v4 as uuid } from "uuid";
 import { usePopUp } from "./PopUpContext";
@@ -20,7 +20,30 @@ export default function BoardDataProvider({ children }) {
   const { viewedTask } = usePopUp();
   const [boards, setBoards] = useState(data.boards);
   const [currentBoard, setCurrentBoard] = useState(boards[0].name);
+  const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
+
+  const [boardsv2, setBoardsv2] = useState(
+    data.boards
+      .find((board) => board.name === currentBoard)
+      .columns.map((column) => column.tasks)
+      .flat()
+  );
+
+  console.log(
+    data.boards
+      .find((board) => board.name === currentBoard)
+      .columns.map((column) => column.tasks)
+      .flat()
+  );
+
+  useEffect(() => {
+    setStatusList(
+      boards
+        .find((board) => board.name === currentBoard)
+        .columns.map((column) => column.name)
+    );
+  }, [currentBoard]);
 
   function changeCurrentBoard(board) {
     setCurrentBoard(board);
@@ -69,8 +92,8 @@ export default function BoardDataProvider({ children }) {
     console.log(boards);
   }
 
-  function handleChangeTaskStatus(value) {
-    const duplicateBoards = [...boards].map((board) => {
+  function handleChangeTaskStatus(value, task, currentStatus) {
+    let duplicateBoards = [...boards].map((board) => {
       return board.name === currentBoard
         ? {
             ...board,
@@ -83,6 +106,35 @@ export default function BoardDataProvider({ children }) {
                         ? { ...task, status: value }
                         : task;
                     }),
+                  }
+                : column;
+            }),
+          }
+        : board;
+    });
+    duplicateBoards = [...boards].map((board) => {
+      return board.name === currentBoard
+        ? {
+            ...board,
+            columns: board.columns.map((column) => {
+              return column.name === value
+                ? { ...column, tasks: [...column.tasks, { ...task }] }
+                : column;
+            }),
+          }
+        : board;
+    });
+    duplicateBoards = [...boards].map((board) => {
+      return board.name === currentBoard
+        ? {
+            ...board,
+            columns: board.columns.map((column) => {
+              return column.name === currentStatus
+                ? {
+                    ...column,
+                    tasks: column.tasks.filter(
+                      (t) => t.title !== viewedTask[0]
+                    ),
                   }
                 : column;
             }),
@@ -118,6 +170,7 @@ export default function BoardDataProvider({ children }) {
         createNewBoard,
         toggleSubtaskCompleted,
         handleChangeTaskStatus,
+        statusList,
       }}
     >
       {children}

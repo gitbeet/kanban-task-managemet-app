@@ -1,16 +1,18 @@
 import { useBoardData } from "../context/BoardDataContext";
 
 export default function CurrentStatus({ task }) {
-  const { handleChangeTaskStatus } = useBoardData();
+  const { handleChangeTaskStatus, statusList } = useBoardData();
   return (
     <div>
       <select
         value={task.status}
-        onChange={(e) => handleChangeTaskStatus(e.target.value)}
+        onChange={(e) =>
+          handleChangeTaskStatus(e.target.value, task, task.status)
+        }
       >
-        <option>Todo</option>
-        <option>Doing</option>
-        <option>Done</option>
+        {statusList.map((status) => (
+          <option>{status}</option>
+        ))}
       </select>
     </div>
   );
