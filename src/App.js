@@ -6,6 +6,7 @@ import CreateNewBoardWindow from "./components/CreateNewBoardWindow";
 import BoardDisplayWindow from "./components/BoardDisplayWindow";
 import TaskViewWindow from "./components/TaskViewWindow";
 import AddNewTaskWindow from "./components/AddNewTaskWindow";
+import DeleteWindow from "./components/DeleteWindow";
 
 function App() {
   const {
@@ -14,6 +15,8 @@ function App() {
     showTaskViewWindow,
     showAddNewTaskWindow,
     showTaskEditWindow,
+    showTaskDeleteWindow,
+    toggleTaskDeleteWindow,
   } = usePopUp();
 
   return (
@@ -24,6 +27,7 @@ function App() {
       {showTaskViewWindow && <TaskViewWindow />}
       {showAddNewTaskWindow && <AddNewTaskWindow type="new" />}
       {showTaskEditWindow && <AddNewTaskWindow type="edit" />}
+      {showTaskDeleteWindow && <DeleteWindow type="task" />}
       <BoardDisplayWindow />
     </div>
   );

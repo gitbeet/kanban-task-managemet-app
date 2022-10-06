@@ -1,51 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import data from "../data.json";
 import { v4 as uuid } from "uuid";
-import { usePopUp } from "./PopUpContext";
-
-// const dataWithId = data.boards
-//   .map((board) => {
-//     return { ...board, id: uuid() };
-//   })
-//   .map((board) => {
-//     return {
-//       ...board,
-//       columns: board.columns.map((column) => {
-//         return { ...column, id: uuid() };
-//       }),
-//     };
-//   })
-//   .map((board) => {
-//     return {
-//       ...board,
-//       columns: board.columns.map((column) => {
-//         return {
-//           ...column,
-//           tasks: column.tasks.map((task) => {
-//             return { ...task, id: uuid() };
-//           }),
-//         };
-//       }),
-//     };
-//   })
-//   .map((board) => {
-//     return {
-//       ...board,
-//       columns: board.columns.map((column) => {
-//         return {
-//           ...column,
-//           tasks: column.tasks.map((task) => {
-//             return {
-//               ...task,
-//               subtasks: task.subtasks.map((subtask) => {
-//                 return { ...subtask, id: uuid() };
-//               }),
-//             };
-//           }),
-//         };
-//       }),
-//     };
-//   });
 
 const dataWithId = data.boards.map((board) => {
   return {
@@ -94,12 +49,6 @@ const emptyTask = {
   ],
 };
 
-const emptySubtask = {
-  id: uuid(),
-  title: "",
-  isCompleted: false,
-};
-
 const boardsContext = createContext();
 
 export function useBoardData() {
@@ -111,11 +60,12 @@ export function useBoardData() {
 export default function BoardDataProvider({ children }) {
   const [boards, setBoards] = useState(dataWithId);
   const [currentBoard, setCurrentBoard] = useState(dataWithId[0].name);
+  const [newTask, setNewTask] = useState(emptyTask);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
+
   const [draggedTask, setDraggedTask] = useState();
   const [draggedTaskColumn, setDraggedTaskColumn] = useState();
-  const [newTask, setNewTask] = useState(emptyTask);
 
   const [viewedTask, setViewedTask] = useState(null);
   const [viewedTaskColumn, setviewedTaskColumn] = useState(null);
@@ -151,16 +101,37 @@ export default function BoardDataProvider({ children }) {
     }
   }
 
-  function handleChangeNewTaskSubtasks(id, changes) {
-    setNewTask((prev) => {
-      return {
-        ...prev,
-        subtasks: prev.subtasks.map((subtask, index) => {
-          return index === id ? { ...subtask, ...changes } : subtask;
-        }),
-      };
+  // function handleChangeNewTaskSubtasks(id, changes) {
+  //   setNewTask((prev) => {
+  //     return {
+  //       ...prev,
+  //       subtasks: prev.subtasks.map((subtask, index) => {
+  //         return index === id ? { ...subtask, ...changes } : subtask;
+  //       }),
+  //     };
+  //   });
+  //   console.log(newTask);
+  // }
+  function deleteTask() {
+    setBoards((prev) => {
+      return prev.map((board) => {
+        return board.name === currentBoard
+          ? {
+              ...board,
+              columns: board.columns.map((column) => {
+                return column.name === viewedTaskColumn
+                  ? {
+                      ...column,
+                      tasks: column.tasks.filter(
+                        (task) => task.id !== viewedTask.id
+                      ),
+                    }
+                  : column;
+              }),
+            }
+          : board;
+      });
     });
-    console.log(newTask);
   }
 
   function createNewTask(type) {
@@ -411,13 +382,14 @@ export default function BoardDataProvider({ children }) {
         draggedTask,
         newTask,
         handleCangeNewTask,
-        handleChangeNewTaskSubtasks,
+        // handleChangeNewTaskSubtasks,
         createNewTask,
         assignViewedTaskAndColumn,
         viewedTaskColumn,
         viewedTask,
         assignViewedStatus,
         assignDraggedTask,
+        deleteTask,
       }}
     >
       {children}
