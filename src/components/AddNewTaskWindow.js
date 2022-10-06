@@ -79,19 +79,19 @@ export default function AddNewTaskWindow({ type }) {
               return (
                 <EditSubtask
                   handleSubtaskDelete={handleEditSubtaskDelete}
-                  key={index}
-                  id={index}
+                  key={subtask.id}
                   subtask={subtask}
+                  type={type}
                 />
               );
             })
-          : newTask.subtasks.map((subtask, index) => {
+          : newTask.subtasks.map((subtask) => {
               return (
                 <EditSubtask
                   handleSubtaskDelete={handleSubtaskDelete}
-                  key={index}
-                  id={index}
+                  key={subtask.id}
                   subtask={subtask}
+                  type={type}
                 />
               );
             })}

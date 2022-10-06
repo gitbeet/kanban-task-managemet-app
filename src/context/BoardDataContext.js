@@ -3,12 +3,83 @@ import data from "../data.json";
 import { v4 as uuid } from "uuid";
 import { usePopUp } from "./PopUpContext";
 
+// const dataWithId = data.boards
+//   .map((board) => {
+//     return { ...board, id: uuid() };
+//   })
+//   .map((board) => {
+//     return {
+//       ...board,
+//       columns: board.columns.map((column) => {
+//         return { ...column, id: uuid() };
+//       }),
+//     };
+//   })
+//   .map((board) => {
+//     return {
+//       ...board,
+//       columns: board.columns.map((column) => {
+//         return {
+//           ...column,
+//           tasks: column.tasks.map((task) => {
+//             return { ...task, id: uuid() };
+//           }),
+//         };
+//       }),
+//     };
+//   })
+//   .map((board) => {
+//     return {
+//       ...board,
+//       columns: board.columns.map((column) => {
+//         return {
+//           ...column,
+//           tasks: column.tasks.map((task) => {
+//             return {
+//               ...task,
+//               subtasks: task.subtasks.map((subtask) => {
+//                 return { ...subtask, id: uuid() };
+//               }),
+//             };
+//           }),
+//         };
+//       }),
+//     };
+//   });
+
+const dataWithId = data.boards.map((board) => {
+  return {
+    ...board,
+    id: uuid(),
+    columns: board.columns.map((column) => {
+      return {
+        ...column,
+        id: uuid(),
+        tasks: column.tasks.map((task) => {
+          return {
+            ...task,
+            id: uuid(),
+            subtasks: task.subtasks.map((subtask) => {
+              return { ...subtask, id: uuid() };
+            }),
+          };
+        }),
+      };
+    }),
+  };
+});
+
+console.log(dataWithId);
+console.log(data.boards);
+
 const emptyBoard = {
+  id: uuid(),
   name: "",
   columns: [{ id: uuid(), name: "" }],
 };
 
 const emptyTask = {
+  id: uuid(),
   title: "",
   description: "",
   status: "",
@@ -25,6 +96,7 @@ const emptyTask = {
 };
 
 const emptySubtask = {
+  id: uuid(),
   title: "",
   isCompleted: false,
 };
@@ -38,8 +110,8 @@ export function useBoardData() {
 }
 
 export default function BoardDataProvider({ children }) {
-  const [boards, setBoards] = useState(data.boards);
-  const [currentBoard, setCurrentBoard] = useState(boards[0].name);
+  const [boards, setBoards] = useState(dataWithId);
+  const [currentBoard, setCurrentBoard] = useState(dataWithId[0].name);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
   const [draggedTask, setDraggedTask] = useState();
@@ -68,8 +140,6 @@ export default function BoardDataProvider({ children }) {
   }
 
   function handleCangeNewTask(type, change) {
-    console.log(type);
-    console.log(change);
     if (type === "new") {
       setNewTask((prev) => {
         return { ...prev, ...change };
@@ -95,7 +165,8 @@ export default function BoardDataProvider({ children }) {
   }
 
   function createNewTask(type) {
-    console.log("im on top");
+    console.log(viewedTask.status);
+    console.log(viewedTaskColumn);
     if (type === "new") {
       const duplicateBoards = [...boards].map((board) => {
         return board.name === currentBoard
@@ -110,31 +181,66 @@ export default function BoardDataProvider({ children }) {
           : board;
       });
       setBoards(duplicateBoards);
-      console.log("im on new");
     }
-    if (type === "edit") {
-      console.log("im on edit");
 
-      const duplicateBoards = [...boards].map((board) => {
-        return board.name === currentBoard
-          ? {
-              ...board,
-              columns: board.columns.map((column) => {
-                return column.name === viewedTask.status
-                  ? {
-                      ...column,
-                      tasks: column.tasks.map((task) => {
-                        return task.title === viewedTask.title
-                          ? viewedTask
-                          : task;
-                      }),
-                    }
-                  : column;
-              }),
-            }
-          : board;
-      });
-      setBoards(duplicateBoards);
+    if (type === "edit") {
+      if (viewedTask.status === viewedTaskColumn) {
+        const duplicateBoards = [...boards].map((board) => {
+          return board.name === currentBoard
+            ? {
+                ...board,
+                columns: board.columns.map((column) => {
+                  return column.name === viewedTask.status
+                    ? {
+                        ...column,
+                        tasks: column.tasks.map((task) => {
+                          return task.id === viewedTask.id ? viewedTask : task;
+                        }),
+                      }
+                    : column;
+                }),
+              }
+            : board;
+        });
+        setBoards(duplicateBoards);
+      }
+
+      if (viewedTask.status !== viewedTaskColumn) {
+        const duplicateBoards = [...boards]
+          .map((board) => {
+            return board.name === currentBoard
+              ? {
+                  ...board,
+                  columns: board.columns.map((column) => {
+                    return column.name === viewedTask.status
+                      ? {
+                          ...column,
+                          tasks: [...column.tasks, viewedTask],
+                        }
+                      : column;
+                  }),
+                }
+              : board;
+          })
+          .map((board) => {
+            return board.name === currentBoard
+              ? {
+                  ...board,
+                  columns: board.columns.map((column) => {
+                    return column.name === viewedTaskColumn
+                      ? {
+                          ...column,
+                          tasks: column.tasks.filter((task) => {
+                            return task.id !== viewedTask.id;
+                          }),
+                        }
+                      : column;
+                  }),
+                }
+              : board;
+          });
+        setBoards(duplicateBoards);
+      }
     }
   }
 

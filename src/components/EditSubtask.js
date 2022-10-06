@@ -1,19 +1,25 @@
 import React from "react";
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function EditSubtask({ subtask, id, handleSubtaskDelete }) {
-  const { handleChangeNewTaskSubtasks } = useBoardData();
+export default function EditSubtask({ type, subtask, handleSubtaskDelete }) {
+  const { handleChangeNewTaskSubtasks, handleCangeNewTask, viewedTask } =
+    useBoardData();
+
+  function handleChangeSubtask(changes) {
+    const updatedSubtasks = { ...viewedTask }.subtasks;
+    const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
+    updatedSubtasks[index] = { ...subtask, ...changes };
+    handleCangeNewTask(type, updatedSubtasks);
+  }
 
   return (
     <>
       <input
-        onChange={(e) =>
-          handleChangeNewTaskSubtasks(id, { title: e.target.value })
-        }
+        onChange={(e) => handleChangeSubtask({ title: e.target.value })}
         value={subtask.title}
       />
       <svg
-        onClick={() => handleSubtaskDelete(id)}
+        onClick={() => handleSubtaskDelete(subtask.id)}
         width="15"
         height="15"
         xmlns="http://www.w3.org/2000/svg"
