@@ -8,7 +8,7 @@ export default function EditStatus({ type }) {
     <div>
       <select
         onChange={(e) => handleCangeNewTask(type, { status: e.target.value })}
-        value={type === "edit" ? viewedTask.status : newTask.status}
+        value={type === "edit" ? viewedTask.status : newTask.status || "Todo"}
       >
         {statusList.map((status, index) => (
           <option key={index}>{status}</option>

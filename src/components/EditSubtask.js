@@ -2,24 +2,52 @@ import React from "react";
 import { useBoardData } from "../context/BoardDataContext";
 
 export default function EditSubtask({ type, subtask, handleSubtaskDelete }) {
-  const { handleChangeNewTaskSubtasks, handleCangeNewTask, viewedTask } =
-    useBoardData();
+  const { handleCangeNewTask, viewedTask, newTask } = useBoardData();
 
   function handleChangeSubtask(changes) {
+    const updatedSubtasks = { ...newTask }.subtasks;
+    const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
+    updatedSubtasks[index] = { ...subtask, ...changes };
+    handleCangeNewTask(type, updatedSubtasks);
+  }
+
+  function handleChangeEditSubtask(changes) {
     const updatedSubtasks = { ...viewedTask }.subtasks;
     const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
     updatedSubtasks[index] = { ...subtask, ...changes };
     handleCangeNewTask(type, updatedSubtasks);
   }
 
+  function handleDeleteSubtask() {
+    const updatedSubtasks = { ...newTask }.subtasks.filter(
+      (subt) => subt.id !== subtask.id
+    );
+    console.log(updatedSubtasks);
+    handleCangeNewTask(type, { subtasks: updatedSubtasks });
+  }
+
+  function handleDeleteEditSubtask() {
+    const updatedSubtasks = { ...viewedTask }.subtasks.filter(
+      (subt) => subt.id !== subtask.id
+    );
+    console.log(updatedSubtasks);
+    handleCangeNewTask(type, { subtasks: updatedSubtasks });
+  }
+
   return (
     <>
       <input
-        onChange={(e) => handleChangeSubtask({ title: e.target.value })}
+        onChange={
+          type === "edit"
+            ? (e) => handleChangeEditSubtask({ title: e.target.value })
+            : (e) => handleChangeSubtask({ title: e.target.value })
+        }
         value={subtask.title}
       />
       <svg
-        onClick={() => handleSubtaskDelete(subtask.id)}
+        onClick={
+          type === "edit" ? handleDeleteEditSubtask : handleDeleteSubtask
+        }
         width="15"
         height="15"
         xmlns="http://www.w3.org/2000/svg"

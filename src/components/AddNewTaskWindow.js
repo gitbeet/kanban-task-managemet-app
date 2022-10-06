@@ -4,6 +4,7 @@ import "../css/AddNewTaskWindow.css";
 import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { useBoardData } from "../context/BoardDataContext";
+import { v4 as uuid } from "uuid";
 
 export default function AddNewTaskWindow({ type }) {
   const { toggleAddNewTaskWindow, closeTaskEditWindow } = usePopUp();
@@ -15,6 +16,7 @@ export default function AddNewTaskWindow({ type }) {
       subtasks: [
         ...newTask.subtasks,
         {
+          id: uuid(),
           title: "",
           isCompleted: false,
         },
@@ -27,6 +29,7 @@ export default function AddNewTaskWindow({ type }) {
       subtasks: [
         ...viewedTask.subtasks,
         {
+          id: uuid(),
           title: "",
           isCompleted: false,
         },

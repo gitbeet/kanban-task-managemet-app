@@ -69,9 +69,6 @@ const dataWithId = data.boards.map((board) => {
   };
 });
 
-console.log(dataWithId);
-console.log(data.boards);
-
 const emptyBoard = {
   id: uuid(),
   name: "",
@@ -82,13 +79,15 @@ const emptyTask = {
   id: uuid(),
   title: "",
   description: "",
-  status: "",
+  status: "Todo",
   subtasks: [
     {
+      id: uuid(),
       title: "",
       isCompleted: false,
     },
     {
+      id: uuid(),
       title: "",
       isCompleted: false,
     },
@@ -165,10 +164,9 @@ export default function BoardDataProvider({ children }) {
   }
 
   function createNewTask(type) {
-    console.log(viewedTask.status);
-    console.log(viewedTaskColumn);
+    console.log(newTask.status);
     if (type === "new") {
-      const duplicateBoards = [...boards].map((board) => {
+      let duplicateBoards = [...boards].map((board) => {
         return board.name === currentBoard
           ? {
               ...board,
@@ -181,6 +179,7 @@ export default function BoardDataProvider({ children }) {
           : board;
       });
       setBoards(duplicateBoards);
+      setNewTask(emptyTask);
     }
 
     if (type === "edit") {
