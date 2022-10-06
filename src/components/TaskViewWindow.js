@@ -5,16 +5,24 @@ import Subtask from "./Subtask";
 import { v4 as uuid } from "uuid";
 import { useBoardData } from "../context/BoardDataContext";
 import CurrentStatus from "./CurrentStatus";
+import { useState } from "react";
+import TaskWindowMenu from "./TaskWindowMenu";
 
 export default function TaskViewWindow() {
   const { viewedTask, viewedTaskColumn } = useBoardData();
-  const { closeTaskViewWindow } = usePopUp();
+  const { closeTaskViewWindow, openTaskEditWindow } = usePopUp();
   const { handleChangeTaskStatusClose } = useBoardData();
   const { title, description } = viewedTask;
+
+  const [showTaskWindowMenu, setShowTaskWindowMenu] = useState(false);
 
   function onClickBackdrop() {
     closeTaskViewWindow();
     handleChangeTaskStatusClose();
+  }
+
+  function toggleTaskWindowMenu() {
+    setShowTaskWindowMenu((prev) => !prev);
   }
 
   return (
@@ -22,6 +30,21 @@ export default function TaskViewWindow() {
       {/* test comment */}
       <div className="task-view-window">
         <header>{viewedTask.title}</header>
+        <svg
+          style={{ margin: "1rem" }}
+          onClick={toggleTaskWindowMenu}
+          className="task-menu-button"
+          width="5"
+          height="20"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g fill="#828FA3" fillRule="evenodd">
+            <circle cx="2.308" cy="2.308" r="2.308" />
+            <circle cx="2.308" cy="10" r="2.308" />
+            <circle cx="2.308" cy="17.692" r="2.308" />
+          </g>
+        </svg>
+        {showTaskWindowMenu && <TaskWindowMenu />}
         <main>{viewedTask.description}</main>
         <section>
           {viewedTask.subtasks.map((subtask) => (

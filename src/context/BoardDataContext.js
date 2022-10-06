@@ -67,11 +67,21 @@ export default function BoardDataProvider({ children }) {
     setviewedTaskColumn(column);
   }
 
-  function handleCangeNewTask(change) {
-    setNewTask((prev) => {
-      return { ...prev, ...change };
-    });
-    console.log(newTask);
+  function handleCangeNewTask(type, change) {
+    console.log(type);
+    console.log("im trying");
+    if (type === "new") {
+      setNewTask((prev) => {
+        return { ...prev, ...change };
+      });
+      console.log("hello");
+    }
+    if (type === "edit") {
+      setViewedTask((prev) => {
+        return { ...prev, ...change };
+      });
+      console.log("hello");
+    }
   }
 
   function handleChangeNewTaskSubtasks(id, changes) {

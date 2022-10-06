@@ -13,6 +13,7 @@ function App() {
     showCreateNewBoardWindow,
     showTaskViewWindow,
     showAddNewTaskWindow,
+    showTaskEditWindow,
   } = usePopUp();
 
   return (
@@ -21,7 +22,8 @@ function App() {
       {showSidebar && <Sidebar />}
       {showCreateNewBoardWindow && <CreateNewBoardWindow />}
       {showTaskViewWindow && <TaskViewWindow />}
-      {showAddNewTaskWindow && <AddNewTaskWindow />}
+      {showAddNewTaskWindow && <AddNewTaskWindow type="new" />}
+      {showTaskEditWindow && <AddNewTaskWindow type="edit" />}
       <BoardDisplayWindow />
     </div>
   );

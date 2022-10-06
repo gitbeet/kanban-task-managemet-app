@@ -5,9 +5,9 @@ import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function AddNewTaskWindow() {
+export default function AddNewTaskWindow({ type = "add" }) {
   const { toggleAddNewTaskWindow } = usePopUp();
-  const { newTask, statusList, handleCangeNewTask, createNewTask } =
+  const { newTask, statusList, handleCangeNewTask, createNewTask, viewedTask } =
     useBoardData();
 
   function handleSubtaskAdd() {
@@ -36,39 +36,54 @@ export default function AddNewTaskWindow() {
   return (
     <>
       <div className="add-new-task-window">
-        <div>Add New Task</div>
+        <div>{type === "edit" ? "Edit Task" : "Add New Task"}</div>
         <label htmlFor="title">Title</label>
         <input
-          value={newTask.title}
-          onChange={(e) => handleCangeNewTask({ title: e.target.value })}
+          value={type === "edit" ? viewedTask.title : newTask.title}
+          onChange={(e) => handleCangeNewTask(type, { title: e.target.value })}
           name="title"
         />
         <label htmlFor="description">Description</label>
         <textarea
-          onChange={(e) => handleCangeNewTask({ description: e.target.value })}
-          value={newTask.description}
+          onChange={(e) =>
+            handleCangeNewTask(type, { description: e.target.value })
+          }
+          value={type === "edit" ? viewedTask.description : newTask.description}
           name="description"
         />
-        {newTask.subtasks.map((subtask, index) => {
-          return (
-            <EditSubtask
-              handleSubtaskDelete={handleSubtaskDelete}
-              key={index}
-              id={index}
-              subtask={subtask}
-            />
-          );
-        })}
+        {type === "edit"
+          ? viewedTask.subtasks.map((subtask, index) => {
+              return (
+                <EditSubtask
+                  handleSubtaskDelete={handleSubtaskDelete}
+                  key={index}
+                  id={index}
+                  subtask={subtask}
+                />
+              );
+            })
+          : newTask.subtasks.map((subtask, index) => {
+              return (
+                <EditSubtask
+                  handleSubtaskDelete={handleSubtaskDelete}
+                  key={index}
+                  id={index}
+                  subtask={subtask}
+                />
+              );
+            })}
         <button onClick={handleSubtaskAdd} className="btn-secondary-sm">
           Add New Subtask
         </button>
         <EditStatus options={statusList} />
         <button onClick={createTask} className="btn-primary-sm">
-          Create Task
+          {type === "edit" ? "Save Changes" : "Create Task"}
         </button>
       </div>
 
-      <Backdrop clickFunction={toggleAddNewTaskWindow} />
+      <Backdrop
+        clickFunction={type === "edit" ? () => {} : toggleAddNewTaskWindow}
+      />
     </>
   );
 }
