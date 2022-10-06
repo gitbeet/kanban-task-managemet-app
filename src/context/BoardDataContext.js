@@ -101,17 +101,6 @@ export default function BoardDataProvider({ children }) {
     }
   }
 
-  // function handleChangeNewTaskSubtasks(id, changes) {
-  //   setNewTask((prev) => {
-  //     return {
-  //       ...prev,
-  //       subtasks: prev.subtasks.map((subtask, index) => {
-  //         return index === id ? { ...subtask, ...changes } : subtask;
-  //       }),
-  //     };
-  //   });
-  //   console.log(newTask);
-  // }
   function deleteTask() {
     setBoards((prev) => {
       return prev.map((board) => {
@@ -132,6 +121,14 @@ export default function BoardDataProvider({ children }) {
           : board;
       });
     });
+  }
+
+  function deleteBoard() {
+    if (boards.length < 2) return;
+    const boardToDelete = currentBoard;
+    const index = boards.findIndex((board) => board.name === currentBoard);
+    setCurrentBoard(boards[index + 1].name || boards[index - 1].name || 0);
+    setBoards((prev) => prev.filter((board) => board.name !== boardToDelete));
   }
 
   function createNewTask(type) {
@@ -390,6 +387,7 @@ export default function BoardDataProvider({ children }) {
         assignViewedStatus,
         assignDraggedTask,
         deleteTask,
+        deleteBoard,
       }}
     >
       {children}

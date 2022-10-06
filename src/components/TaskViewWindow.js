@@ -9,8 +9,9 @@ import { useState } from "react";
 import TaskWindowMenu from "./TaskWindowMenu";
 
 export default function TaskViewWindow() {
-  const { viewedTask, viewedTaskColumn } = useBoardData();
-  const { closeTaskViewWindow, openTaskEditWindow } = usePopUp();
+  const { viewedTask } = useBoardData();
+  const { closeTaskViewWindow, openTaskEditWindow, toggleTaskDeleteWindow } =
+    usePopUp();
   const { handleChangeTaskStatusClose } = useBoardData();
   const { title, description } = viewedTask;
 
@@ -44,7 +45,12 @@ export default function TaskViewWindow() {
             <circle cx="2.308" cy="17.692" r="2.308" />
           </g>
         </svg>
-        {showTaskWindowMenu && <TaskWindowMenu />}
+        {showTaskWindowMenu && (
+          <TaskWindowMenu
+            onEdit={openTaskEditWindow}
+            onDelete={toggleTaskDeleteWindow}
+          />
+        )}
         <main>{viewedTask.description}</main>
         <section>
           {viewedTask.subtasks.map((subtask) => (

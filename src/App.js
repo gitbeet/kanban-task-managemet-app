@@ -7,6 +7,7 @@ import BoardDisplayWindow from "./components/BoardDisplayWindow";
 import TaskViewWindow from "./components/TaskViewWindow";
 import AddNewTaskWindow from "./components/AddNewTaskWindow";
 import DeleteWindow from "./components/DeleteWindow";
+import { useBoardData } from "./context/BoardDataContext";
 
 function App() {
   const {
@@ -16,8 +17,24 @@ function App() {
     showAddNewTaskWindow,
     showTaskEditWindow,
     showTaskDeleteWindow,
+    showBoardDeleteWindow,
+    toggleBoardDeleteWindow,
     toggleTaskDeleteWindow,
+    closeTaskViewWindow,
   } = usePopUp();
+
+  const { deleteTask, deleteBoard, viewedTask, currentBoard } = useBoardData();
+
+  function deleteTaskFunc() {
+    deleteTask();
+    toggleTaskDeleteWindow();
+    closeTaskViewWindow();
+  }
+
+  function deleteBoardFunc() {
+    deleteBoard();
+    toggleBoardDeleteWindow();
+  }
 
   return (
     <div>
@@ -27,7 +44,24 @@ function App() {
       {showTaskViewWindow && <TaskViewWindow />}
       {showAddNewTaskWindow && <AddNewTaskWindow type="new" />}
       {showTaskEditWindow && <AddNewTaskWindow type="edit" />}
-      {showTaskDeleteWindow && <DeleteWindow type="task" />}
+      {showTaskDeleteWindow && (
+        <DeleteWindow
+          onDelete={deleteTaskFunc}
+          onCancel={toggleTaskDeleteWindow}
+          name={viewedTask.title}
+          type="task"
+          message=" and its subtasks? This action cannot be reversed."
+        />
+      )}
+      {showBoardDeleteWindow && (
+        <DeleteWindow
+          onDelete={deleteBoardFunc}
+          onCancel={toggleBoardDeleteWindow}
+          name={currentBoard}
+          type="board"
+          message="? This action will remove all columns and tasks and cannot be reversed."
+        />
+      )}
       <BoardDisplayWindow />
     </div>
   );

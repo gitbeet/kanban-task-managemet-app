@@ -1,12 +1,8 @@
-import { usePopUp } from "../context/PopUpContext";
-
-export default function TaskWindowMenu() {
-  const { openTaskEditWindow, toggleTaskDeleteWindow } = usePopUp();
-
+export default function TaskWindowMenu({ onEdit, onDelete }) {
   return (
     <div className="task-view-menu">
-      <div onClick={openTaskEditWindow}>Edit</div>
-      <div onClick={toggleTaskDeleteWindow}>Delete</div>
+      <div onClick={onEdit}>Edit</div>
+      <div onClick={onDelete}>Delete</div>
     </div>
   );
 }

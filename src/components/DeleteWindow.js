@@ -1,27 +1,21 @@
-import { useBoardData } from "../context/BoardDataContext";
-import { usePopUp } from "../context/PopUpContext";
-
-export default function DeleteWindow() {
-  const { viewedTask, deleteTask } = useBoardData();
-  const { toggleTaskDeleteWindow, closeTaskViewWindow } = usePopUp();
-
-  function deleteTaskFunc() {
-    deleteTask();
-    toggleTaskDeleteWindow();
-    closeTaskViewWindow();
-  }
-
+export default function DeleteWindow({
+  onDelete,
+  onCancel,
+  name,
+  type,
+  message,
+}) {
   return (
     <div className="add-new-task-window">
-      <div>Delete this task?</div>
+      <div>Delete this {type}?</div>
       <div>
-        Are you sure you want to delete the ‘{viewedTask.title}’ task and its
-        subtasks? This action cannot be reversed.
+        Are you sure you want to delete the ‘{name}’ {type}
+        {message}
       </div>
-      <button onClick={deleteTaskFunc} className="btn-danger-sm">
+      <button onClick={onDelete} className="btn-danger-sm">
         Delete
       </button>
-      <button onClick={toggleTaskDeleteWindow} className="btn-secondary-sm">
+      <button onClick={onCancel} className="btn-secondary-sm">
         Cancel
       </button>
     </div>
