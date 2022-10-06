@@ -8,8 +8,8 @@ export default function CurrentStatus() {
         value={viewedTask.status}
         onChange={(e) => handleChangeTaskStatus(e.target.value)}
       >
-        {statusList.map((status) => (
-          <option>{status}</option>
+        {statusList.map((status, index) => (
+          <option key={index}>{status}</option>
         ))}
       </select>
     </div>

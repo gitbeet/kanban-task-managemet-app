@@ -106,34 +106,23 @@ export default function BoardDataProvider({ children }) {
     setCurrentBoard(board);
   }
 
-  function dropTask(value, draggedTask) {
+  function assignDraggedTask(task) {
+    setDraggedTask(task);
+  }
+
+  function dropTask(value) {
+    if (draggedTaskColumn === value) return;
+
+    const duplicateTask = { ...draggedTask };
+    duplicateTask.status = value;
+
     let duplicateBoards = [...boards].map((board) => {
       return board.name === currentBoard
         ? {
             ...board,
             columns: board.columns.map((column) => {
               return column.name === value
-                ? {
-                    ...column,
-                    tasks: column.tasks.map((task) => {
-                      return task.title === draggedTask.title
-                        ? { ...task, status: value }
-                        : task;
-                    }),
-                  }
-                : column;
-            }),
-          }
-        : board;
-    });
-
-    duplicateBoards = [...duplicateBoards].map((board) => {
-      return board.name === currentBoard
-        ? {
-            ...board,
-            columns: board.columns.map((column) => {
-              return column.name === value
-                ? { ...column, tasks: [...column.tasks, { ...draggedTask }] }
+                ? { ...column, tasks: [...column.tasks, { ...duplicateTask }] }
                 : column;
             }),
           }
@@ -157,14 +146,14 @@ export default function BoardDataProvider({ children }) {
           }
         : board;
     });
-
     setBoards(duplicateBoards);
-    // toggleDraggedTask(null);
+    toggleDraggedTask(null);
   }
 
   function toggleDraggedTask(task, column) {
     setDraggedTask(task);
     setDraggedTaskColumn(column);
+    console.log("dragged task", draggedTask);
   }
 
   function toggleSubtaskCompleted(subtaskTitle) {
@@ -287,6 +276,7 @@ export default function BoardDataProvider({ children }) {
         viewedTaskColumn,
         viewedTask,
         assignViewedStatus,
+        assignDraggedTask,
       }}
     >
       {children}

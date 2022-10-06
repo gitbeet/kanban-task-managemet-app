@@ -6,10 +6,10 @@ import { useDrop } from "react-dnd";
 import { useBoardData } from "../context/BoardDataContext";
 
 export default function Column({ column }) {
-  const { dropTask, draggedTask } = useBoardData();
+  const { dropTask } = useBoardData();
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
-    drop: () => dropTask(column.name, draggedTask),
+    drop: () => dropTask(column.name),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),

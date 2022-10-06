@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useMemo } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import { usePopUp } from "../context/PopUpContext";
 import { useDrag } from "react-dnd";
@@ -30,9 +30,15 @@ export default function Task({ task, column }) {
     .find((board) => board.name === currentBoard)
     .columns.find((col) => col.name === column)
     .tasks.find((t) => t.title === task.title).subtasks.length;
+
+  useMemo(() => {
+    if (isDragging) {
+      toggleDraggedTask(task, column);
+    }
+  }, [isDragging]);
+
   return (
     <div
-      onDrag={() => toggleDraggedTask(task, column)}
       ref={drag}
       style={{ cursor: "pointer" }}
       onClick={() => openTaskViewWindow(task, column)}
