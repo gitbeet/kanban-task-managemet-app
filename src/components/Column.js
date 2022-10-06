@@ -20,8 +20,8 @@ export default function Column({ column }) {
       <header>
         {column.name} ({column.tasks?.length || 0})
       </header>
-      {column.tasks?.map((task) => (
-        <Task key={uuid()} task={task} column={column.name} />
+      {column.tasks?.map((task, index) => (
+        <Task key={uuid()} id={index} task={task} column={column.name} />
       ))}
     </div>
   );

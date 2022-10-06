@@ -5,15 +5,27 @@ import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function AddNewTaskWindow({ type = "add" }) {
-  const { toggleAddNewTaskWindow } = usePopUp();
-  const { newTask, statusList, handleCangeNewTask, createNewTask, viewedTask } =
+export default function AddNewTaskWindow({ type }) {
+  const { toggleAddNewTaskWindow, closeTaskEditWindow } = usePopUp();
+  const { newTask, viewedTask, handleCangeNewTask, createNewTask } =
     useBoardData();
 
   function handleSubtaskAdd() {
-    handleCangeNewTask({
+    handleCangeNewTask(type, {
       subtasks: [
         ...newTask.subtasks,
+        {
+          title: "",
+          isCompleted: false,
+        },
+      ],
+    });
+  }
+
+  function handleEditSubtaskAdd() {
+    handleCangeNewTask(type, {
+      subtasks: [
+        ...viewedTask.subtasks,
         {
           title: "",
           isCompleted: false,
@@ -35,8 +47,13 @@ export default function AddNewTaskWindow({ type = "add" }) {
   }
 
   function createTask() {
-    createNewTask();
+    createNewTask(type);
     toggleAddNewTaskWindow();
+  }
+
+  function saveChanges() {
+    createNewTask(type);
+    closeTaskEditWindow();
   }
 
   return (
@@ -78,11 +95,17 @@ export default function AddNewTaskWindow({ type = "add" }) {
                 />
               );
             })}
-        <button onClick={handleSubtaskAdd} className="btn-secondary-sm">
+        <button
+          onClick={type === "edit" ? handleEditSubtaskAdd : handleSubtaskAdd}
+          className="btn-secondary-sm"
+        >
           Add New Subtask
         </button>
-        <EditStatus type={type} options={statusList} />
-        <button onClick={createTask} className="btn-primary-sm">
+        <EditStatus type={type} />
+        <button
+          onClick={type === "edit" ? saveChanges : createTask}
+          className="btn-primary-sm"
+        >
           {type === "edit" ? "Save Changes" : "Create Task"}
         </button>
       </div>

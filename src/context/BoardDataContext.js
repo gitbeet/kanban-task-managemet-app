@@ -94,20 +94,48 @@ export default function BoardDataProvider({ children }) {
     console.log(newTask);
   }
 
-  function createNewTask() {
-    const duplicateBoards = [...boards].map((board) => {
-      return board.name === currentBoard
-        ? {
-            ...board,
-            columns: board.columns.map((column) => {
-              return column.name === newTask.status
-                ? { ...column, tasks: [...column.tasks, newTask] }
-                : column;
-            }),
-          }
-        : board;
-    });
-    setBoards(duplicateBoards);
+  function createNewTask(type) {
+    console.log("im on top");
+    if (type === "new") {
+      const duplicateBoards = [...boards].map((board) => {
+        return board.name === currentBoard
+          ? {
+              ...board,
+              columns: board.columns.map((column) => {
+                return column.name === newTask.status
+                  ? { ...column, tasks: [...column.tasks, newTask] }
+                  : column;
+              }),
+            }
+          : board;
+      });
+      setBoards(duplicateBoards);
+      console.log("im on new");
+    }
+    if (type === "edit") {
+      console.log("im on edit");
+
+      const duplicateBoards = [...boards].map((board) => {
+        return board.name === currentBoard
+          ? {
+              ...board,
+              columns: board.columns.map((column) => {
+                return column.name === viewedTask.status
+                  ? {
+                      ...column,
+                      tasks: column.tasks.map((task) => {
+                        return task.title === viewedTask.title
+                          ? viewedTask
+                          : task;
+                      }),
+                    }
+                  : column;
+              }),
+            }
+          : board;
+      });
+      setBoards(duplicateBoards);
+    }
   }
 
   function changeCurrentBoard(board) {

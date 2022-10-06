@@ -24,6 +24,10 @@ export default function PopUpProvider({ children }) {
     setShowTaskViewWindow(false);
   }
 
+  function closeTaskEditWindow() {
+    setShowTaskEditWindow(false);
+  }
+
   function toggleAddNewTaskWindow() {
     setShowAddNewTaskWindow((prev) => !prev);
   }
@@ -60,6 +64,7 @@ export default function PopUpProvider({ children }) {
         showAddNewTaskWindow,
         openTaskEditWindow,
         showTaskEditWindow,
+        closeTaskEditWindow,
       }}
     >
       {children}

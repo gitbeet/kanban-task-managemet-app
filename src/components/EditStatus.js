@@ -1,7 +1,7 @@
 import React from "react";
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function EditStatus(type) {
+export default function EditStatus({ type }) {
   const { handleCangeNewTask, newTask, statusList, viewedTask } =
     useBoardData();
   return (
