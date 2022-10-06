@@ -69,18 +69,16 @@ export default function BoardDataProvider({ children }) {
 
   function handleCangeNewTask(type, change) {
     console.log(type);
-    console.log("im trying");
+    console.log(change);
     if (type === "new") {
       setNewTask((prev) => {
         return { ...prev, ...change };
       });
-      console.log("hello");
     }
     if (type === "edit") {
       setViewedTask((prev) => {
         return { ...prev, ...change };
       });
-      console.log("hello");
     }
   }
 

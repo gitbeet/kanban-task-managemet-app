@@ -23,8 +23,14 @@ export default function AddNewTaskWindow({ type = "add" }) {
   }
 
   function handleSubtaskDelete(id) {
-    handleCangeNewTask({
+    handleCangeNewTask(type, {
       subtasks: newTask.subtasks.filter((subtask, index) => index !== id),
+    });
+  }
+
+  function handleEditSubtaskDelete(id) {
+    handleCangeNewTask(type, {
+      subtasks: viewedTask.subtasks.filter((subtask, index) => index !== id),
     });
   }
 
@@ -55,7 +61,7 @@ export default function AddNewTaskWindow({ type = "add" }) {
           ? viewedTask.subtasks.map((subtask, index) => {
               return (
                 <EditSubtask
-                  handleSubtaskDelete={handleSubtaskDelete}
+                  handleSubtaskDelete={handleEditSubtaskDelete}
                   key={index}
                   id={index}
                   subtask={subtask}
@@ -75,7 +81,7 @@ export default function AddNewTaskWindow({ type = "add" }) {
         <button onClick={handleSubtaskAdd} className="btn-secondary-sm">
           Add New Subtask
         </button>
-        <EditStatus options={statusList} />
+        <EditStatus type={type} options={statusList} />
         <button onClick={createTask} className="btn-primary-sm">
           {type === "edit" ? "Save Changes" : "Create Task"}
         </button>
