@@ -28,7 +28,7 @@ const emptyTask = {
   id: uuid(),
   title: "",
   description: "",
-  status: "Todo",
+  status: "",
   subtasks: [
     {
       id: uuid(),
@@ -55,7 +55,7 @@ export default function BoardDataProvider({ children }) {
   const emptyBoard = {
     id: uuid(),
     name: "",
-    columns: [{ id: uuid(), name: "" }],
+    columns: [],
   };
 
   const [boards, setBoards] = useState(dataWithId);
@@ -127,12 +127,14 @@ export default function BoardDataProvider({ children }) {
     if (boards.length < 2) return;
     const boardToDelete = currentBoard;
     const index = boards.findIndex((board) => board.id === currentBoard);
-    setCurrentBoard(boards[index + 1].name || boards[index - 1].name || 0);
-    setBoards((prev) => prev.filter((board) => board.name !== boardToDelete));
+    setCurrentBoard(boards[index + 1].id || boards[index - 1].id || 0);
+    setBoards((prev) => prev.filter((board) => board.id !== boardToDelete));
   }
 
   function createNewTask(type) {
-    console.log(viewedTask.status);
+    console.log(boards);
+    console.log(viewedTask);
+
     if (type === "new") {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoard
@@ -265,12 +267,12 @@ export default function BoardDataProvider({ children }) {
     console.log("dragged task", draggedTask);
   }
 
-  function toggleSubtaskCompleted(subtaskTitle) {
+  function toggleSubtaskCompleted(id) {
     setViewedTask((prev) => {
       return {
         ...prev,
         subtasks: prev.subtasks.map((subtask) => {
-          return subtask.title === subtaskTitle
+          return subtask.id === id
             ? { ...subtask, isCompleted: !subtask.isCompleted }
             : subtask;
         }),

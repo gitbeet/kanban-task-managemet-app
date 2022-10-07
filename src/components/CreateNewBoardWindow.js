@@ -20,7 +20,7 @@ export default function CreateNewBoardWindow({
   function handleColumnAdd() {
     handleChangeNewBoard({
       ...newBoard,
-      columns: [...columns, { id: uuid(), name: "" }],
+      columns: [...columns, { id: uuid(), name: "", tasks: [] }],
     });
   }
 

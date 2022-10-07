@@ -9,7 +9,7 @@ export default function Subtask({ subtask }) {
         className={
           subtask.isCompleted ? " subtask-completed" : "subtask-not-completed"
         }
-        onClick={() => toggleSubtaskCompleted(subtask.title)}
+        onClick={() => toggleSubtaskCompleted(subtask.id)}
       ></div>
       <div>{subtask.title}</div>
     </div>

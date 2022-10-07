@@ -5,7 +5,7 @@ import "../css/Board.css";
 
 export default function Board({ board }) {
   const { darkMode } = useDarkMode();
-  const { currentBoard, changeCurrentBoard } = useBoardData();
+  const { currentBoard, changeCurrentBoard, boards } = useBoardData();
 
   let current = currentBoard === board;
 
@@ -31,7 +31,7 @@ export default function Board({ board }) {
           fill="currentColor"
         />
       </svg>
-      {board}
+      {boards.find((b) => b.id === board).name}
     </div>
   );
 }

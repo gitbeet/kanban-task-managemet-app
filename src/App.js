@@ -25,6 +25,7 @@ function App() {
     toggleAddNewTaskWindow,
     closeTaskEditWindow,
     toggleCreateNewBoardWindow,
+    toggleEditBoardWindow,
   } = usePopUp();
 
   const {
@@ -47,6 +48,11 @@ function App() {
     toggleBoardDeleteWindow();
   }
 
+  function SaveEditBoardChanges() {
+    toggleEditBoardWindow();
+    editBoard();
+  }
+
   return (
     <div>
       <Nav />
@@ -64,7 +70,7 @@ function App() {
         <CreateNewBoardWindow
           header="Edit Board"
           buttonText="Save Changes"
-          submitFunction={editBoard}
+          submitFunction={SaveEditBoardChanges}
         />
       )}
       {showTaskViewWindow && <TaskViewWindow />}
