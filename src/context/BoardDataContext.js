@@ -53,9 +53,18 @@ export default function BoardDataProvider({ children }) {
     );
   }, [currentBoard, boards]);
 
-  useEffect(() => {
-    console.log(viewedTask);
-  });
+  // useEffect(() => {
+  //   console.log(viewedTask);
+  // });
+
+  function handleColumnAdd(columnName) {
+    let duplicateBoards = [...boards].map((board) => {
+      return board.id === currentBoard
+        ? { ...board, columns: [{ name: columnName, tasks: [], id: uuid() }] }
+        : board;
+    });
+    setBoards(duplicateBoards);
+  }
 
   function assignViewedStatus(status) {
     setViewedStatus(status);
@@ -63,6 +72,14 @@ export default function BoardDataProvider({ children }) {
 
   function assignNewBoard(board) {
     setNewBoard(board);
+  }
+
+  function spawnNewEmptyColumn() {
+    return {
+      id: uuid(),
+      name: "",
+      tasks: [],
+    };
   }
 
   function spawnNewEmptyBoard() {
@@ -230,6 +247,7 @@ export default function BoardDataProvider({ children }) {
   }
 
   function dropTask(value) {
+    console.log(draggedTaskColumn, value);
     if (draggedTaskColumn === value) return;
     const duplicateTask = { ...draggedTask };
     duplicateTask.status = boards
@@ -273,7 +291,6 @@ export default function BoardDataProvider({ children }) {
   function toggleDraggedTask(task, column) {
     setDraggedTask(task);
     setDraggedTaskColumn(column);
-    console.log("dragged task", draggedTask);
   }
 
   function toggleSubtaskCompleted(id) {
@@ -417,6 +434,7 @@ export default function BoardDataProvider({ children }) {
         emptyViewedTask,
         assignNewBoard,
         editBoard,
+        handleColumnAdd,
       }}
     >
       {children}
