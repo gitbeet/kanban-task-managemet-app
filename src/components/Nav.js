@@ -5,7 +5,8 @@ import { usePopUp } from "../context/PopUpContext";
 import TaskWindowMenu from "./TaskWindowMenu";
 
 export default function Nav() {
-  const { currentBoard, emptyViewedTask } = useBoardData();
+  const { boards, currentBoard, emptyViewedTask, assignNewBoard } =
+    useBoardData();
   const {
     toggleSidebar,
     toggleAddNewTaskWindow,
@@ -19,6 +20,11 @@ export default function Nav() {
     toggleAddNewTaskWindow();
   }
 
+  function editFunction() {
+    toggleEditBoardWindow();
+    assignNewBoard(boards.find((board) => board.id === currentBoard));
+  }
+
   return (
     <div className="fs-heading-600 ">
       <div className="container nav">
@@ -30,7 +36,7 @@ export default function Nav() {
           </g>
         </svg>
         <div onClick={toggleSidebar} className="nav-select-board">
-          {currentBoard}
+          {boards.find((board) => board.id === currentBoard).name}
           <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
             <path
               stroke="#635FC7"
@@ -62,7 +68,7 @@ export default function Nav() {
         </svg>
         {showMenu && (
           <TaskWindowMenu
-            onEdit={toggleEditBoardWindow}
+            onEdit={editFunction}
             onDelete={toggleBoardDeleteWindow}
           />
         )}

@@ -29,7 +29,6 @@ export default function DynamicInput({ data, id }) {
     });
   }
 
-  console.log(newBoard);
   return (
     <div className="dynamic-input">
       <input

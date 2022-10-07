@@ -6,11 +6,15 @@ import "../css/CreateNewBoardWindow.css";
 import DynamicInput from "./DynamicInput";
 import { v4 as uuid } from "uuid";
 
-export default function CreateNewBoardWindow() {
-  const { toggleCreateNewBoardWindow } = usePopUp();
+export default function CreateNewBoardWindow({
+  header,
+  closeFunction,
+  buttonText,
+  submitFunction,
+}) {
   const { darkMode } = useDarkMode();
-  const { newBoard, handleChangeNewBoard, createNewBoard } = useBoardData();
-  const { columns, name } = newBoard;
+  const { newBoard, handleChangeNewBoard } = useBoardData();
+  const { columns } = newBoard;
 
   // this works
   function handleColumnAdd() {
@@ -29,10 +33,10 @@ export default function CreateNewBoardWindow() {
             : "create-new-board bg-light-900 text-primary-100"
         }
       >
-        <div>Add New Board</div>
+        <div>{header}</div>
         <label htmlFor="name">Board Name</label>
         <input
-          // this works
+          value={newBoard.name}
           onChange={(e) =>
             handleChangeNewBoard({ [e.target.name]: e.target.value })
           }
@@ -43,19 +47,19 @@ export default function CreateNewBoardWindow() {
             <DynamicInput
               key={column.id}
               id={column.id}
-              handleChangeFunc={handleChangeNewBoard}
               data={column.name}
+              handleChangeFunc={handleChangeNewBoard}
             />
           );
         })}
         <button onClick={handleColumnAdd} className="btn-secondary-sm">
           +Add New Column
         </button>
-        <button onClick={createNewBoard} className="btn-primary-sm">
-          Create New Board
+        <button onClick={submitFunction} className="btn-primary-sm">
+          {buttonText}
         </button>
       </div>
-      <Backdrop clickFunction={toggleCreateNewBoardWindow} />
+      <Backdrop clickFunction={closeFunction} />
     </>
   );
 }

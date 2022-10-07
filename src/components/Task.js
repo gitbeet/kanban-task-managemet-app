@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import { usePopUp } from "../context/PopUpContext";
 import { useDrag } from "react-dnd";
@@ -15,7 +15,7 @@ export default function Task({ task, column }) {
   const { boards, currentBoard, toggleDraggedTask } = useBoardData();
 
   const completedSubtasks = boards
-    .find((board) => board.name === currentBoard)
+    .find((board) => board.id === currentBoard)
     .columns.find((col) => col.name === column)
     .tasks.find((t) => t.title === task.title)
     .subtasks.reduce((acc, subtask) => {
@@ -27,7 +27,7 @@ export default function Task({ task, column }) {
     }, 0);
 
   const totalSubtasks = boards
-    .find((board) => board.name === currentBoard)
+    .find((board) => board.id === currentBoard)
     .columns.find((col) => col.name === column)
     .tasks.find((t) => t.title === task.title).subtasks.length;
 

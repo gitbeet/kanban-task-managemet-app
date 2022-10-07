@@ -24,12 +24,6 @@ const dataWithId = data.boards.map((board) => {
   };
 });
 
-const emptyBoard = {
-  id: uuid(),
-  name: "",
-  columns: [{ id: uuid(), name: "" }],
-};
-
 const emptyTask = {
   id: uuid(),
   title: "",
@@ -58,8 +52,14 @@ export function useBoardData() {
 }
 
 export default function BoardDataProvider({ children }) {
+  const emptyBoard = {
+    id: uuid(),
+    name: "",
+    columns: [{ id: uuid(), name: "" }],
+  };
+
   const [boards, setBoards] = useState(dataWithId);
-  const [currentBoard, setCurrentBoard] = useState(dataWithId[0].name);
+  const [currentBoard, setCurrentBoard] = useState(dataWithId[0].id);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
 
@@ -73,13 +73,17 @@ export default function BoardDataProvider({ children }) {
   useEffect(() => {
     setStatusList(
       boards
-        .find((board) => board.name === currentBoard)
+        .find((board) => board.id === currentBoard)
         .columns.map((column) => column.name)
     );
   }, [currentBoard]);
 
   function assignViewedStatus(status) {
     setViewedStatus(status);
+  }
+
+  function assignNewBoard(board) {
+    setNewBoard(board);
   }
 
   function emptyViewedTask() {
@@ -100,7 +104,7 @@ export default function BoardDataProvider({ children }) {
   function deleteTask() {
     setBoards((prev) => {
       return prev.map((board) => {
-        return board.name === currentBoard
+        return board.id === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -122,7 +126,7 @@ export default function BoardDataProvider({ children }) {
   function deleteBoard() {
     if (boards.length < 2) return;
     const boardToDelete = currentBoard;
-    const index = boards.findIndex((board) => board.name === currentBoard);
+    const index = boards.findIndex((board) => board.id === currentBoard);
     setCurrentBoard(boards[index + 1].name || boards[index - 1].name || 0);
     setBoards((prev) => prev.filter((board) => board.name !== boardToDelete));
   }
@@ -131,7 +135,7 @@ export default function BoardDataProvider({ children }) {
     console.log(viewedTask.status);
     if (type === "new") {
       let duplicateBoards = [...boards].map((board) => {
-        return board.name === currentBoard
+        return board.id === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -149,7 +153,7 @@ export default function BoardDataProvider({ children }) {
     if (type === "edit") {
       if (viewedTask.status === viewedTaskColumn) {
         const duplicateBoards = [...boards].map((board) => {
-          return board.name === currentBoard
+          return board.id === currentBoard
             ? {
                 ...board,
                 columns: board.columns.map((column) => {
@@ -171,7 +175,7 @@ export default function BoardDataProvider({ children }) {
       if (viewedTask.status !== viewedTaskColumn) {
         const duplicateBoards = [...boards]
           .map((board) => {
-            return board.name === currentBoard
+            return board.id === currentBoard
               ? {
                   ...board,
                   columns: board.columns.map((column) => {
@@ -186,7 +190,7 @@ export default function BoardDataProvider({ children }) {
               : board;
           })
           .map((board) => {
-            return board.name === currentBoard
+            return board.id === currentBoard
               ? {
                   ...board,
                   columns: board.columns.map((column) => {
@@ -222,7 +226,7 @@ export default function BoardDataProvider({ children }) {
     duplicateTask.status = value;
 
     let duplicateBoards = [...boards].map((board) => {
-      return board.name === currentBoard
+      return board.id === currentBoard
         ? {
             ...board,
             columns: board.columns.map((column) => {
@@ -235,7 +239,7 @@ export default function BoardDataProvider({ children }) {
     });
 
     duplicateBoards = [...duplicateBoards].map((board) => {
-      return board.name === currentBoard
+      return board.id === currentBoard
         ? {
             ...board,
             columns: board.columns.map((column) => {
@@ -287,7 +291,7 @@ export default function BoardDataProvider({ children }) {
     console.log(viewedTaskColumn, viewedStatus);
     if (viewedTaskColumn === viewedStatus) {
       let duplicateBoards = [...boards].map((board) => {
-        return board.name === currentBoard
+        return board.id === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -308,7 +312,7 @@ export default function BoardDataProvider({ children }) {
       setBoards(duplicateBoards);
     } else {
       let duplicateBoards = [...boards].map((board) => {
-        return board.name === currentBoard
+        return board.id === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -323,7 +327,7 @@ export default function BoardDataProvider({ children }) {
           : board;
       });
       duplicateBoards = [...duplicateBoards].map((board) => {
-        return board.name === currentBoard
+        return board.id === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -347,6 +351,14 @@ export default function BoardDataProvider({ children }) {
   function handleChangeNewBoard(changes) {
     setNewBoard((prev) => {
       return { ...prev, ...changes };
+    });
+  }
+
+  function editBoard() {
+    setBoards((prev) => {
+      return prev.map((board) => {
+        return board.id === currentBoard ? newBoard : board;
+      });
     });
   }
 
@@ -374,7 +386,6 @@ export default function BoardDataProvider({ children }) {
         toggleDraggedTask,
         draggedTask,
         handleCangeNewTask,
-        // handleChangeNewTaskSubtasks,
         createNewTask,
         assignViewedTaskAndColumn,
         viewedTaskColumn,
@@ -384,6 +395,9 @@ export default function BoardDataProvider({ children }) {
         deleteTask,
         deleteBoard,
         emptyViewedTask,
+        emptyBoard,
+        assignNewBoard,
+        editBoard,
       }}
     >
       {children}

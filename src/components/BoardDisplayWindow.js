@@ -6,7 +6,7 @@ export default function BoardDisplayWindow() {
   return (
     <div>
       <ColumnsList
-        board={boards.find((board) => board.name === currentBoard).columns}
+        board={boards.find((board) => board.id === currentBoard).columns}
       />
     </div>
   );
