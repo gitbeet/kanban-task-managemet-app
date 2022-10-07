@@ -15,14 +15,14 @@ export default function EditStatus({ type }) {
 
   useEffect(() => {
     if (type === "new") {
-      handleCangeNewTask(type, { status: statusList[0] });
+      handleCangeNewTask({ status: statusList[0] });
     }
   }, []);
 
   return (
     <div>
       <select
-        onChange={(e) => handleCangeNewTask(type, { status: e.target.value })}
+        onChange={(e) => handleCangeNewTask({ status: e.target.value })}
         value={viewedTask.status || statusList[0]}
       >
         {statusList.map((status, index) => (

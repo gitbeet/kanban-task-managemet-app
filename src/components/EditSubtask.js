@@ -8,7 +8,7 @@ export default function EditSubtask({ type, subtask }) {
     const updatedSubtasks = { ...viewedTask }.subtasks;
     const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
     updatedSubtasks[index] = { ...subtask, ...changes };
-    handleCangeNewTask(type, updatedSubtasks);
+    handleCangeNewTask(updatedSubtasks);
   }
 
   function handleDeleteSubtask() {
@@ -16,7 +16,7 @@ export default function EditSubtask({ type, subtask }) {
       (subt) => subt.id !== subtask.id
     );
     console.log(updatedSubtasks);
-    handleCangeNewTask(type, { subtasks: updatedSubtasks });
+    handleCangeNewTask({ subtasks: updatedSubtasks });
   }
 
   return (

@@ -16,8 +16,8 @@ export default function Task({ task, column }) {
 
   const completedSubtasks = boards
     .find((board) => board.id === currentBoard)
-    .columns.find((col) => col.name === column)
-    .tasks.find((t) => t.title === task.title)
+    .columns.find((col) => col.id === column)
+    .tasks.find((t) => t.id === task.id)
     .subtasks.reduce((acc, subtask) => {
       if (subtask.isCompleted) {
         return acc + 1;
@@ -28,8 +28,8 @@ export default function Task({ task, column }) {
 
   const totalSubtasks = boards
     .find((board) => board.id === currentBoard)
-    .columns.find((col) => col.name === column)
-    .tasks.find((t) => t.title === task.title).subtasks.length;
+    .columns.find((col) => col.id === column)
+    .tasks.find((t) => t.id === task.id).subtasks.length;
 
   useMemo(() => {
     if (isDragging) {

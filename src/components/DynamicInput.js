@@ -2,15 +2,13 @@ import { useBoardData } from "../context/BoardDataContext";
 import "../css/DynamicInput.css";
 
 export default function DynamicInput({ data, id }) {
-  const { handleChangeNewBoard, newBoard, removeColumn } = useBoardData();
+  const { handleChangeNewBoard, newBoard } = useBoardData();
 
   const { columns } = newBoard;
 
   function handleColumnChange(columnChange) {
     const newColumns = [...columns];
-    console.log("newColumns", newColumns);
     const index = newColumns.findIndex((i) => {
-      console.log(i.id, id);
       return i.id === id;
     });
     console.log("index", index);

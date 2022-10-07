@@ -17,7 +17,7 @@ export default function AddNewTaskWindow({
   const { handleCangeNewTask } = useBoardData();
 
   function handleSubtaskAdd() {
-    handleCangeNewTask(type, {
+    handleCangeNewTask({
       subtasks: [
         ...task.subtasks,
         {
@@ -28,9 +28,9 @@ export default function AddNewTaskWindow({
       ],
     });
   }
-  // Check this!!!
+  // Check code
   function handleSubtaskDelete(id) {
-    handleCangeNewTask(type, {
+    handleCangeNewTask({
       subtasks: task.subtasks.filter((subtask, index) => index !== id),
     });
   }
@@ -47,14 +47,12 @@ export default function AddNewTaskWindow({
         <label htmlFor="title">Title</label>
         <input
           value={task.title}
-          onChange={(e) => handleCangeNewTask(type, { title: e.target.value })}
+          onChange={(e) => handleCangeNewTask({ title: e.target.value })}
           name="title"
         />
         <label htmlFor="description">Description</label>
         <textarea
-          onChange={(e) =>
-            handleCangeNewTask(type, { description: e.target.value })
-          }
+          onChange={(e) => handleCangeNewTask({ description: e.target.value })}
           value={task.description}
           name="description"
         />

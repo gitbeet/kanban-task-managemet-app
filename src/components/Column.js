@@ -9,7 +9,7 @@ export default function Column({ column }) {
   const { dropTask } = useBoardData();
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
-    drop: () => dropTask(column.name),
+    drop: () => dropTask(column.id),
     collect: (monitor) => ({
       isOver: !!monitor.isOver(),
     }),
@@ -21,7 +21,7 @@ export default function Column({ column }) {
         {column.name} ({column.tasks?.length || 0})
       </header>
       {column.tasks?.map((task, index) => (
-        <Task key={uuid()} id={index} task={task} column={column.name} />
+        <Task key={uuid()} id={index} task={task} column={column.id} />
       ))}
     </div>
   );

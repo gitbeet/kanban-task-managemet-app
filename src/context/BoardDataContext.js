@@ -24,25 +24,6 @@ const dataWithId = data.boards.map((board) => {
   };
 });
 
-const emptyTask = {
-  id: uuid(),
-  title: "",
-  description: "",
-  status: "",
-  subtasks: [
-    {
-      id: uuid(),
-      title: "",
-      isCompleted: false,
-    },
-    {
-      id: uuid(),
-      title: "",
-      isCompleted: false,
-    },
-  ],
-};
-
 const boardsContext = createContext();
 
 export function useBoardData() {
@@ -52,16 +33,10 @@ export function useBoardData() {
 }
 
 export default function BoardDataProvider({ children }) {
-  const emptyBoard = {
-    id: uuid(),
-    name: "",
-    columns: [],
-  };
-
   const [boards, setBoards] = useState(dataWithId);
   const [currentBoard, setCurrentBoard] = useState(dataWithId[0].id);
   const [statusList, setStatusList] = useState();
-  const [newBoard, setNewBoard] = useState(emptyBoard);
+  const [newBoard, setNewBoard] = useState(spawnNewEmptyBoard());
 
   const [draggedTask, setDraggedTask] = useState();
   const [draggedTaskColumn, setDraggedTaskColumn] = useState();
@@ -76,7 +51,11 @@ export default function BoardDataProvider({ children }) {
         .find((board) => board.id === currentBoard)
         .columns.map((column) => column.name)
     );
-  }, [currentBoard]);
+  }, [currentBoard, boards]);
+
+  useEffect(() => {
+    console.log(viewedTask);
+  });
 
   function assignViewedStatus(status) {
     setViewedStatus(status);
@@ -86,8 +65,37 @@ export default function BoardDataProvider({ children }) {
     setNewBoard(board);
   }
 
+  function spawnNewEmptyBoard() {
+    return {
+      id: uuid(),
+      name: "",
+      columns: [],
+    };
+  }
+
+  function spawnNewEmptyTask() {
+    return {
+      id: uuid(),
+      title: "",
+      description: "",
+      status: "",
+      subtasks: [
+        {
+          id: uuid(),
+          title: "",
+          isCompleted: false,
+        },
+        {
+          id: uuid(),
+          title: "",
+          isCompleted: false,
+        },
+      ],
+    };
+  }
+
   function emptyViewedTask() {
-    setViewedTask(emptyTask);
+    setViewedTask(spawnNewEmptyTask());
   }
 
   function assignViewedTaskAndColumn(task, column) {
@@ -95,7 +103,7 @@ export default function BoardDataProvider({ children }) {
     setviewedTaskColumn(column);
   }
 
-  function handleCangeNewTask(type, change) {
+  function handleCangeNewTask(change) {
     setViewedTask((prev) => {
       return { ...prev, ...change };
     });
@@ -108,7 +116,7 @@ export default function BoardDataProvider({ children }) {
           ? {
               ...board,
               columns: board.columns.map((column) => {
-                return column.name === viewedTaskColumn
+                return column.id === viewedTaskColumn
                   ? {
                       ...column,
                       tasks: column.tasks.filter(
@@ -149,7 +157,7 @@ export default function BoardDataProvider({ children }) {
           : board;
       });
       setBoards(duplicateBoards);
-      setViewedTask(emptyTask);
+      setViewedTask(spawnNewEmptyTask());
     }
 
     if (type === "edit") {
@@ -223,16 +231,17 @@ export default function BoardDataProvider({ children }) {
 
   function dropTask(value) {
     if (draggedTaskColumn === value) return;
-
     const duplicateTask = { ...draggedTask };
-    duplicateTask.status = value;
-
+    duplicateTask.status = boards
+      .find((board) => board.id === currentBoard)
+      .columns.find((column) => column.id === value).name;
+    console.log(duplicateTask.status);
     let duplicateBoards = [...boards].map((board) => {
       return board.id === currentBoard
         ? {
             ...board,
             columns: board.columns.map((column) => {
-              return column.name === value
+              return column.id === value
                 ? { ...column, tasks: [...column.tasks, { ...duplicateTask }] }
                 : column;
             }),
@@ -245,11 +254,11 @@ export default function BoardDataProvider({ children }) {
         ? {
             ...board,
             columns: board.columns.map((column) => {
-              return column.name === draggedTaskColumn
+              return column.id === draggedTaskColumn
                 ? {
                     ...column,
                     tasks: column.tasks.filter(
-                      (task) => task.title !== draggedTask.title
+                      (task) => task.id !== draggedTask.id
                     ),
                   }
                 : column;
@@ -268,6 +277,7 @@ export default function BoardDataProvider({ children }) {
   }
 
   function toggleSubtaskCompleted(id) {
+    console.log(id);
     setViewedTask((prev) => {
       return {
         ...prev,
@@ -290,20 +300,22 @@ export default function BoardDataProvider({ children }) {
   }
 
   function handleChangeTaskStatusClose() {
-    console.log(viewedTaskColumn, viewedStatus);
-    if (viewedTaskColumn === viewedStatus) {
+    let viewedStatusId = boards
+      .find((board) => board.id === currentBoard)
+      .columns.find((column) => column.name === viewedStatus).id;
+    console.log(viewedTask.id);
+    console.log(viewedTaskColumn === viewedStatusId);
+    if (viewedTaskColumn === viewedStatusId) {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
-                return column.name === viewedStatus
+                return column.id === viewedStatusId
                   ? {
                       ...column,
                       tasks: column.tasks.map((task) => {
-                        return task.title === viewedTask.title
-                          ? viewedTask
-                          : task;
+                        return task.id === viewedTask.id ? viewedTask : task;
                       }),
                     }
                   : column;
@@ -312,13 +324,14 @@ export default function BoardDataProvider({ children }) {
           : board;
       });
       setBoards(duplicateBoards);
+      setViewedTask(null);
     } else {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
-                return column.name === viewedStatus
+                return column.id === viewedStatusId
                   ? {
                       ...column,
                       tasks: [...column.tasks, viewedTask],
@@ -333,11 +346,11 @@ export default function BoardDataProvider({ children }) {
           ? {
               ...board,
               columns: board.columns.map((column) => {
-                return column.name === viewedTaskColumn
+                return column.id === viewedTaskColumn
                   ? {
                       ...column,
                       tasks: column.tasks.filter(
-                        (task) => task.title !== viewedTask.title
+                        (task) => task.id !== viewedTask.id
                       ),
                     }
                   : column;
@@ -345,7 +358,6 @@ export default function BoardDataProvider({ children }) {
             }
           : board;
       });
-      console.log("Hello");
       setBoards(duplicateBoards);
     }
   }
@@ -365,10 +377,16 @@ export default function BoardDataProvider({ children }) {
   }
 
   function createNewBoard() {
+    if (
+      newBoard.columns.length !==
+      new Set(newBoard.columns.map((column) => column.name)).size
+    )
+      return;
+
     setBoards((prev) => {
       return [...prev, { ...newBoard }];
     });
-    setNewBoard(emptyBoard);
+    setNewBoard(spawnNewEmptyBoard());
   }
 
   return (
@@ -397,7 +415,6 @@ export default function BoardDataProvider({ children }) {
         deleteTask,
         deleteBoard,
         emptyViewedTask,
-        emptyBoard,
         assignNewBoard,
         editBoard,
       }}
