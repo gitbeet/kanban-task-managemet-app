@@ -20,6 +20,11 @@ export default function PopUpProvider({ children }) {
   const [showTaskEditWindow, setShowTaskEditWindow] = useState(false);
   const [showTaskDeleteWindow, setShowTaskDeleteWindow] = useState(false);
   const [showBoardDeleteWindow, setShowBoardDeleteWindow] = useState(false);
+  const [showEditBoardWindow, setShowEditBoardWindow] = useState(false);
+
+  function toggleEditBoardWindow() {
+    setShowEditBoardWindow((prev) => !prev);
+  }
 
   function toggleBoardDeleteWindow() {
     setShowBoardDeleteWindow((prev) => !prev);
@@ -79,6 +84,8 @@ export default function PopUpProvider({ children }) {
         showTaskDeleteWindow,
         showBoardDeleteWindow,
         toggleBoardDeleteWindow,
+        showEditBoardWindow,
+        toggleEditBoardWindow,
       }}
     >
       {children}

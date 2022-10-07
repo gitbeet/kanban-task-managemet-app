@@ -9,8 +9,7 @@ import { v4 as uuid } from "uuid";
 export default function CreateNewBoardWindow() {
   const { toggleCreateNewBoardWindow } = usePopUp();
   const { darkMode } = useDarkMode();
-  const { newBoard, boards, handleChangeNewBoard, createNewBoard } =
-    useBoardData();
+  const { newBoard, handleChangeNewBoard, createNewBoard } = useBoardData();
   const { columns, name } = newBoard;
 
   // this works

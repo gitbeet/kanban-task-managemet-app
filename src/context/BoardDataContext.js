@@ -60,7 +60,6 @@ export function useBoardData() {
 export default function BoardDataProvider({ children }) {
   const [boards, setBoards] = useState(dataWithId);
   const [currentBoard, setCurrentBoard] = useState(dataWithId[0].name);
-  const [newTask, setNewTask] = useState(emptyTask);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(emptyBoard);
 
@@ -83,22 +82,19 @@ export default function BoardDataProvider({ children }) {
     setViewedStatus(status);
   }
 
+  function emptyViewedTask() {
+    setViewedTask(emptyTask);
+  }
+
   function assignViewedTaskAndColumn(task, column) {
     setViewedTask(task);
     setviewedTaskColumn(column);
   }
 
   function handleCangeNewTask(type, change) {
-    if (type === "new") {
-      setNewTask((prev) => {
-        return { ...prev, ...change };
-      });
-    }
-    if (type === "edit") {
-      setViewedTask((prev) => {
-        return { ...prev, ...change };
-      });
-    }
+    setViewedTask((prev) => {
+      return { ...prev, ...change };
+    });
   }
 
   function deleteTask() {
@@ -132,22 +128,22 @@ export default function BoardDataProvider({ children }) {
   }
 
   function createNewTask(type) {
-    console.log(newTask.status);
+    console.log(viewedTask.status);
     if (type === "new") {
       let duplicateBoards = [...boards].map((board) => {
         return board.name === currentBoard
           ? {
               ...board,
               columns: board.columns.map((column) => {
-                return column.name === newTask.status
-                  ? { ...column, tasks: [...column.tasks, newTask] }
+                return column.name === viewedTask.status
+                  ? { ...column, tasks: [...column.tasks, viewedTask] }
                   : column;
               }),
             }
           : board;
       });
       setBoards(duplicateBoards);
-      setNewTask(emptyTask);
+      setViewedTask(emptyTask);
     }
 
     if (type === "edit") {
@@ -377,7 +373,6 @@ export default function BoardDataProvider({ children }) {
         dropTask,
         toggleDraggedTask,
         draggedTask,
-        newTask,
         handleCangeNewTask,
         // handleChangeNewTaskSubtasks,
         createNewTask,
@@ -388,6 +383,7 @@ export default function BoardDataProvider({ children }) {
         assignDraggedTask,
         deleteTask,
         deleteBoard,
+        emptyViewedTask,
       }}
     >
       {children}

@@ -1,17 +1,10 @@
 import React from "react";
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function EditSubtask({ type, subtask, handleSubtaskDelete }) {
-  const { handleCangeNewTask, viewedTask, newTask } = useBoardData();
+export default function EditSubtask({ type, subtask }) {
+  const { handleCangeNewTask, viewedTask } = useBoardData();
 
   function handleChangeSubtask(changes) {
-    const updatedSubtasks = { ...newTask }.subtasks;
-    const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
-    updatedSubtasks[index] = { ...subtask, ...changes };
-    handleCangeNewTask(type, updatedSubtasks);
-  }
-
-  function handleChangeEditSubtask(changes) {
     const updatedSubtasks = { ...viewedTask }.subtasks;
     const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
     updatedSubtasks[index] = { ...subtask, ...changes };
@@ -19,14 +12,6 @@ export default function EditSubtask({ type, subtask, handleSubtaskDelete }) {
   }
 
   function handleDeleteSubtask() {
-    const updatedSubtasks = { ...newTask }.subtasks.filter(
-      (subt) => subt.id !== subtask.id
-    );
-    console.log(updatedSubtasks);
-    handleCangeNewTask(type, { subtasks: updatedSubtasks });
-  }
-
-  function handleDeleteEditSubtask() {
     const updatedSubtasks = { ...viewedTask }.subtasks.filter(
       (subt) => subt.id !== subtask.id
     );
@@ -37,17 +22,11 @@ export default function EditSubtask({ type, subtask, handleSubtaskDelete }) {
   return (
     <>
       <input
-        onChange={
-          type === "edit"
-            ? (e) => handleChangeEditSubtask({ title: e.target.value })
-            : (e) => handleChangeSubtask({ title: e.target.value })
-        }
+        onChange={(e) => handleChangeSubtask({ title: e.target.value })}
         value={subtask.title}
       />
       <svg
-        onClick={
-          type === "edit" ? handleDeleteEditSubtask : handleDeleteSubtask
-        }
+        onClick={handleDeleteSubtask}
         width="15"
         height="15"
         xmlns="http://www.w3.org/2000/svg"

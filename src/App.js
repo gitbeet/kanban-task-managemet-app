@@ -21,10 +21,13 @@ function App() {
     toggleBoardDeleteWindow,
     toggleTaskDeleteWindow,
     closeTaskViewWindow,
+    showEditBoardWindow,
+    toggleAddNewTaskWindow,
+    closeTaskEditWindow,
   } = usePopUp();
 
-  const { deleteTask, deleteBoard, viewedTask, currentBoard } = useBoardData();
-
+  const { viewedTask, deleteTask, deleteBoard, currentBoard, createNewTask } =
+    useBoardData();
   function deleteTaskFunc() {
     deleteTask();
     toggleTaskDeleteWindow();
@@ -41,9 +44,28 @@ function App() {
       <Nav />
       {showSidebar && <Sidebar />}
       {showCreateNewBoardWindow && <CreateNewBoardWindow />}
+      {showEditBoardWindow && <CreateNewBoardWindow />}
       {showTaskViewWindow && <TaskViewWindow />}
-      {showAddNewTaskWindow && <AddNewTaskWindow type="new" />}
-      {showTaskEditWindow && <AddNewTaskWindow type="edit" />}
+      {showAddNewTaskWindow && (
+        <AddNewTaskWindow
+          header="Add New Task"
+          task={viewedTask}
+          type="new"
+          closeFunction={toggleAddNewTaskWindow}
+          buttonText="Create Task"
+          createTaskFunc={createNewTask}
+        />
+      )}
+      {showTaskEditWindow && (
+        <AddNewTaskWindow
+          header="Edit Task"
+          task={viewedTask}
+          type="edit"
+          closeFunction={closeTaskEditWindow}
+          buttonText="Save Changes"
+          createTaskFunc={createNewTask}
+        />
+      )}
       {showTaskDeleteWindow && (
         <DeleteWindow
           onDelete={deleteTaskFunc}

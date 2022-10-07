@@ -6,15 +6,20 @@ import EditStatus from "./EditStatus";
 import { useBoardData } from "../context/BoardDataContext";
 import { v4 as uuid } from "uuid";
 
-export default function AddNewTaskWindow({ type }) {
-  const { toggleAddNewTaskWindow, closeTaskEditWindow } = usePopUp();
-  const { newTask, viewedTask, handleCangeNewTask, createNewTask } =
-    useBoardData();
+export default function AddNewTaskWindow({
+  buttonText,
+  type,
+  header,
+  task,
+  closeFunction,
+  createTaskFunc,
+}) {
+  const { handleCangeNewTask } = useBoardData();
 
   function handleSubtaskAdd() {
     handleCangeNewTask(type, {
       subtasks: [
-        ...newTask.subtasks,
+        ...task.subtasks,
         {
           id: uuid(),
           title: "",
@@ -23,49 +28,25 @@ export default function AddNewTaskWindow({ type }) {
       ],
     });
   }
-
-  function handleEditSubtaskAdd() {
-    handleCangeNewTask(type, {
-      subtasks: [
-        ...viewedTask.subtasks,
-        {
-          id: uuid(),
-          title: "",
-          isCompleted: false,
-        },
-      ],
-    });
-  }
-
+  // Check this!!!
   function handleSubtaskDelete(id) {
     handleCangeNewTask(type, {
-      subtasks: newTask.subtasks.filter((subtask, index) => index !== id),
+      subtasks: task.subtasks.filter((subtask, index) => index !== id),
     });
-  }
-
-  function handleEditSubtaskDelete(id) {
-    handleCangeNewTask(type, {
-      subtasks: viewedTask.subtasks.filter((subtask, index) => index !== id),
-    });
-  }
-
-  function createTask() {
-    createNewTask(type);
-    toggleAddNewTaskWindow();
   }
 
   function saveChanges() {
-    createNewTask(type);
-    closeTaskEditWindow();
+    createTaskFunc(type);
+    closeFunction();
   }
 
   return (
     <>
       <div className="add-new-task-window">
-        <div>{type === "edit" ? "Edit Task" : "Add New Task"}</div>
+        <div>{header}</div>
         <label htmlFor="title">Title</label>
         <input
-          value={type === "edit" ? viewedTask.title : newTask.title}
+          value={task.title}
           onChange={(e) => handleCangeNewTask(type, { title: e.target.value })}
           name="title"
         />
@@ -74,48 +55,29 @@ export default function AddNewTaskWindow({ type }) {
           onChange={(e) =>
             handleCangeNewTask(type, { description: e.target.value })
           }
-          value={type === "edit" ? viewedTask.description : newTask.description}
+          value={task.description}
           name="description"
         />
-        {type === "edit"
-          ? viewedTask.subtasks.map((subtask, index) => {
-              return (
-                <EditSubtask
-                  handleSubtaskDelete={handleEditSubtaskDelete}
-                  key={subtask.id}
-                  subtask={subtask}
-                  type={type}
-                />
-              );
-            })
-          : newTask.subtasks.map((subtask) => {
-              return (
-                <EditSubtask
-                  handleSubtaskDelete={handleSubtaskDelete}
-                  key={subtask.id}
-                  subtask={subtask}
-                  type={type}
-                />
-              );
-            })}
-        <button
-          onClick={type === "edit" ? handleEditSubtaskAdd : handleSubtaskAdd}
-          className="btn-secondary-sm"
-        >
+        {task.subtasks.map((subtask) => {
+          return (
+            <EditSubtask
+              handleSubtaskDelete={handleSubtaskDelete}
+              key={subtask.id}
+              subtask={subtask}
+              type={type}
+            />
+          );
+        })}
+        <button onClick={handleSubtaskAdd} className="btn-secondary-sm">
           Add New Subtask
         </button>
         <EditStatus type={type} />
-        <button
-          onClick={type === "edit" ? saveChanges : createTask}
-          className="btn-primary-sm"
-        >
-          {type === "edit" ? "Save Changes" : "Create Task"}
+        <button onClick={saveChanges} className="btn-primary-sm">
+          {buttonText}
         </button>
       </div>
 
-      <Backdrop
-        clickFunction={type === "edit" ? () => {} : toggleAddNewTaskWindow}
-      />
+      <Backdrop clickFunction={closeFunction} />
     </>
   );
 }
