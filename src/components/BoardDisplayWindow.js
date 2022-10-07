@@ -16,9 +16,21 @@ export default function BoardDisplayWindow() {
   ).columns;
   return (
     <div>
-      {currentBoardData.length > 0 && <ColumnsList board={currentBoardData} />}
+      {currentBoardData.length > 0 && (
+        <>
+          <ColumnsList board={currentBoardData} />
+          <div onClick={toggleAddNewColumnMenu}>+ New Column</div>
+          {showAddNewColumnMenu && (
+            <AddNewColumn
+              handleColumnAdd={handleColumnAdd}
+              closeFunction={toggleAddNewColumnMenu}
+            />
+          )}
+        </>
+      )}
       {currentBoardData.length === 0 && (
         <>
+          This board is empty. Create a new column to get started.
           {showAddNewColumnMenu && (
             <AddNewColumn
               handleColumnAdd={handleColumnAdd}

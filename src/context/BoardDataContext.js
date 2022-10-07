@@ -60,7 +60,13 @@ export default function BoardDataProvider({ children }) {
   function handleColumnAdd(columnName) {
     let duplicateBoards = [...boards].map((board) => {
       return board.id === currentBoard
-        ? { ...board, columns: [{ name: columnName, tasks: [], id: uuid() }] }
+        ? {
+            ...board,
+            columns: [
+              ...board.columns,
+              { name: columnName, tasks: [], id: uuid() },
+            ],
+          }
         : board;
     });
     setBoards(duplicateBoards);
