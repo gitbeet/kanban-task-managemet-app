@@ -53,7 +53,7 @@ export default function AddNewTaskWindow({
             Title
           </label>
           <input
-            className="border border-neutral-500 rounded-md dark:bg-primary-300 dark:border-primary-450"
+            className="border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300"
             placeholder="e.g. Take coffee break"
             value={task.title}
             onChange={(e) => handleCangeNewTask({ title: e.target.value })}
@@ -69,7 +69,7 @@ export default function AddNewTaskWindow({
             Description
           </label>
           <textarea
-            className="border border-neutral-500 rounded-md resize-none dark:bg-primary-300 dark:border-primary-450"
+            className="resize-none border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w"
             placeholder="e.g. It’s always good to take a break. This 
             15 minute break will  recharge the batteries 
             a little."

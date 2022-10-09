@@ -1,5 +1,4 @@
 import { useBoardData } from "../context/BoardDataContext";
-import "../css/DynamicInput.css";
 
 export default function DynamicInput({ data, id }) {
   const { handleChangeNewBoard, newBoard } = useBoardData();
@@ -28,8 +27,9 @@ export default function DynamicInput({ data, id }) {
   }
 
   return (
-    <div className="dynamic-input">
+    <div className="flex justify-between items-center space-x-2  bg-neutral-900 border-primary-450 dark:bg-primary-300">
       <input
+        className="w-full bg-neutral-900 dark:bg-primary-300 border-opacity-25 border-primary-500 "
         onChange={(e) => handleColumnChange({ name: e.target.value })}
         value={data}
       />

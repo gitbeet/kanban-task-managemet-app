@@ -49,7 +49,7 @@ export default function Nav() {
           </svg>
         </div>
       </div>
-      <div className="flex space-x-">
+      <div className="flex space-x-2">
         <button
           disabled={
             boards.find((board) => board.id === currentBoard).columns.length < 1

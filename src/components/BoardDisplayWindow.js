@@ -15,7 +15,7 @@ export default function BoardDisplayWindow() {
     (board) => board.id === currentBoard
   ).columns;
   return (
-    <div>
+    <div className="min-h-[100vh] overflow-x-auto bg-neutral-700 dark:bg-primary-200 dark:text-primary-500 p-4">
       {currentBoardData.length > 0 && (
         <>
           <ColumnsList board={currentBoardData} />

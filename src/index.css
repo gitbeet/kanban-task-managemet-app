@@ -4,10 +4,12 @@
 
 *{
     font-family: 'Plus Jakarta Sans', sans-serif;
+    /* outline: 1px solid red !important; */
+
 }
 
 input{
-    @apply px-4 py-2 border rounded-md outline-none
+    @apply  px-4 py-3 border rounded-md outline-none border-opacity-25 border-primary-500 
 }
 
 input:focus,
@@ -17,11 +19,11 @@ select:focus{
 }
 
 textarea{
-    @apply px-4 py-2 border rounded-md outline-none
+    @apply px-4 py-4 border rounded-md outline-none border-opacity-25 border-primary-500 
 }
 
 select{
-    @apply py-2 px-4 border rounded-md outline-none
+    @apply py-4 px-4 border rounded-md outline-none border-opacity-25 border-primary-500 
 }
 
 ::placeholder{
