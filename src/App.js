@@ -74,6 +74,7 @@ function App() {
           header="Edit Board"
           buttonText="Save Changes"
           submitFunction={SaveEditBoardChanges}
+          closeFunction={toggleEditBoardWindow}
         />
       )}
       {showTaskViewWindow && <TaskViewWindow />}

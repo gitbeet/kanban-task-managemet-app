@@ -6,6 +6,7 @@ import { useBoardData } from "../context/BoardDataContext";
 import CurrentStatus from "./CurrentStatus";
 import { useState, useEffect, useRef } from "react";
 import TaskWindowMenu from "./TaskWindowMenu";
+import EditDeleteMenu from "./EditDeleteMenu";
 
 export default function TaskViewWindow() {
   const { closeTaskViewWindow, openTaskEditWindow, toggleTaskDeleteWindow } =
@@ -41,27 +42,13 @@ export default function TaskViewWindow() {
           <header className="font-bold text-md leading-6">
             {viewedTask.title}
           </header>
-          <div className="flex justify-end w-10 cursor-pointer">
-            <svg
-              onClick={toggleTaskWindowMenu}
-              width="5"
-              height="20"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g fill="#828FA3" fillRule="evenodd">
-                <circle cx="2.308" cy="2.308" r="2.308" />
-                <circle cx="2.308" cy="10" r="2.308" />
-                <circle cx="2.308" cy="17.692" r="2.308" />
-              </g>
-            </svg>
-          </div>
-        </div>
-        {showTaskWindowMenu && (
-          <TaskWindowMenu
+          <EditDeleteMenu
+            onClick={toggleTaskWindowMenu}
+            show={showTaskWindowMenu}
             onEdit={openTaskEditWindow}
             onDelete={toggleTaskDeleteWindow}
           />
-        )}
+        </div>
         <section className="text-primary-500 text-sm leading-6 tracking-wide">
           {viewedTask.description}
         </section>
