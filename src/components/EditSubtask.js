@@ -1,4 +1,3 @@
-import React from "react";
 import { useBoardData } from "../context/BoardDataContext";
 
 export default function EditSubtask({ type, subtask }) {
@@ -23,7 +22,7 @@ export default function EditSubtask({ type, subtask }) {
     <div className="flex justify-between items-center space-x-2">
       <input
         // 95% because otherwise it cuts the close button
-        className="w-[95%] border-neutral-500 dark:bg-primary-400 dark:border-primary-450"
+        className="w-[95%] border-neutral-500 dark:bg-primary-300 dark:border-primary-450"
         onChange={(e) => handleChangeSubtask({ title: e.target.value })}
         value={subtask.title}
       />

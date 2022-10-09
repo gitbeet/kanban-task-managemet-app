@@ -1,12 +1,3 @@
-.toggle-theme{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    gap: 1.4rem;
-    padding: 1rem 1rem;
-}
-
 .toggle-theme-button{
     position: relative;
     display: flex;

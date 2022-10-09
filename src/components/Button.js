@@ -1,8 +1,15 @@
 import React from "react";
 
-export default function Button({ onClick, text, type, size }) {
+export default function Button({
+  onClick,
+  text,
+  type,
+  size,
+  disabled = false,
+}) {
   return (
     <button
+      disabled={disabled}
       onClick={onClick}
       className={
         type === "primary" && size === "sm"

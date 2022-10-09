@@ -1,10 +1,7 @@
-import React from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import { useDarkMode } from "../context/DarkModeContext";
-import "../css/Board.css";
 
 export default function Board({ board }) {
-  const { darkMode } = useDarkMode();
   const { currentBoard, changeCurrentBoard, boards } = useBoardData();
 
   let current = currentBoard === board;
@@ -14,10 +11,8 @@ export default function Board({ board }) {
       onClick={() => changeCurrentBoard(board)}
       className={
         current
-          ? "board bg-primary-600 fs-heading-400 text-neutral-900"
-          : darkMode
-          ? "board text-primary-500 fs-heading-400 bg-dark-300"
-          : "board text-primary-500 fs-heading-400 bg-light-900"
+          ? "cursor-pointer bg-primary-600 text-neutral-900 flex items-center space-x-3 rounded-r-full pl-4 py-4 font-semibold"
+          : "cursor-pointer bg-neutral-900 text-primary-500 dark:bg-primary-300 dark:text-primary-500 flex items-center space-x-3 pl-4  py-4 font-semibold"
       }
     >
       <svg
@@ -31,7 +26,7 @@ export default function Board({ board }) {
           fill="currentColor"
         />
       </svg>
-      {boards.find((b) => b.id === board).name}
+      <p>{boards.find((b) => b.id === board).name}</p>
     </div>
   );
 }

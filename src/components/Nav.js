@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import "../css/Nav.css";
+import { useState } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import { usePopUp } from "../context/PopUpContext";
 import TaskWindowMenu from "./TaskWindowMenu";
@@ -26,8 +25,8 @@ export default function Nav() {
   }
 
   return (
-    <div className="fs-heading-600 ">
-      <div className="container nav">
+    <div className="relative mx-auto flex items-center justify-between px-4 py-5 shadow-md dark:bg-primary-300 dark:text-neutral-900 z-10">
+      <div className="flex space-x-4">
         <svg width="24" height="25" xmlns="http://www.w3.org/2000/svg">
           <g fill="#635FC7" fillRule="evenodd">
             <rect width="6" height="25" rx="2" />
@@ -35,8 +34,11 @@ export default function Nav() {
             <rect opacity=".5" x="18" width="6" height="25" rx="2" />
           </g>
         </svg>
-        <div onClick={toggleSidebar} className="nav-select-board">
-          {boards.find((board) => board.id === currentBoard).name}
+        <div
+          onClick={toggleSidebar}
+          className="cursor-pointer flex items-center justify-between space-x-2 text-xl font-semibold"
+        >
+          <div>{boards.find((board) => board.id === currentBoard).name}</div>
           <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
             <path
               stroke="#635FC7"
@@ -46,12 +48,14 @@ export default function Nav() {
             />
           </svg>
         </div>
+      </div>
+      <div className="flex space-x-">
         <button
           disabled={
             boards.find((board) => board.id === currentBoard).columns.length < 1
           }
           onClick={openAddNewTaskWindow}
-          className="add-task-button"
+          className="bg-primary-600 px-4 py-2 rounded-full hover:bg-primary-700 transition-all disabled:opacity-50 disabled:pointer-events-none"
         >
           <svg width="12" height="12" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -60,25 +64,27 @@ export default function Nav() {
             />
           </svg>
         </button>
-        <svg
-          onClick={() => setShowMenu((prev) => !prev)}
-          width="5"
-          height="20"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g fill="#828FA3" fillRule="evenodd">
-            <circle cx="2.308" cy="2.308" r="2.308" />
-            <circle cx="2.308" cy="10" r="2.308" />
-            <circle cx="2.308" cy="17.692" r="2.308" />
-          </g>
-        </svg>
-        {showMenu && (
-          <TaskWindowMenu
-            onEdit={editFunction}
-            onDelete={toggleBoardDeleteWindow}
-          />
-        )}
+        <div className="cursor-pointer flex items-center justify-center w-6">
+          <svg
+            onClick={() => setShowMenu((prev) => !prev)}
+            width="5"
+            height="20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <g fill="#828FA3" fillRule="evenodd">
+              <circle cx="2.308" cy="2.308" r="2.308" />
+              <circle cx="2.308" cy="10" r="2.308" />
+              <circle cx="2.308" cy="17.692" r="2.308" />
+            </g>
+          </svg>
+        </div>
       </div>
+      {showMenu && (
+        <TaskWindowMenu
+          onEdit={editFunction}
+          onDelete={toggleBoardDeleteWindow}
+        />
+      )}
     </div>
   );
 }

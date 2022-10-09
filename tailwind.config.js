@@ -22,7 +22,7 @@ module.exports = {
       "danger-500": "hsl(0, 78%, 63%)",
       "danger-600": "hsl(0, 100%, 80%)",
 
-      "backdrop-500": "hsla(237, 100%, 4%,.5)",
+      "backdrop-500": "hsla(237, 20%, 4%,.5)",
     },
     screens: {
       sm: "375px",

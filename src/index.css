@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+*{
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
 input{
     @apply px-4 py-2 border rounded-md outline-none
 }
