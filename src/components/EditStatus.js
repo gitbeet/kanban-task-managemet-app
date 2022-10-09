@@ -20,7 +20,7 @@ export default function EditStatus({ type }) {
   }, []);
 
   return (
-    <div>
+    <div className="">
       <select
         className="w-[100%] border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w"
         onChange={(e) => handleCangeNewTask({ status: e.target.value })}

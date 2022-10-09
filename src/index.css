@@ -5,12 +5,13 @@
 *{
     font-family: 'Plus Jakarta Sans', sans-serif;
     /* outline: 1px solid red !important; */
-
 }
+
 
 input{
-    @apply  px-4 py-3 border rounded-md outline-none border-opacity-25 border-primary-500 
+    @apply  px-4 py-3 border rounded-md outline-none border-opacity-25 border-primary-500 bg-neutral-900 
 }
+
 
 input:focus,
 textarea:focus,
@@ -18,13 +19,16 @@ select:focus{
     @apply outline-none
 }
 
+
 textarea{
-    @apply px-4 py-4 border rounded-md outline-none border-opacity-25 border-primary-500 
+    @apply px-4 py-4 border rounded-md outline-none border-opacity-25 border-primary-500 bg-neutral-900 
 }
 
+
 select{
-    @apply py-4 px-4 border rounded-md outline-none border-opacity-25 border-primary-500 
+    @apply appearance-none py-4 px-4 border rounded-md outline-none border-opacity-25 border-primary-500 text-primary-100 bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900
 }
+
 
 ::placeholder{
     @apply text-sm

@@ -23,9 +23,9 @@ export default function CreateNewBoardWindow({
 
   return (
     <>
-      <div className="w-[350px] rounded-md absolute left-1/2 -translate-x-1/2 z-50 bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 p-8 space-y-7">
+      <div className="w-[min(90%,350px)] md:w-[450px] rounded-md absolute left-1/2 -translate-x-1/2 z-50 bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 p-8 space-y-7">
         <div className="text-xl font-bold">{header}</div>
-        <div>
+        <div className="space-y-2">
           <label htmlFor="name" className="text-sm text-neutral-900">
             Board Name
           </label>
@@ -39,7 +39,7 @@ export default function CreateNewBoardWindow({
           />
         </div>
         <div className="flex flex-col space-y-4">
-          <p>Board Columns</p>
+          <p className="text-sm -mb-2">Board Columns</p>
           {newBoard.columns.map((column) => {
             return (
               <DynamicInput
