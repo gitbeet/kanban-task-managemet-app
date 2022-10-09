@@ -22,6 +22,7 @@ export default function EditStatus({ type }) {
   return (
     <div>
       <select
+        className="w-[100%] border-primary-500 bg-neutral-900 dark:bg-primary-400 dark:border-primary-450"
         onChange={(e) => handleCangeNewTask({ status: e.target.value })}
         value={viewedTask.status || statusList[0]}
       >

@@ -8,8 +8,11 @@ import TaskViewWindow from "./components/TaskViewWindow";
 import AddNewTaskWindow from "./components/AddNewTaskWindow";
 import DeleteWindow from "./components/DeleteWindow";
 import { useBoardData } from "./context/BoardDataContext";
+import { useDarkMode } from "./context/DarkModeContext";
 
 function App() {
+  const { darkMode } = useDarkMode();
+
   const {
     showSidebar,
     showCreateNewBoardWindow,
@@ -54,7 +57,7 @@ function App() {
   }
 
   return (
-    <div>
+    <div className={darkMode && "dark"}>
       <Nav />
       {showSidebar && <Sidebar />}
       {/* CREATE / EDIT BOARD */}

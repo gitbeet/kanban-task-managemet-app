@@ -20,12 +20,15 @@ export default function EditSubtask({ type, subtask }) {
   }
 
   return (
-    <>
+    <div className="flex justify-between items-center space-x-2">
       <input
+        // 95% because otherwise it cuts the close button
+        className="w-[95%] border-neutral-500 dark:bg-primary-400 dark:border-primary-450"
         onChange={(e) => handleChangeSubtask({ title: e.target.value })}
         value={subtask.title}
       />
       <svg
+        className=""
         onClick={handleDeleteSubtask}
         width="15"
         height="15"
@@ -36,6 +39,6 @@ export default function EditSubtask({ type, subtask }) {
           <path d="M0 2.122 2.122 0 14.85 12.728l-2.122 2.122z" />
         </g>
       </svg>
-    </>
+    </div>
   );
 }

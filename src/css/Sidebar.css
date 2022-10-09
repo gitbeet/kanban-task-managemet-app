@@ -10,7 +10,8 @@
     width: 16.5rem;
     padding-top: .5rem;
     padding-bottom: 1rem;
-    z-index: 3;
+    z-index: 100;
+    background-color: white;
 }
 
 .sidebar-toggle-theme{
