@@ -9,7 +9,7 @@ export default function AddNewColumn({ handleColumnAdd, closeFunction }) {
   }
 
   return (
-    <div className="add-new-column">
+    <div className="">
       <label htmlFor="name">Column Name</label>
       <input onChange={(e) => setColumnName(e.target.value)} />
       <button onClick={createColumn} className="btn-secondary-sm">

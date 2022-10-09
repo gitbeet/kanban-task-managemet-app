@@ -28,18 +28,22 @@ export default function BoardDisplayWindow() {
           )}
         </>
       )}
-      {currentBoardData.length === 0 && (
-        <>
-          This board is empty. Create a new column to get started.
-          {showAddNewColumnMenu && (
-            <AddNewColumn
-              handleColumnAdd={handleColumnAdd}
-              closeFunction={toggleAddNewColumnMenu}
-            />
-          )}
-          <button onClick={toggleAddNewColumnMenu}>Add New Column</button>
-        </>
-      )}
+      <div className="text-xl">
+        {currentBoardData.length === 0 && (
+          <>
+            This board is empty. Create a new column to get started.
+            {showAddNewColumnMenu && (
+              <AddNewColumn
+                handleColumnAdd={handleColumnAdd}
+                closeFunction={toggleAddNewColumnMenu}
+              />
+            )}
+            <button className="btn-primary-sm" onClick={toggleAddNewColumnMenu}>
+              +Add New Column
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
 }
