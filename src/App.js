@@ -39,6 +39,7 @@ function App() {
     createNewTask,
     createNewBoard,
     editBoard,
+    changeCurrentBoard,
   } = useBoardData();
   function deleteTaskFunc() {
     deleteTask();
@@ -52,12 +53,17 @@ function App() {
   }
 
   function SaveEditBoardChanges() {
-    toggleEditBoardWindow();
     editBoard();
+    toggleEditBoardWindow();
+  }
+
+  function saveAndCloseAddNewBoardWindow() {
+    createNewBoard();
+    toggleCreateNewBoardWindow();
   }
 
   return (
-    <div className={darkMode && "dark"}>
+    <div className={darkMode ? "dark" : ""}>
       <Nav />
       {showSidebar && <Sidebar />}
       {/* CREATE / EDIT BOARD */}
@@ -66,7 +72,7 @@ function App() {
           header="Add New Board"
           closeFunction={toggleCreateNewBoardWindow}
           buttonText="Create New Board"
-          submitFunction={createNewBoard}
+          submitFunction={saveAndCloseAddNewBoardWindow}
         />
       )}
       {showEditBoardWindow && (

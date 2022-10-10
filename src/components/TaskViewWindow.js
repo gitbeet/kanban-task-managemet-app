@@ -47,6 +47,8 @@ export default function TaskViewWindow() {
             show={showTaskWindowMenu}
             onEdit={openTaskEditWindow}
             onDelete={toggleTaskDeleteWindow}
+            onClose={toggleTaskWindowMenu}
+            backdropOpacity="20"
           />
         </div>
         <section className="text-primary-500 text-sm leading-6 tracking-wide">

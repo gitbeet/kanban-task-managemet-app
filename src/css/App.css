@@ -1,4 +1,3 @@
-
 /*  CSS RESETS  */
 
 /* Box sizing rules */
@@ -35,6 +34,7 @@ body {
 body {
   text-rendering: optimizeSpeed;
   line-height: 1.5;
+  border: 1px solid transparent;
 }
 
 /* A elements that don't have a class get default styles */

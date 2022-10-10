@@ -3,7 +3,7 @@ import { useBoardData } from "../context/BoardDataContext";
 export default function Subtask({ subtask }) {
   const { toggleSubtaskCompleted } = useBoardData();
   return (
-    <div className="flex justify-start items-center space-x-6 p-4 rounded-sm bg-neutral-600 hover:bg-primary-600 hover:bg-opacity-25 dark:bg-primary-200">
+    <div className="flex justify-start items-center space-x-6 p-4 rounded-sm bg-neutral-700 hover:bg-primary-600 hover:bg-opacity-25 dark:bg-primary-200">
       <div
         className={
           subtask.isCompleted

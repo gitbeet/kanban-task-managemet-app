@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import { usePopUp } from "../context/PopUpContext";
 import EditDeleteMenu from "./EditDeleteMenu";
-import TaskWindowMenu from "./TaskWindowMenu";
 
 export default function Nav() {
   const { boards, currentBoard, emptyViewedTask, assignNewBoard } =
@@ -25,8 +24,9 @@ export default function Nav() {
     assignNewBoard(boards.find((board) => board.id === currentBoard));
   }
 
+  console.log(boards.length < 2);
   return (
-    <div className="relative mx-auto flex items-center justify-between px-4 py-5 shadow-md dark:bg-primary-300 dark:text-neutral-900 z-10">
+    <div className=" mx-auto flex items-center justify-between px-4 py-5 shadow-md dark:bg-primary-300 dark:text-neutral-900 z-10">
       <div className="flex space-x-4">
         <svg width="24" height="25" xmlns="http://www.w3.org/2000/svg">
           <g fill="#635FC7" fillRule="evenodd">
@@ -39,7 +39,9 @@ export default function Nav() {
           onClick={toggleSidebar}
           className="cursor-pointer flex items-center justify-between space-x-2 text-xl font-semibold"
         >
-          <div>{boards.find((board) => board.id === currentBoard).name}</div>
+          <div className="truncate">
+            {boards.find((board) => board.id === currentBoard).name}
+          </div>
           <svg width="10" height="7" xmlns="http://www.w3.org/2000/svg">
             <path
               stroke="#635FC7"
@@ -70,6 +72,9 @@ export default function Nav() {
           show={showMenu}
           onEdit={editFunction}
           onDelete={toggleBoardDeleteWindow}
+          onDisable={boards.length < 2}
+          onClose={() => setShowMenu((prev) => !prev)}
+          backdropOpacity="20"
         />
       </div>
     </div>

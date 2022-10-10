@@ -42,7 +42,7 @@ export default function Task({ task, column }) {
       ref={drag}
       style={{ cursor: "pointer" }}
       onClick={() => openTaskViewWindow(task, column)}
-      className="flex flex-col items-start bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 shadow-md rounded-md py-6 pl-4 pr-12 w-[19rem] space-y-2"
+      className="flex flex-col items-start bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 shadow-md rounded-md py-6 pl-4 pr-12 w-full space-y-2"
     >
       <header className="font-bold tracking-wide text-sm">{task.title}</header>
       <p className="text-xs font-bold text-primary-450 dark:text-primary-500">

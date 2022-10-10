@@ -156,9 +156,10 @@ export default function BoardDataProvider({ children }) {
 
   function deleteBoard() {
     if (boards.length < 2) return;
+    console.log("im here");
     const boardToDelete = currentBoard;
     const index = boards.findIndex((board) => board.id === currentBoard);
-    setCurrentBoard(boards[index + 1].id || boards[index - 1].id || 0);
+    setCurrentBoard(boards[index + 1]?.id || boards[index - 1].id);
     setBoards((prev) => prev.filter((board) => board.id !== boardToDelete));
   }
 

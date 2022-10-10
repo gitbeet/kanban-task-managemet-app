@@ -10,7 +10,7 @@ export default function CreateNewBoardWindow({
   buttonText,
   submitFunction,
 }) {
-  const { newBoard, handleChangeNewBoard } = useBoardData();
+  const { newBoard, handleChangeNewBoard, changeCurrentBoard } = useBoardData();
   const { columns } = newBoard;
 
   // this works
@@ -19,6 +19,11 @@ export default function CreateNewBoardWindow({
       ...newBoard,
       columns: [...columns, { id: uuid(), name: "", tasks: [] }],
     });
+  }
+
+  function saveChanges() {
+    submitFunction();
+    changeCurrentBoard(newBoard.id);
   }
 
   return (
@@ -62,7 +67,7 @@ export default function CreateNewBoardWindow({
             type="primary"
             size="sm"
             text={buttonText}
-            onClick={submitFunction}
+            onClick={saveChanges}
           />
         </div>
       </div>
