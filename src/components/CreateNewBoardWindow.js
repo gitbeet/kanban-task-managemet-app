@@ -29,7 +29,7 @@ export default function CreateNewBoardWindow({
 
   return (
     <>
-      <div className="w-[min(90%,350px)] md:w-[450px] rounded-md absolute left-1/2 -translate-x-1/2 z-50 bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 p-8 space-y-7">
+      <div className="w-[min(90%,350px)] md:w-[450px] rounded-md absolute left-1/2 -translate-x-1/2 z-[1200] bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 p-8 space-y-7">
         <div className="text-xl font-bold">{header}</div>
         <div className="space-y-2">
           <label htmlFor="name" className="text-sm text-neutral-900">
@@ -73,7 +73,7 @@ export default function CreateNewBoardWindow({
           />
         </div>
       </div>
-      <Backdrop clickFunction={closeFunction} />
+      <Backdrop clickFunction={closeFunction} zIndex="1100" />
     </>
   );
 }

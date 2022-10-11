@@ -13,7 +13,7 @@ export default function Sidebar() {
   return (
     <>
       <div className={darkMode ? "dark " : " "}>
-        <div className="  flex flex-col rounded-md md:rounded-none absolute justify-center items-start top-20 left-1/2 -translate-x-1/2 w-[17rem] space-y-6 py-4 z-[1300] bg-neutral-900 border-rounded-md dark:bg-primary-300 dark:text-neutral-900 md:static md:justify-between md:translate-x-0 md:translate-y-0 md:h-full md:border-r md:border-neutral-500 md:dark:border-primary-400 ">
+        <div className="  flex flex-col rounded-md md:rounded-none absolute justify-center items-start top-20 left-1/2 -translate-x-1/2 w-[17rem] space-y-6 py-4 z-[1200] bg-neutral-900 border-rounded-md dark:bg-primary-300 dark:text-neutral-900 md:static md:justify-between md:translate-x-0 md:translate-y-0 md:h-full md:border-r md:border-neutral-500 md:dark:border-primary-400 ">
           <div className="md:space-y-6">
             {/* ALL BOARDS HEADER */}
             <div className="tracking-wider text-primary-500 pl-4 text-sm font-semibold md:pl-10">
@@ -49,7 +49,7 @@ export default function Sidebar() {
         </div>
       </div>
       <div className="md:hidden">
-        <Backdrop clickFunction={toggleSidebar} zIndex="10000" />
+        <Backdrop clickFunction={toggleSidebar} zIndex="1100" />
       </div>
     </>
   );

@@ -1,14 +1,16 @@
+import * as ReactDOM from "react-dom";
 import { usePopUp } from "../context/PopUpContext";
 import Backdrop from "./Backdrop";
 import Subtask from "./Subtask";
 import { v4 as uuid } from "uuid";
 import { useBoardData } from "../context/BoardDataContext";
 import CurrentStatus from "./CurrentStatus";
-import { useState, useEffect, useRef } from "react";
-import TaskWindowMenu from "./TaskWindowMenu";
+import { useState } from "react";
 import EditDeleteMenu from "./EditDeleteMenu";
+import { useDarkMode } from "../context/DarkModeContext";
 
 export default function TaskViewWindow() {
+  const { darkMode } = useDarkMode();
   const { closeTaskViewWindow, openTaskEditWindow, toggleTaskDeleteWindow } =
     usePopUp();
   const { viewedTask, handleChangeTaskStatusClose } = useBoardData();
@@ -35,47 +37,50 @@ export default function TaskViewWindow() {
 
   const totalSubtasks = viewedTask.subtasks.length;
 
-  return (
+  return ReactDOM.createPortal(
     <>
-      <div className="absolute w-[min(90%,350px)] md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 z-50 rounded-md left-1/2 -translate-x-1/2 p-6 space-y-6">
-        <div className="flex justify-between items-center">
-          <header className="font-bold text-md leading-6">
-            {viewedTask.title}
-          </header>
-          <EditDeleteMenu
-            onClick={toggleTaskWindowMenu}
-            show={showTaskWindowMenu}
-            onEdit={openTaskEditWindow}
-            onDelete={toggleTaskDeleteWindow}
-            onClose={toggleTaskWindowMenu}
-            backdropOpacity="20"
-          />
-        </div>
-        <section className="text-primary-500 text-sm leading-6 tracking-wide">
-          {viewedTask.description}
-        </section>
-        <section className="space-y-4">
-          <p className="font-bold text-sm text-primary-500 dark:text-neutral-900">
-            Subtasks ({completedSubtasks}
-            of {totalSubtasks})
-          </p>
-          <div className="space-y-4">
-            {viewedTask.subtasks.map((subtask) => (
-              <Subtask
-                key={uuid()}
-                taskTitle={title}
-                taskDescription={description}
-                subtask={subtask}
-              />
-            ))}
+      <div className={darkMode && "dark"}>
+        <div className="absolute w-[min(90%,350px)] md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 z-[1200] rounded-md left-1/2 -translate-x-1/2 p-6 space-y-6">
+          <div className="flex justify-between items-center">
+            <header className="font-bold text-md leading-6">
+              {viewedTask.title}
+            </header>
+            <EditDeleteMenu
+              onClick={toggleTaskWindowMenu}
+              show={showTaskWindowMenu}
+              onEdit={openTaskEditWindow}
+              onDelete={toggleTaskDeleteWindow}
+              onClose={toggleTaskWindowMenu}
+              backdropOpacity="20"
+            />
           </div>
-        </section>
-        <div className="font-bold text-sm text-primary-500 dark:text-neutral-900">
-          Current Status
+          <section className="text-primary-500 text-sm leading-6 tracking-wide">
+            {viewedTask.description}
+          </section>
+          <section className="space-y-4">
+            <p className="font-bold text-sm text-primary-500 dark:text-neutral-900">
+              Subtasks ({completedSubtasks}
+              of {totalSubtasks})
+            </p>
+            <div className="space-y-4">
+              {viewedTask.subtasks.map((subtask) => (
+                <Subtask
+                  key={uuid()}
+                  taskTitle={title}
+                  taskDescription={description}
+                  subtask={subtask}
+                />
+              ))}
+            </div>
+          </section>
+          <div className="font-bold text-sm text-primary-500 dark:text-neutral-900">
+            Current Status
+          </div>
+          <CurrentStatus />
         </div>
-        <CurrentStatus />
       </div>
-      <Backdrop clickFunction={onClickBackdrop} />
-    </>
+      <Backdrop clickFunction={onClickBackdrop} zIndex="1100" />
+    </>,
+    document.getElementById("menu")
   );
 }

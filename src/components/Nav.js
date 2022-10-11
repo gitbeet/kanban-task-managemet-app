@@ -28,7 +28,7 @@ export default function Nav() {
   }
   return (
     <div
-      className={`w-full mx-auto flex items-center md:items-stretch justify-between px-4 py-5 md:py-0 md:px-0 shadow-md md:shadow-none dark:bg-primary-300 dark:text-neutral-900 z-10 ${
+      className={`w-full mx-auto flex items-center md:items-stretch justify-between px-4 py-5 md:py-0 md:px-0 shadow-md md:shadow-none dark:bg-primary-300 dark:text-neutral-900 ${
         !showSidebar &&
         `md:shadow-md md:border-b md:border-neutral-500 md:dark:border-primary-400`
       }`}

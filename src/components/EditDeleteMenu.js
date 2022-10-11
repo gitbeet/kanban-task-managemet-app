@@ -1,6 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import TaskWindowMenu from "./TaskWindowMenu";
-import { findDOMNode } from "react-dom";
 
 export default function EditDeleteMenu({
   onClick,
@@ -12,6 +11,22 @@ export default function EditDeleteMenu({
   onDisable,
 }) {
   const myRef = useRef();
+
+  const [pos, setPos] = useState([]);
+
+  useEffect(() => {
+    if (!myRef) return;
+    function handleResize() {
+      setPos([
+        myRef.current.getBoundingClientRect().left,
+        myRef.current.getBoundingClientRect().top,
+      ]);
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  });
 
   return (
     <>
@@ -37,8 +52,8 @@ export default function EditDeleteMenu({
           show={show}
           backdropOpacity={backdropOpacity}
           position={[
-            myRef.current.getBoundingClientRect().left,
-            myRef.current.getBoundingClientRect().top,
+            pos[0] || myRef.current.getBoundingClientRect().left,
+            pos[1] || myRef.current.getBoundingClientRect().top,
           ]}
         />
       )}

@@ -14,6 +14,7 @@ export default function AddNewTaskWindow({
   closeFunction,
   createTaskFunc,
 }) {
+  const { darkMode } = useDarkMode();
   const { handleCangeNewTask } = useBoardData();
 
   function handleSubtaskAdd() {
@@ -41,9 +42,9 @@ export default function AddNewTaskWindow({
   }
 
   return (
-    <>
+    <div className={darkMode && "dark"}>
       {/* title */}
-      <div className="space-y-8 w-[min(90%,350px)] md:w-[450px] flex-col absolute z-50 bg-neutral-900 p-6 left-[50%] top-16 -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
+      <div className="space-y-8 w-[min(90%,350px)] md:w-[450px] flex-col absolute z-[1200] bg-neutral-900 p-6 left-[50%] top-16 -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
         <div className="font-semibold text-lg">{header}</div>
         <div className="flex flex-col space-y-2">
           <label
@@ -119,7 +120,7 @@ export default function AddNewTaskWindow({
         </div>
       </div>
 
-      <Backdrop clickFunction={closeFunction} />
-    </>
+      <Backdrop zIndex="1100" clickFunction={closeFunction} />
+    </div>
   );
 }

@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import AddNewColumn from "./AddNewColumn";
 import ColumnsList from "./ColumnsList";
-import Backdrop from "./Backdrop";
 import Button from "./Button";
 
 export default function BoardDisplayWindow() {
@@ -17,7 +16,7 @@ export default function BoardDisplayWindow() {
     (board) => board.id === currentBoard
   ).columns;
   return (
-    <div className="z-0 overflow-x-auto w-[100vw] min-h-full bg-neutral-700 dark:bg-primary-200 text-primary-100 dark:text-primary-500 p-4">
+    <div className="overflow-auto w-[100vw] min-h-full bg-neutral-700 dark:bg-primary-200 text-primary-100 dark:text-primary-500 p-4">
       {currentBoardData.length > 0 && (
         <div className="flex min-h-full  justify-start items-stretch">
           {/* boards */}
@@ -53,11 +52,6 @@ export default function BoardDisplayWindow() {
           <AddNewColumn
             handleColumnAdd={handleColumnAdd}
             closeFunction={toggleAddNewColumnMenu}
-          />
-          <Backdrop
-            clickFunction={toggleAddNewColumnMenu}
-            zIndex="0"
-            opacity="100"
           />
         </>
       )}

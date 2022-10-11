@@ -1,5 +1,7 @@
 import Backdrop from "./Backdrop";
 import Button from "./Button";
+import * as ReactDOM from "react-dom";
+import { useDarkMode } from "../context/DarkModeContext";
 
 export default function DeleteWindow({
   onDelete,
@@ -8,9 +10,11 @@ export default function DeleteWindow({
   type,
   message,
 }) {
-  return (
-    <>
-      <div className="absolute z-[1100] w-[min(90%,350px)] md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 rounded-md left-1/2 -translate-x-1/2 p-6 space-y-6">
+  const { darkMode } = useDarkMode();
+
+  return ReactDOM.createPortal(
+    <div className={darkMode && "dark"}>
+      <div className="absolute z-[1700] w-[min(90%,350px)] md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 rounded-md left-1/2 -translate-x-1/2 p-6 space-y-6">
         <div className="text-danger-500 text-lg font-bold">
           Delete this {type}?
         </div>
@@ -23,7 +27,8 @@ export default function DeleteWindow({
           <Button onClick={onCancel} type="secondary" text="Cancel" size="sm" />
         </div>
       </div>
-      <Backdrop zIndex="1000" clickFunction={onCancel} />
-    </>
+      <Backdrop zIndex="1600" clickFunction={onCancel} />
+    </div>,
+    document.getElementById("menu")
   );
 }
