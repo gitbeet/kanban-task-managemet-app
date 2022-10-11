@@ -14,7 +14,7 @@ export default function EditDeleteMenu({
     <>
       <div
         onClick={onClick}
-        className="flex justify-end items-center w-10 cursor-pointer "
+        className="flex justify-end items-center w-10 cursor-pointer md:scale-125 "
       >
         <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg">
           <g fill="#828FA3" fillRule="evenodd">

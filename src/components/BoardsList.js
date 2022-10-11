@@ -24,7 +24,7 @@ export default function BoardsList() {
       ))}
       <div
         onClick={showCreateBoardWindow}
-        className="cursor-pointer flex items-center space-x-3 py-2 pl-4 text-primary-600"
+        className="cursor-pointer flex items-center space-x-3 py-2 pl-4 text-primary-600 md:pl-10"
       >
         <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
           <path

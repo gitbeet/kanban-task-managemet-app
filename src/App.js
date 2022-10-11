@@ -63,9 +63,21 @@ function App() {
   }
 
   return (
-    <div className={darkMode ? "dark" : ""}>
-      <Nav />
-      {showSidebar && <Sidebar />}
+    <div
+      className={
+        darkMode
+          ? "dark flex justify-center h-full  items-stretch"
+          : " flex justify-center h-full  items-stretch "
+      }
+    >
+      <div className="flex flex-col max-w-[100vw] h-full">
+        <Nav />
+        <div className="flex h-full">
+          {showSidebar && <Sidebar />}
+          <BoardDisplayWindow />
+        </div>
+      </div>
+
       {/* CREATE / EDIT BOARD */}
       {showCreateNewBoardWindow && (
         <CreateNewBoardWindow
@@ -122,7 +134,6 @@ function App() {
           message="? This action will remove all columns and tasks and cannot be reversed."
         />
       )}
-      <BoardDisplayWindow />
     </div>
   );
 }

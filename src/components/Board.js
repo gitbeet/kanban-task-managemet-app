@@ -1,5 +1,4 @@
 import { useBoardData } from "../context/BoardDataContext";
-import { useDarkMode } from "../context/DarkModeContext";
 
 export default function Board({ board }) {
   const { currentBoard, changeCurrentBoard, boards } = useBoardData();
@@ -11,8 +10,8 @@ export default function Board({ board }) {
       onClick={() => changeCurrentBoard(board)}
       className={
         current
-          ? "cursor-pointer bg-primary-600 text-neutral-900 flex items-center space-x-3 rounded-r-full pl-4 py-4 font-semibold"
-          : "cursor-pointer bg-neutral-900 text-primary-500 dark:bg-primary-300 dark:text-primary-500 flex items-center space-x-3 pl-4  py-4 font-semibold"
+          ? "cursor-pointer bg-primary-600 text-neutral-900 flex items-center space-x-3 rounded-r-full pl-4 py-4 font-semibold md:pl-10"
+          : "cursor-pointer bg-neutral-900 text-primary-500 dark:bg-primary-300 dark:text-primary-500 flex items-center space-x-3 pl-4  py-4 font-semibold md:pl-10"
       }
     >
       <svg
