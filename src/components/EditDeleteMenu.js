@@ -1,5 +1,6 @@
-import Backdrop from "./Backdrop";
+import { useEffect, useRef } from "react";
 import TaskWindowMenu from "./TaskWindowMenu";
+import { findDOMNode } from "react-dom";
 
 export default function EditDeleteMenu({
   onClick,
@@ -10,9 +11,12 @@ export default function EditDeleteMenu({
   backdropOpacity,
   onDisable,
 }) {
+  const myRef = useRef();
+
   return (
     <>
       <div
+        ref={myRef}
         onClick={onClick}
         className="flex justify-end items-center w-10 cursor-pointer md:scale-125 "
       >
@@ -23,20 +27,19 @@ export default function EditDeleteMenu({
             <circle cx="2.308" cy="17.692" r="2.308" />
           </g>
         </svg>
-        {show && (
-          <TaskWindowMenu
-            onEdit={onEdit}
-            onDelete={onDelete}
-            onClose={onClose}
-            onDisable={onDisable}
-          />
-        )}
       </div>
       {show && (
-        <Backdrop
-          clickFunction={onClose}
-          zIndex="1100"
-          opacity={backdropOpacity}
+        <TaskWindowMenu
+          onEdit={onEdit}
+          onDelete={onDelete}
+          onClose={onClose}
+          onDisable={onDisable}
+          show={show}
+          backdropOpacity={backdropOpacity}
+          position={[
+            myRef.current.getBoundingClientRect().left,
+            myRef.current.getBoundingClientRect().top,
+          ]}
         />
       )}
     </>

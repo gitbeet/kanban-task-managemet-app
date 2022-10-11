@@ -9,6 +9,7 @@ export default function CreateNewBoardWindow({
   closeFunction,
   buttonText,
   submitFunction,
+  disabled = false,
 }) {
   const { newBoard, handleChangeNewBoard, changeCurrentBoard } = useBoardData();
   const { columns } = newBoard;
@@ -64,6 +65,7 @@ export default function CreateNewBoardWindow({
         </div>
         <div className="flex flex-col">
           <Button
+            disabled={disabled}
             type="primary"
             size="sm"
             text={buttonText}

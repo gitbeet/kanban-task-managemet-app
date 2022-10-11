@@ -1,8 +1,12 @@
 import { useState } from "react";
 import Button from "./Button";
 
-export default function AddNewColumn({ handleColumnAdd, closeFunction }) {
-  const [columnName, setColumnName] = useState();
+export default function AddNewColumn({
+  handleColumnAdd,
+  closeFunction,
+  disabled,
+}) {
+  const [columnName, setColumnName] = useState("");
 
   function createColumn() {
     handleColumnAdd(columnName);
@@ -27,6 +31,7 @@ export default function AddNewColumn({ handleColumnAdd, closeFunction }) {
         size="sm"
         text="Add Column"
         onClick={createColumn}
+        disabled={columnName?.length === 0}
       />
     </div>
   );

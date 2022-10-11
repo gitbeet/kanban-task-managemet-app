@@ -39,6 +39,7 @@ function App() {
     createNewTask,
     createNewBoard,
     editBoard,
+    newBoard,
     changeCurrentBoard,
   } = useBoardData();
   function deleteTaskFunc() {
@@ -85,6 +86,7 @@ function App() {
           closeFunction={toggleCreateNewBoardWindow}
           buttonText="Create New Board"
           submitFunction={saveAndCloseAddNewBoardWindow}
+          disabled={newBoard.name.length === 0}
         />
       )}
       {showEditBoardWindow && (
