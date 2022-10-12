@@ -14,9 +14,9 @@ export default function TaskWindowMenu({
   const { darkMode } = useDarkMode();
   return ReactDOM.createPortal(
     <>
-      <div className={`${darkMode && "dark"}`}>
+      <div className={`${darkMode ? "dark z-[500] fixed" : " z-[500] fixed"}`}>
         <div
-          className={`absolute border-primary-450 bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 py-4  shadow-lg rounded-md space-y-4 -translate-x-1/2 z-[1400]`}
+          className={`fixed border-primary-450 bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 py-4  shadow-lg rounded-md space-y-4 -translate-x-1/2 ]`}
           style={{
             top: `${(position[1] + 30).toString()}px`,
             left: `${(position[0] - 30).toString()}px`,
@@ -38,11 +38,9 @@ export default function TaskWindowMenu({
         </div>
       </div>
       {show && (
-        <Backdrop
-          clickFunction={onClose}
-          zIndex="1300"
-          opacity={backdropOpacity}
-        />
+        <div className="fixed z-[400]">
+          <Backdrop clickFunction={onClose} opacity={backdropOpacity} />
+        </div>
       )}
     </>,
     document.getElementById("menu")

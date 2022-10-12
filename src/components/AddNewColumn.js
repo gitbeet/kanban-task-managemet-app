@@ -19,7 +19,7 @@ export default function AddNewColumn({
 
   return ReactDOM.createPortal(
     <div className={darkMode && "dark"}>
-      <div className="w-[min(90%,350px)] absolute flex flex-col z-[1200] p-4 space-y-4 bg-neutral-900 dark:bg-primary-300 text-primary-100 dark:text-neutral-900 left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 rounded-md">
+      <div className="w-[min(90%,350px)] fixed flex flex-col z-[300] p-4 space-y-4 bg-neutral-900 dark:bg-primary-300 text-primary-100 dark:text-neutral-900 left-1/2 top-1/4 -translate-x-1/2 -translate-y-1/2 rounded-md">
         <h2>Add a Column</h2>
         <div className="flex flex-col space-y-2">
           <label className="text-sm text-primary-500" htmlFor="name">
@@ -39,7 +39,9 @@ export default function AddNewColumn({
           disabled={columnName?.length === 0}
         />
       </div>
-      <Backdrop clickFunction={closeFunction} zIndex="1100" opacity="100" />
+      <div className="fixed z-[200]">
+        <Backdrop clickFunction={closeFunction} opacity="100" />
+      </div>
     </div>,
     document.getElementById("menu")
   );

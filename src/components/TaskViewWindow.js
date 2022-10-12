@@ -39,8 +39,8 @@ export default function TaskViewWindow() {
 
   return ReactDOM.createPortal(
     <>
-      <div className={darkMode && "dark"}>
-        <div className="absolute w-[min(90%,350px)] md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 z-[1200] rounded-md left-1/2 -translate-x-1/2 p-6 space-y-6">
+      <div className={darkMode ? "dark z-[400] fixed" : " z-[400] fixed"}>
+        <div className="fixed w-[min(90%,350px)] md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 rounded-md left-1/2 top-1/4  -translate-x-1/2 p-6 space-y-6">
           <div className="flex justify-between items-center">
             <header className="font-bold text-md leading-6">
               {viewedTask.title}
@@ -79,7 +79,9 @@ export default function TaskViewWindow() {
           <CurrentStatus />
         </div>
       </div>
-      <Backdrop clickFunction={onClickBackdrop} zIndex="1100" />
+      <div className="fixed z-[300]">
+        <Backdrop clickFunction={onClickBackdrop} />
+      </div>
     </>,
     document.getElementById("menu")
   );

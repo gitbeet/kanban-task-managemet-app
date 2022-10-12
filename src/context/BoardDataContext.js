@@ -156,7 +156,6 @@ export default function BoardDataProvider({ children }) {
 
   function deleteBoard() {
     if (boards.length < 2) return;
-    console.log("im here");
     const boardToDelete = currentBoard;
     const index = boards.findIndex((board) => board.id === currentBoard);
     setCurrentBoard(boards[index + 1]?.id || boards[index - 1].id);
@@ -164,9 +163,6 @@ export default function BoardDataProvider({ children }) {
   }
 
   function createNewTask(type) {
-    console.log(boards);
-    console.log(viewedTask);
-
     if (type === "new") {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoard
@@ -254,13 +250,11 @@ export default function BoardDataProvider({ children }) {
   }
 
   function dropTask(value) {
-    console.log(draggedTaskColumn, value);
     if (draggedTaskColumn === value) return;
     const duplicateTask = { ...draggedTask };
     duplicateTask.status = boards
       .find((board) => board.id === currentBoard)
       .columns.find((column) => column.id === value).name;
-    console.log(duplicateTask.status);
     let duplicateBoards = [...boards].map((board) => {
       return board.id === currentBoard
         ? {
@@ -301,7 +295,6 @@ export default function BoardDataProvider({ children }) {
   }
 
   function toggleSubtaskCompleted(id) {
-    console.log(id);
     setViewedTask((prev) => {
       return {
         ...prev,
@@ -312,7 +305,6 @@ export default function BoardDataProvider({ children }) {
         }),
       };
     });
-    console.log(viewedTask);
   }
 
   function handleChangeTaskStatus(value) {
@@ -320,15 +312,12 @@ export default function BoardDataProvider({ children }) {
     setViewedTask((prev) => {
       return { ...prev, status: value };
     });
-    console.log(viewedTask);
   }
 
   function handleChangeTaskStatusClose() {
     let viewedStatusId = boards
       .find((board) => board.id === currentBoard)
       .columns.find((column) => column.name === viewedStatus).id;
-    console.log(viewedTask.id);
-    console.log(viewedTaskColumn === viewedStatusId);
     if (viewedTaskColumn === viewedStatusId) {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoard

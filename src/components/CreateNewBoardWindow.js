@@ -3,6 +3,8 @@ import { useBoardData } from "../context/BoardDataContext";
 import DynamicInput from "./DynamicInput";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
+import * as ReactDOM from "react-dom";
+import { useDarkMode } from "../context/DarkModeContext";
 
 export default function CreateNewBoardWindow({
   header,
@@ -11,6 +13,7 @@ export default function CreateNewBoardWindow({
   submitFunction,
   disabled = false,
 }) {
+  const { darkMode } = useDarkMode();
   const { newBoard, handleChangeNewBoard, changeCurrentBoard } = useBoardData();
   const { columns } = newBoard;
 
@@ -27,53 +30,70 @@ export default function CreateNewBoardWindow({
     changeCurrentBoard(newBoard.id);
   }
 
-  return (
+  let zIndexWindow = buttonText === "Save Changes" ? "z-[700]" : "z-[300]";
+
+  return ReactDOM.createPortal(
     <>
-      <div className="w-[min(90%,350px)] md:w-[450px] rounded-md absolute left-1/2 -translate-x-1/2 z-[1200] bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 p-8 space-y-7">
-        <div className="text-xl font-bold">{header}</div>
-        <div className="space-y-2">
-          <label htmlFor="name" className="text-sm text-neutral-900">
-            Board Name
-          </label>
-          <input
-            name="name"
-            className="border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w-full"
-            value={newBoard.name}
-            onChange={(e) =>
-              handleChangeNewBoard({ [e.target.name]: e.target.value })
-            }
-          />
-        </div>
-        <div className="flex flex-col space-y-4">
-          <p className="text-sm -mb-2">Board Columns</p>
-          {newBoard.columns.map((column) => {
-            return (
-              <DynamicInput
-                key={column.id}
-                id={column.id}
-                data={column.name}
-                handleChangeFunc={handleChangeNewBoard}
-              />
-            );
-          })}
-          <Button
-            type="secondary"
-            size="sm"
-            text="+Add New Column"
-            onClick={handleColumnAdd}
-          />
-        </div>
-        <div className="flex flex-col">
-          <Button
-            disabled={disabled}
-            type="primary"
-            size="sm"
-            text={buttonText}
-            onClick={saveChanges}
-          />
+      <div
+        className={
+          darkMode ? `dark ${zIndexWindow} fixed ` : `${zIndexWindow} fixed`
+        }
+      >
+        <div
+          className={`w-[min(90%,350px)] md:w-[450px] rounded-md fixed top-1/4 left-1/2 -translate-x-1/2 bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900 p-8 space-y-7`}
+        >
+          <div className="text-xl font-bold">{header}</div>
+          <div className="space-y-2">
+            <label htmlFor="name" className="text-sm text-neutral-900">
+              Board Name
+            </label>
+            <input
+              name="name"
+              className="border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w-full"
+              value={newBoard.name}
+              onChange={(e) =>
+                handleChangeNewBoard({ [e.target.name]: e.target.value })
+              }
+            />
+          </div>
+          <div className="flex flex-col space-y-4">
+            <p className="text-sm -mb-2">Board Columns</p>
+            {newBoard.columns.map((column) => {
+              return (
+                <DynamicInput
+                  key={column.id}
+                  id={column.id}
+                  data={column.name}
+                  handleChangeFunc={handleChangeNewBoard}
+                />
+              );
+            })}
+            <Button
+              type="secondary"
+              size="sm"
+              text="+Add New Column"
+              onClick={handleColumnAdd}
+            />
+          </div>
+          <div className="flex flex-col">
+            <Button
+              disabled={disabled}
+              type="primary"
+              size="sm"
+              text={buttonText}
+              onClick={saveChanges}
+            />
+          </div>
         </div>
       </div>
-      <Backdrop clickFunction={closeFunction} zIndex="1100" />
-    </>
+      <div
+        className={
+          buttonText === "Save Changes" ? "fixed z-[650]" : "fixed z-[200]"
+        }
+      >
+        <Backdrop clickFunction={closeFunction} />
+      </div>
+    </>,
+    document.getElementById("menu")
   );
 }

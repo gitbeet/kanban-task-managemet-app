@@ -5,6 +5,7 @@ import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
+import { useState } from "react";
 
 export default function AddNewTaskWindow({
   buttonText,
@@ -15,7 +16,8 @@ export default function AddNewTaskWindow({
   createTaskFunc,
 }) {
   const { darkMode } = useDarkMode();
-  const { handleCangeNewTask } = useBoardData();
+  const { handleCangeNewTask, viewedTask } = useBoardData();
+  const [errors, setErrors] = useState([{ name: "", subtasks: [] }]);
 
   function handleSubtaskAdd() {
     handleCangeNewTask({
@@ -36,15 +38,58 @@ export default function AddNewTaskWindow({
     });
   }
 
+  function clearError(id) {
+    // Clear error message on typing so it doesn't clutter field
+    setErrors((prev) => {
+      return prev.subtasks.map((subtask) => {
+        return subtask.id === id ? { ...subtask, message: "" } : subtask;
+      });
+    });
+  }
+
   function saveChanges() {
+    setErrors([{ name: "", subtasks: [] }]);
+    let tempErrors = { name: "", subtasks: [] };
+    // SUBTASK ERRORS
+    viewedTask.subtasks.forEach((subtask) => {
+      if (subtask.title.length === 0) {
+        tempErrors.subtasks = [
+          ...tempErrors.subtasks,
+          { id: subtask.id, message: "Can't be empty." },
+        ];
+      } else {
+        tempErrors.subtasks = [
+          ...tempErrors.subtasks,
+          { id: subtask.id, message: "" },
+        ];
+      }
+    });
+
+    // NAME ERRORS
+    if (viewedTask.title.length === 0) {
+      console.log("im here");
+      tempErrors.name = "Can't be empty.";
+    }
+    setErrors(tempErrors);
+    console.log(
+      tempErrors.name,
+      tempErrors.subtasks.findIndex((subtask) => subtask.message.length > 0) !==
+        -1
+    );
+    if (
+      tempErrors.name ||
+      tempErrors.subtasks.findIndex((subtask) => subtask.message.length > 0) !==
+        -1
+    )
+      return;
     createTaskFunc(type);
     closeFunction();
   }
 
   return (
-    <div className={darkMode && "dark"}>
+    <div className={darkMode ? "dark " : ""}>
       {/* title */}
-      <div className="space-y-8 w-[min(90%,350px)] md:w-[450px] flex-col absolute z-[1200] bg-neutral-900 p-6 left-[50%] top-16 -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
+      <div className="space-y-8 w-[min(90%,350px)] md:w-[450px]  flex-col fixed z-[300] bg-neutral-900 p-6  left-[50%] top-[2rem] -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
         <div className="font-semibold text-lg">{header}</div>
         <div className="flex flex-col space-y-2">
           <label
@@ -53,13 +98,18 @@ export default function AddNewTaskWindow({
           >
             Title
           </label>
-          <input
-            className="border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300"
-            placeholder="e.g. Take coffee break"
-            value={task.title}
-            onChange={(e) => handleCangeNewTask({ title: e.target.value })}
-            name="title"
-          />
+          <div className="relative flex flex-col">
+            <input
+              className={`${
+                errors.name &&
+                "placeholder:text-danger-500 placeholder:text-right"
+              } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300`}
+              placeholder={errors.name ? errors.name : "e.g. Take coffee break"}
+              value={task.title}
+              onChange={(e) => handleCangeNewTask({ title: e.target.value })}
+              name="title"
+            />
+          </div>
         </div>
         {/* description */}
         <div className="flex flex-col space-y-2">
@@ -87,7 +137,7 @@ export default function AddNewTaskWindow({
           <div className="text-primary-500 text-xs opacity-75 font-bold dark:text-neutral-900 dark:opacity-100">
             Subtasks
           </div>
-          <div className="space-y-4 mt-2">
+          <div className="space-y-4 mt-2 max-h-[16rem]">
             {task.subtasks.map((subtask) => {
               return (
                 <EditSubtask
@@ -95,6 +145,13 @@ export default function AddNewTaskWindow({
                   key={subtask.id}
                   subtask={subtask}
                   type={type}
+                  clearError={clearError}
+                  errorMessage={
+                    (errors.subtasks &&
+                      errors?.subtasks?.find((error) => error.id === subtask.id)
+                        .message) ||
+                    ""
+                  }
                 />
               );
             })}
@@ -120,7 +177,9 @@ export default function AddNewTaskWindow({
         </div>
       </div>
 
-      <Backdrop zIndex="1100" clickFunction={closeFunction} />
+      <div className="fixed z-[200]">
+        <Backdrop clickFunction={closeFunction} />
+      </div>
     </div>
   );
 }

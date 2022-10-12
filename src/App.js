@@ -1,4 +1,3 @@
-import "./css/App.css";
 import Sidebar from "./components/Sidebar";
 import Nav from "./components/Nav";
 import { usePopUp } from "./context/PopUpContext";
@@ -67,13 +66,13 @@ function App() {
     <div
       className={
         darkMode
-          ? "dark flex justify-center h-full  items-stretch"
-          : " flex justify-center h-full  items-stretch "
+          ? "dark flex justify-center h-full min-w-full  items-stretch"
+          : "flex justify-center h-full min-w-full  items-stretch "
       }
     >
-      <div className="flex flex-col max-w-[100vw] h-full">
+      <div className="flex flex-col min-w-[100vw] h-full scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 ">
         <Nav />
-        <div className="flex h-full">
+        <div className="flex h-[calc(100%-90px)]">
           {showSidebar && <Sidebar />}
           <BoardDisplayWindow />
         </div>
@@ -122,7 +121,7 @@ function App() {
         <DeleteWindow
           onDelete={deleteTaskFunc}
           onCancel={toggleTaskDeleteWindow}
-          name={viewedTask.title}
+          name={viewedTask.id}
           type="task"
           message=" and its subtasks? This action cannot be reversed."
         />

@@ -7,11 +7,25 @@
     /* outline: 1px solid red !important; */
 }
 
-
-input{
-    @apply  px-4 py-3 border rounded-md outline-none border-opacity-25 border-primary-500 bg-neutral-900 
+#menu{
+position:fixed;
+z-index: 2;
 }
 
+#root{
+top:0;
+bottom:0;
+left:0;
+right:0;
+position:absolute;
+height:100vh;
+width: 100vw;
+z-index: 1;
+}
+
+input{
+    @apply  px-4 py-3 border rounded-md outline-none border-opacity-25 border-primary-500 bg-neutral-900 hover:border-primary-600 hover:border-opacity-100 cursor-pointer
+}
 
 input:focus,
 textarea:focus,
@@ -21,15 +35,15 @@ select:focus{
 
 
 textarea{
-    @apply px-4 py-4 border rounded-md outline-none border-opacity-25 border-primary-500 bg-neutral-900 
+    @apply px-4 py-4 border rounded-md outline-none border-opacity-25 border-primary-500 bg-neutral-900 hover:border-primary-600 hover:border-opacity-100 cursor-pointer
 }
 
 
 select{
-    @apply appearance-none py-4 px-4 border rounded-md outline-none border-opacity-25 border-primary-500 text-primary-100 bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900
+    @apply cursor-pointer appearance-none py-4 px-4 border rounded-md outline-none border-opacity-25 border-primary-500 text-primary-100 bg-neutral-900 dark:bg-primary-300 dark:text-neutral-900
 }
 
 
 ::placeholder{
-    @apply text-sm
+    @apply text-sm 
 }
