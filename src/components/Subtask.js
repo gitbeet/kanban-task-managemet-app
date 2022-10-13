@@ -4,14 +4,16 @@ export default function Subtask({ subtask, errorMessage }) {
   const { toggleSubtaskCompleted } = useBoardData();
   console.log(errorMessage);
   return (
-    <div className="flex justify-start items-center space-x-6 p-4 rounded-sm bg-neutral-700 hover:bg-primary-600 hover:bg-opacity-25 dark:bg-primary-200 dark:hover:bg-primary-600 dark:hover:bg-opacity-25">
+    <div
+      onClick={() => toggleSubtaskCompleted(subtask.id)}
+      className="cursor-pointer flex justify-start items-center space-x-6 p-4 rounded-sm bg-neutral-700 hover:bg-primary-600 hover:bg-opacity-25 dark:bg-primary-200 dark:hover:bg-primary-600 dark:hover:bg-opacity-25"
+    >
       <div
         className={
           subtask.isCompleted
-            ? "cursor-pointer flex items-center justify-center w-4 h-4 bg-primary-600 border rounded-sm border-primary-450 border-opacity-25 "
-            : "cursor-pointer flex items-center justify-center w-4 h-4 bg-neutral-900 dark:bg-primary-300 border rounded-sm border-primary-450 border-opacity-25 "
+            ? "flex items-center justify-center w-4 h-4 bg-primary-600 border rounded-sm border-primary-450 border-opacity-25 "
+            : "flex items-center justify-center w-4 h-4 bg-neutral-900 dark:bg-primary-300 border rounded-sm border-primary-450 border-opacity-25 "
         }
-        onClick={() => toggleSubtaskCompleted(subtask.id)}
       >
         <svg
           className={subtask.isCompleted ? "block" : "hidden"}

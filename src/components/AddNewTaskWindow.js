@@ -80,9 +80,9 @@ export default function AddNewTaskWindow({
   }
 
   return (
-    <div className={darkMode ? "dark overflow-auto " : "overflow-auto "}>
+    <div className={darkMode ? "dark overflow-auto " : "overflow-auto  "}>
       {/* title */}
-      <div className="space-y-8 w-[min(90%,350px)] md:w-[450px]  flex-col fixed z-[300] bg-neutral-900 p-6  left-[50%] top-[2rem] -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
+      <div className="scrollbar-thin scrollbar-thumb-primary-600 scrollbar-track-neutral-900 max-h-[90vh] overflow-auto space-y-8 w-[min(90%,350px)] md:w-[450px]  flex-col fixed z-[300] bg-neutral-900 p-6  left-[50%] top-[2rem] -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
         <div className="font-semibold text-lg">{header}</div>
         <div className="flex flex-col space-y-2">
           <label
