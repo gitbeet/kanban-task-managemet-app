@@ -1,6 +1,6 @@
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function DynamicInput({ data, id }) {
+export default function DynamicInput({ data, id, errorMessage }) {
   const { handleChangeNewBoard, newBoard } = useBoardData();
 
   const { columns } = newBoard;
@@ -11,7 +11,7 @@ export default function DynamicInput({ data, id }) {
       return i.id === id;
     });
     console.log("index", index);
-    newColumns[index] = { ...newColumns[index], ...columnChange };
+    newColumns[index] = { ...newColumns[index], ...columnChange, error: "" };
     console.log("columnChange", columnChange);
     handleChangeNewBoard({ columns: newColumns });
   }
@@ -29,9 +29,13 @@ export default function DynamicInput({ data, id }) {
   return (
     <div className="flex justify-between items-center space-x-2  bg-neutral-900 border-primary-450 dark:bg-primary-300">
       <input
-        className="w-full bg-neutral-900 dark:bg-primary-300 border-opacity-25 border-primary-500 "
+        className={` ${
+          errorMessage &&
+          "placeholder:text-right border-opacity-100 placeholder:text-danger-500 placeholder:hover:text-danger-600 border-danger-500 hover:border-danger-600"
+        } w-full bg-neutral-900 dark:bg-primary-300 border-opacity-25 border-primary-500`}
         onChange={(e) => handleColumnChange({ name: e.target.value })}
         value={data}
+        placeholder={errorMessage}
       />
       <svg
         onClick={handleColumnDelete}

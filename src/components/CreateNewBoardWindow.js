@@ -21,13 +21,52 @@ export default function CreateNewBoardWindow({
   function handleColumnAdd() {
     handleChangeNewBoard({
       ...newBoard,
-      columns: [...columns, { id: uuid(), name: "", tasks: [] }],
+      columns: [...columns, { id: uuid(), name: "", tasks: [], error: "" }],
     });
   }
 
   function saveChanges() {
+    let temp = { ...newBoard };
+
+    if (temp.name.length === 0) {
+      temp.error = "Can't be empty.";
+    }
+
+    temp = {
+      ...temp,
+      columns: temp.columns.map((c) => {
+        if (c.name.length === 0) {
+          console.log("its empty");
+          return { ...c, error: "Can't be empty." };
+        } else {
+          console.log("its not");
+          return c;
+        }
+      }),
+    };
+
+    console.log(temp);
+
+    handleChangeNewBoard({ error: temp.error });
+    handleChangeNewBoard({ columns: temp.columns });
+    console.log(newBoard);
+
+    if (
+      temp.name.length === 0 ||
+      temp.columns.findIndex((column) => column.error.length > 0) !== -1
+    ) {
+      return;
+    }
+
     submitFunction();
     changeCurrentBoard(newBoard.id);
+  }
+
+  function handleChange(changes) {
+    handleChangeNewBoard(changes);
+    if (newBoard.error) {
+      handleChangeNewBoard({ error: "" });
+    }
   }
 
   let zIndexWindow = buttonText === "Save Changes" ? "z-[700]" : "z-[300]";
@@ -49,11 +88,15 @@ export default function CreateNewBoardWindow({
             </label>
             <input
               name="name"
-              className="border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w-full"
+              className={` ${
+                newBoard.error &&
+                "placeholder-danger-500 border-danger-500 border-opacity-100 hover:border-danger-600 hover:placeholder:text-danger-600 placeholder:text-right"
+              } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w-full`}
               value={newBoard.name}
               onChange={(e) =>
-                handleChangeNewBoard({ [e.target.name]: e.target.value })
+                handleChange({ [e.target.name]: e.target.value })
               }
+              placeholder={newBoard.error}
             />
           </div>
           <div className="flex flex-col space-y-4">
@@ -65,6 +108,9 @@ export default function CreateNewBoardWindow({
                   id={column.id}
                   data={column.name}
                   handleChangeFunc={handleChangeNewBoard}
+                  errorMessage={
+                    newBoard.columns.find((c) => c.id === column.id).error
+                  }
                 />
               );
             })}
@@ -77,7 +123,6 @@ export default function CreateNewBoardWindow({
           </div>
           <div className="flex flex-col">
             <Button
-              disabled={disabled}
               type="primary"
               size="sm"
               text={buttonText}

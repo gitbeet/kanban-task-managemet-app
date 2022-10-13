@@ -5,7 +5,6 @@ import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
-import { useState } from "react";
 
 export default function AddNewTaskWindow({
   buttonText,
@@ -75,7 +74,9 @@ export default function AddNewTaskWindow({
   // CLEAR THE ERROR ON TYPING SO WHEN YOU DELETE THE TEXT THE OLD ERROR DOES NOT SHOW / LOOKS CLEANER
   function handleChange(change) {
     handleCangeNewTask(change);
-    handleCangeNewTask({ error: "" });
+    if (viewedTask.error) {
+      handleCangeNewTask({ error: "" });
+    }
   }
 
   return (
@@ -94,7 +95,7 @@ export default function AddNewTaskWindow({
             <input
               className={`${
                 viewedTask.error &&
-                "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100"
+                "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100 hover:border-danger-600  hover:placeholder:text-danger-600"
               } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300`}
               placeholder={
                 viewedTask.error ? viewedTask.error : "e.g. Take coffee break"

@@ -95,6 +95,7 @@ export default function BoardDataProvider({ children }) {
       id: uuid(),
       name: "",
       columns: [],
+      error: "",
     };
   }
 

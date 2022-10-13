@@ -11,8 +11,20 @@ export default function AddNewColumn({
 }) {
   const { darkMode } = useDarkMode();
   const [columnName, setColumnName] = useState("");
+  const [error, setError] = useState("");
+
+  function handleChange(changes) {
+    setColumnName(changes);
+    if (error) {
+      setError("");
+    }
+  }
 
   function createColumn() {
+    if (columnName.length === 0) {
+      setError("Can't be empty.");
+      return;
+    }
     handleColumnAdd(columnName);
     closeFunction();
   }
@@ -26,9 +38,13 @@ export default function AddNewColumn({
             Column Name
           </label>
           <input
-            className="dark:bg-primary-300"
+            className={`${
+              error &&
+              "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100 hover:border-danger-600  hover:placeholder:text-danger-600"
+            } dark:bg-primary-300`}
             value={columnName}
-            onChange={(e) => setColumnName(e.target.value)}
+            onChange={(e) => handleChange(e.target.value)}
+            placeholder={error}
           />
         </div>
         <Button
@@ -36,7 +52,6 @@ export default function AddNewColumn({
           size="sm"
           text="Add Column"
           onClick={createColumn}
-          disabled={columnName?.length === 0}
         />
       </div>
       <div className="fixed z-[200]">

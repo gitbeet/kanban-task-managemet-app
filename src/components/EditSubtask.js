@@ -19,7 +19,6 @@ export default function EditSubtask({
     const updatedSubtasks = { ...viewedTask }.subtasks.filter(
       (subt) => subt.id !== subtask.id
     );
-    console.log(updatedSubtasks);
     handleCangeNewTask({ subtasks: updatedSubtasks });
   }
 
@@ -28,9 +27,9 @@ export default function EditSubtask({
       <div className="flex flex-col relative">
         <input
           // 95% because otherwise it cuts the close button
-          className={`w-[95%] ${
+          className={`w-full ${
             errorMessage &&
-            "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100"
+            "placeholder:text-danger-500 placeholder:text-right border-danger-500 hover:border-danger-600   border-opacity-100  hover:placeholder:text-danger-600"
           } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w`}
           onChange={(e) => handleChangeSubtask({ title: e.target.value })}
           value={subtask.title}
