@@ -169,6 +169,8 @@ export default function BoardDataProvider({ children }) {
   }
 
   function createNewTask(type) {
+    console.log(viewedTask.status);
+
     if (type === "new") {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoard
@@ -187,7 +189,15 @@ export default function BoardDataProvider({ children }) {
     }
 
     if (type === "edit") {
-      if (viewedTask.status === viewedTaskColumn) {
+      let p =
+        boards
+          .find((board) => board.id === currentBoard)
+          .columns.find((column) => column.id === viewedTaskColumn)
+          .tasks.find((task) => task.id === viewedTask.id).status ===
+        viewedTask.status;
+      console.log(p);
+      if (p) {
+        // if (viewedTask.status === viewedTaskColumn) {
         const duplicateBoards = [...boards].map((board) => {
           return board.id === currentBoard
             ? {
@@ -208,7 +218,7 @@ export default function BoardDataProvider({ children }) {
         setBoards(duplicateBoards);
       }
 
-      if (viewedTask.status !== viewedTaskColumn) {
+      if (!p) {
         const duplicateBoards = [...boards]
           .map((board) => {
             return board.id === currentBoard
@@ -230,7 +240,7 @@ export default function BoardDataProvider({ children }) {
               ? {
                   ...board,
                   columns: board.columns.map((column) => {
-                    return column.name === viewedTaskColumn
+                    return column.id === viewedTaskColumn
                       ? {
                           ...column,
                           tasks: column.tasks.filter((task) => {
@@ -242,6 +252,7 @@ export default function BoardDataProvider({ children }) {
                 }
               : board;
           });
+
         setBoards(duplicateBoards);
       }
     }
