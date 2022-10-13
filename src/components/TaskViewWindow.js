@@ -52,6 +52,7 @@ export default function TaskViewWindow() {
               onDelete={toggleTaskDeleteWindow}
               onClose={toggleTaskWindowMenu}
               backdropOpacity="20"
+              buttonText="task"
             />
           </div>
           <section className="text-primary-500 text-sm leading-6 tracking-wide">

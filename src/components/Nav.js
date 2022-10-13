@@ -137,15 +137,18 @@ export default function Nav() {
             />
           </svg>
         </button>
-        <EditDeleteMenu
-          onClick={() => setShowMenu((prev) => !prev)}
-          show={showMenu}
-          onEdit={editFunction}
-          onDelete={toggleBoardDeleteWindow}
-          onDisable={boards.length < 2}
-          onClose={() => setShowMenu((prev) => !prev)}
-          backdropOpacity="20"
-        />
+        <div className="flex justify-center items-center pr-2 md:pr-8">
+          <EditDeleteMenu
+            onClick={() => setShowMenu((prev) => !prev)}
+            show={showMenu}
+            onEdit={editFunction}
+            onDelete={toggleBoardDeleteWindow}
+            onDisable={boards.length < 2}
+            onClose={() => setShowMenu((prev) => !prev)}
+            backdropOpacity="20"
+            buttonText="board"
+          />
+        </div>
       </div>
     </div>
   );

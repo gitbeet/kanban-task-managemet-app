@@ -10,6 +10,7 @@ export default function TaskWindowMenu({
   show,
   backdropOpacity,
   position,
+  buttonText,
 }) {
   const { darkMode } = useDarkMode();
   return ReactDOM.createPortal(
@@ -23,17 +24,17 @@ export default function TaskWindowMenu({
           }}
         >
           <div
-            className="cursor-pointer hover:bg-primary-600 pl-3 pr-8 py-2 mr-3 rounded-r-full font-bold"
+            className="cursor-pointer text-primary-500 hover:text-primary-200 dark:hover:text-neutral-900  pl-3 pr-12 py-2 mr-3  font-bold capitalize whitespace-nowrap"
             onClick={onEdit}
           >
-            Edit
+            Edit {buttonText}
           </div>
           <button
-            className="disabled:opacity-30 cursor-pointer hover:bg-primary-600 pl-3 pr-8 py-2 mr-3 rounded-r-full font-bold "
+            className="disabled:opacity-30 cursor-pointer text-danger-500 hover:text-danger-400 dark:hover:text-danger-600 pl-3 pr-12 py-2 mr-3  font-bold capitalize whitespace-nowrap"
             onClick={onDelete}
             disabled={onDisable}
           >
-            Delete
+            Delete {buttonText}
           </button>
         </div>
       </div>

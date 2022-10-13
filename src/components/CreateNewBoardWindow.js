@@ -14,7 +14,13 @@ export default function CreateNewBoardWindow({
   disabled = false,
 }) {
   const { darkMode } = useDarkMode();
-  const { newBoard, handleChangeNewBoard, changeCurrentBoard } = useBoardData();
+  const {
+    newBoard,
+    handleChangeNewBoard,
+    changeCurrentBoard,
+    assignNewBoard,
+    spawnNewEmptyBoard,
+  } = useBoardData();
   const { columns } = newBoard;
 
   // this works
@@ -36,20 +42,15 @@ export default function CreateNewBoardWindow({
       ...temp,
       columns: temp.columns.map((c) => {
         if (c.name.length === 0) {
-          console.log("its empty");
           return { ...c, error: "Can't be empty." };
         } else {
-          console.log("its not");
           return c;
         }
       }),
     };
 
-    console.log(temp);
-
     handleChangeNewBoard({ error: temp.error });
     handleChangeNewBoard({ columns: temp.columns });
-    console.log(newBoard);
 
     if (
       temp.name.length === 0 ||
@@ -67,6 +68,11 @@ export default function CreateNewBoardWindow({
     if (newBoard.error) {
       handleChangeNewBoard({ error: "" });
     }
+  }
+
+  function onClose() {
+    closeFunction();
+    assignNewBoard(spawnNewEmptyBoard());
   }
 
   let zIndexWindow = buttonText === "Save Changes" ? "z-[700]" : "z-[300]";
@@ -88,10 +94,11 @@ export default function CreateNewBoardWindow({
             </label>
             <input
               name="name"
-              className={` ${
-                newBoard.error &&
-                "placeholder-danger-500 border-danger-500 border-opacity-100 hover:border-danger-600 hover:placeholder:text-danger-600 placeholder:text-right"
-              } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w-full`}
+              className={`  bg-neutral-900  dark:bg-primary-300 w-full ${
+                newBoard.error
+                  ? "placeholder-danger-500  hover:border-danger-600 hover:placeholder:text-danger-600 placeholder:text-right border-danger-500"
+                  : "border-opacity-25 border-primary-500"
+              }`}
               value={newBoard.name}
               onChange={(e) =>
                 handleChange({ [e.target.name]: e.target.value })
@@ -136,7 +143,7 @@ export default function CreateNewBoardWindow({
           buttonText === "Save Changes" ? "fixed z-[650]" : "fixed z-[200]"
         }
       >
-        <Backdrop clickFunction={closeFunction} />
+        <Backdrop clickFunction={onClose} />
       </div>
     </>,
     document.getElementById("menu")

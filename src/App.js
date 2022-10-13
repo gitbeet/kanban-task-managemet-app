@@ -39,7 +39,6 @@ function App() {
     createNewBoard,
     editBoard,
     newBoard,
-    changeCurrentBoard,
   } = useBoardData();
   function deleteTaskFunc() {
     deleteTask();
@@ -72,7 +71,7 @@ function App() {
     >
       <div className="flex flex-col min-w-[100vw] h-full scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 ">
         <Nav />
-        <div className="flex h-[calc(100%-90px)]">
+        <div className="flex h-full md:h-[calc(100%-90px)]">
           {showSidebar && <Sidebar />}
           <BoardDisplayWindow />
         </div>

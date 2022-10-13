@@ -9,6 +9,7 @@ export default function EditDeleteMenu({
   onClose,
   backdropOpacity,
   onDisable,
+  buttonText,
 }) {
   const myRef = useRef();
 
@@ -33,7 +34,7 @@ export default function EditDeleteMenu({
       <div
         ref={myRef}
         onClick={onClick}
-        className="flex justify-end items-center w-10 cursor-pointer md:scale-125 "
+        className="flex justify-center items-center w-10 cursor-pointer md:scale-125 "
       >
         <svg width="5" height="20" xmlns="http://www.w3.org/2000/svg">
           <g fill="#828FA3" fillRule="evenodd">
@@ -45,6 +46,7 @@ export default function EditDeleteMenu({
       </div>
       {show && (
         <TaskWindowMenu
+          buttonText={buttonText}
           onEdit={onEdit}
           onDelete={onDelete}
           onClose={onClose}

@@ -82,14 +82,6 @@ export default function BoardDataProvider({ children }) {
     setNewBoard(board);
   }
 
-  function spawnNewEmptyColumn() {
-    return {
-      id: uuid(),
-      name: "",
-      tasks: [],
-    };
-  }
-
   function spawnNewEmptyBoard() {
     return {
       id: uuid(),
@@ -448,6 +440,7 @@ export default function BoardDataProvider({ children }) {
         assignNewBoard,
         editBoard,
         handleColumnAdd,
+        spawnNewEmptyBoard,
       }}
     >
       {children}
