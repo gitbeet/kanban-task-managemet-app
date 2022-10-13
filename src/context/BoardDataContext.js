@@ -6,16 +6,19 @@ const dataWithId = data.boards.map((board) => {
   return {
     ...board,
     id: uuid(),
+    error: "",
     columns: board.columns.map((column) => {
       return {
         ...column,
+        error: "",
         id: uuid(),
         tasks: column.tasks.map((task) => {
           return {
             ...task,
             id: uuid(),
+            error: "",
             subtasks: task.subtasks.map((subtask) => {
-              return { ...subtask, id: uuid() };
+              return { ...subtask, id: uuid(), error: "" };
             }),
           };
         }),
@@ -25,7 +28,6 @@ const dataWithId = data.boards.map((board) => {
 });
 
 const boardsContext = createContext();
-
 export function useBoardData() {
   const context = useContext(boardsContext);
   if (!context) throw new Error("No board data context was found");
@@ -102,16 +104,19 @@ export default function BoardDataProvider({ children }) {
       title: "",
       description: "",
       status: "",
+      error: "",
       subtasks: [
         {
           id: uuid(),
           title: "",
           isCompleted: false,
+          error: "",
         },
         {
           id: uuid(),
           title: "",
           isCompleted: false,
+          error: "",
         },
       ],
     };

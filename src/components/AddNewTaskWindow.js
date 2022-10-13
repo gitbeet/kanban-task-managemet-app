@@ -17,7 +17,6 @@ export default function AddNewTaskWindow({
 }) {
   const { darkMode } = useDarkMode();
   const { handleCangeNewTask, viewedTask } = useBoardData();
-  const [errors, setErrors] = useState([{ name: "", subtasks: [] }]);
 
   function handleSubtaskAdd() {
     handleCangeNewTask({
@@ -27,6 +26,7 @@ export default function AddNewTaskWindow({
           id: uuid(),
           title: "",
           isCompleted: false,
+          error: "",
         },
       ],
     });
@@ -38,52 +38,44 @@ export default function AddNewTaskWindow({
     });
   }
 
-  function clearError(id) {
-    // Clear error message on typing so it doesn't clutter field
-    setErrors((prev) => {
-      return prev.subtasks.map((subtask) => {
-        return subtask.id === id ? { ...subtask, message: "" } : subtask;
-      });
-    });
-  }
-
   function saveChanges() {
-    setErrors([{ name: "", subtasks: [] }]);
-    let tempErrors = { name: "", subtasks: [] };
-    // SUBTASK ERRORS
-    viewedTask.subtasks.forEach((subtask) => {
-      if (subtask.title.length === 0) {
-        tempErrors.subtasks = [
-          ...tempErrors.subtasks,
-          { id: subtask.id, message: "Can't be empty." },
-        ];
-      } else {
-        tempErrors.subtasks = [
-          ...tempErrors.subtasks,
-          { id: subtask.id, message: "" },
-        ];
-      }
-    });
+    let temp = { ...viewedTask };
 
-    // NAME ERRORS
-    if (viewedTask.title.length === 0) {
-      console.log("im here");
-      tempErrors.name = "Can't be empty.";
+    if (temp.title.length === 0) {
+      temp.error = "Can't be empty.";
     }
-    setErrors(tempErrors);
-    console.log(
-      tempErrors.name,
-      tempErrors.subtasks.findIndex((subtask) => subtask.message.length > 0) !==
-        -1
-    );
+
+    temp = {
+      ...temp,
+      subtasks: temp.subtasks.map((s) => {
+        if (s.title.length === 0) {
+          console.log("its empty");
+          return { ...s, error: "Can't be empty." };
+        } else {
+          console.log("its not");
+          return s;
+        }
+      }),
+    };
+
+    handleCangeNewTask({ error: temp.error });
+    handleCangeNewTask({ subtasks: [...temp.subtasks] });
+
     if (
-      tempErrors.name ||
-      tempErrors.subtasks.findIndex((subtask) => subtask.message.length > 0) !==
-        -1
-    )
+      temp.title.length === 0 ||
+      temp.subtasks.findIndex((subtask) => subtask.error.length > 0) !== -1
+    ) {
       return;
+    }
+
     createTaskFunc(type);
     closeFunction();
+  }
+
+  // CLEAR THE ERROR ON TYPING SO WHEN YOU DELETE THE TEXT THE OLD ERROR DOES NOT SHOW / LOOKS CLEANER
+  function handleChange(change) {
+    handleCangeNewTask(change);
+    handleCangeNewTask({ error: "" });
   }
 
   return (
@@ -101,12 +93,14 @@ export default function AddNewTaskWindow({
           <div className="relative flex flex-col">
             <input
               className={`${
-                errors.name &&
-                "placeholder:text-danger-500 placeholder:text-right"
+                viewedTask.error &&
+                "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100"
               } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300`}
-              placeholder={errors.name ? errors.name : "e.g. Take coffee break"}
+              placeholder={
+                viewedTask.error ? viewedTask.error : "e.g. Take coffee break"
+              }
               value={task.title}
-              onChange={(e) => handleCangeNewTask({ title: e.target.value })}
+              onChange={(e) => handleChange({ title: e.target.value })}
               name="title"
             />
           </div>
@@ -145,12 +139,8 @@ export default function AddNewTaskWindow({
                   key={subtask.id}
                   subtask={subtask}
                   type={type}
-                  clearError={clearError}
                   errorMessage={
-                    (errors.subtasks &&
-                      errors?.subtasks?.find((error) => error.id === subtask.id)
-                        .message) ||
-                    ""
+                    viewedTask.subtasks.find((s) => s.id === subtask.id).error
                   }
                 />
               );

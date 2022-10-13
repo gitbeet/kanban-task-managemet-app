@@ -11,7 +11,7 @@ export default function EditSubtask({
   function handleChangeSubtask(changes) {
     const updatedSubtasks = { ...viewedTask }.subtasks;
     const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
-    updatedSubtasks[index] = { ...subtask, ...changes };
+    updatedSubtasks[index] = { ...subtask, ...changes, error: "" };
     handleCangeNewTask(updatedSubtasks);
   }
 
@@ -29,7 +29,8 @@ export default function EditSubtask({
         <input
           // 95% because otherwise it cuts the close button
           className={`w-[95%] ${
-            errorMessage && "placeholder:text-danger-500 placeholder:text-right"
+            errorMessage &&
+            "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100"
           } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w`}
           onChange={(e) => handleChangeSubtask({ title: e.target.value })}
           value={subtask.title}
