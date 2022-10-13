@@ -132,7 +132,7 @@ export default function AddNewTaskWindow({
           <div className="text-primary-500 text-xs opacity-75 font-bold dark:text-neutral-900 dark:opacity-100">
             Subtasks
           </div>
-          <div className="space-y-4 mt-2 max-h-[16rem]">
+          <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 mt-2 max-h-[11rem] overflow-auto px-4">
             {task.subtasks.map((subtask) => {
               return (
                 <EditSubtask

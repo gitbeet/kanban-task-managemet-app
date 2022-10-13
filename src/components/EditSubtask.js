@@ -24,21 +24,16 @@ export default function EditSubtask({
 
   return (
     <div className="flex justify-between items-center space-x-2">
-      <div className="flex flex-col relative">
-        <input
-          // 95% because otherwise it cuts the close button
-          className={`w-full ${
-            errorMessage &&
-            "placeholder:text-danger-500 placeholder:text-right border-danger-500 hover:border-danger-600   border-opacity-100  hover:placeholder:text-danger-600"
-          } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w`}
-          onChange={(e) => handleChangeSubtask({ title: e.target.value })}
-          value={subtask.title}
-          placeholder={errorMessage}
-        />
-        {/* <p className="text-danger-500 absolute top-1/2 -translate-y-1/2 left-full -translate-x-[60%] w-full">
-          {errorMessage}
-        </p> */}
-      </div>
+      <input
+        // 95% because otherwise it cuts the close button
+        className={`w-full ${
+          errorMessage &&
+          "placeholder:text-danger-500 placeholder:text-right border-danger-500 hover:border-danger-600   border-opacity-100  hover:placeholder:text-danger-600"
+        } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w`}
+        onChange={(e) => handleChangeSubtask({ title: e.target.value })}
+        value={subtask.title}
+        placeholder={errorMessage}
+      />
 
       <svg
         className="cursor-pointer"

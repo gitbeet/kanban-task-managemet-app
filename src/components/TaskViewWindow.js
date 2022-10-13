@@ -62,7 +62,7 @@ export default function TaskViewWindow() {
               Subtasks ({completedSubtasks}
               of {totalSubtasks})
             </p>
-            <div className="space-y-4">
+            <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 max-h-[15rem] overflow-auto px-4">
               {viewedTask.subtasks.map((subtask) => (
                 <Subtask
                   key={uuid()}
