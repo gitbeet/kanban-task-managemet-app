@@ -5,7 +5,7 @@ import Subtask from "./Subtask";
 import { v4 as uuid } from "uuid";
 import { useBoardData } from "../context/BoardDataContext";
 import CurrentStatus from "./CurrentStatus";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditDeleteMenu from "./EditDeleteMenu";
 import { useDarkMode } from "../context/DarkModeContext";
 
@@ -17,6 +17,16 @@ export default function TaskViewWindow() {
   const { title, description } = viewedTask;
 
   const [showTaskWindowMenu, setShowTaskWindowMenu] = useState(false);
+
+  useEffect(() => {
+    function onKeyDown(e) {
+      if (e.key === "Escape") {
+        onClickBackdrop();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  });
 
   function onClickBackdrop() {
     closeTaskViewWindow();
@@ -40,7 +50,7 @@ export default function TaskViewWindow() {
   return ReactDOM.createPortal(
     <>
       <div className={darkMode ? "dark z-[400] fixed" : " z-[400] fixed"}>
-        <div className="fixed w-[min(90%,350px)] md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 rounded-md left-1/2 top-1/4  -translate-x-1/2 p-6 space-y-6">
+        <div className="fixed max-h-[90vh]  w-[min(90%,350px)] overflow-auto md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 rounded-md left-1/2 top-[50vh] -translate-y-1/2 -translate-x-1/2 p-6 space-y-6">
           <div className="flex justify-between items-center">
             <header className="font-bold text-md leading-6">
               {viewedTask.title}

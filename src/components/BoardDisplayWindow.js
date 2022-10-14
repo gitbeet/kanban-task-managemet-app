@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import AddNewColumn from "./AddNewColumn";
 import ColumnsList from "./ColumnsList";
 import Button from "./Button";
+import ScrollButtons from "./ScrollButtons";
 
 export default function BoardDisplayWindow() {
   const { currentBoard, boards, handleColumnAdd } = useBoardData();
@@ -12,11 +13,36 @@ export default function BoardDisplayWindow() {
     setShowAddNewColumnMenu((prev) => !prev);
   }
 
+  const scrollToRightRef = useRef();
+  const scrollToLeftRef = useRef();
+
+  function scrollToRight() {
+    if (!scrollToRightRef.current) return;
+    scrollToRightRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }
+
+  function scrollToLeft() {
+    if (!scrollToLeftRef.current) return;
+    scrollToLeftRef.current.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  }
+
   const currentBoardData = boards.find(
     (board) => board.id === currentBoard
   ).columns;
   return (
     <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 w-full min-h-full overflow-auto ">
+      {/* pseudo element to scroll left */}
+      <div ref={scrollToLeftRef} className="top-0 left-0 bg-danger-400"></div>
+      <ScrollButtons
+        scrollToLeft={scrollToLeft}
+        scrollToRight={scrollToRight}
+      />
       <div className=" min-h-full min-w-fit bg-neutral-700 dark:bg-primary-200 text-primary-100 dark:text-primary-500 p-4">
         {currentBoardData.length > 0 && (
           <div className="flex min-h-full  justify-start items-stretch">
@@ -31,6 +57,11 @@ export default function BoardDisplayWindow() {
                 + New Column
               </h2>
             </div>
+            {/* PSEUDO ELEMENT SCROLL TO RIGHT   */}
+            <div
+              ref={scrollToRightRef}
+              className=" top-0 left-full w-1 h-1"
+            ></div>
           </div>
         )}
         {currentBoardData.length === 0 && (

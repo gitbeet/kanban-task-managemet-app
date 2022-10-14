@@ -5,6 +5,7 @@ import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
+import { useEffect } from "react";
 
 export default function AddNewTaskWindow({
   buttonText,
@@ -16,6 +17,19 @@ export default function AddNewTaskWindow({
 }) {
   const { darkMode } = useDarkMode();
   const { handleCangeNewTask, viewedTask } = useBoardData();
+
+  useEffect(() => {
+    function onKeyDown(e) {
+      if (e.key === "Enter") {
+        saveChanges();
+      }
+      if (e.key === "Escape") {
+        closeFunction();
+      }
+    }
+    document.addEventListener("keydown", onKeyDown);
+    return () => document.removeEventListener("keydown", onKeyDown);
+  });
 
   function handleSubtaskAdd() {
     handleCangeNewTask({
@@ -82,7 +96,7 @@ export default function AddNewTaskWindow({
   return (
     <div className={darkMode ? "dark overflow-auto " : "overflow-auto  "}>
       {/* title */}
-      <div className="scrollbar-thin scrollbar-thumb-primary-600 scrollbar-track-neutral-900 max-h-[90vh] overflow-auto space-y-8 w-[min(90%,350px)] md:w-[450px]  flex-col fixed z-[300] bg-neutral-900 p-6  left-[50%] top-[2rem] -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
+      <div className="scrollbar-thin scrollbar-thumb-primary-600 scrollbar-track-neutral-900 max-h-[90vh] overflow-auto space-y-8 w-[min(90%,350px)] md:w-[450px]  flex-col fixed z-[300] bg-neutral-900 p-6  left-[50%]  top-[50vh] -translate-y-1/2  -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
         <div className="font-semibold text-lg">{header}</div>
         <div className="flex flex-col space-y-2">
           <label
@@ -94,13 +108,15 @@ export default function AddNewTaskWindow({
           <div className="relative flex flex-col">
             <input
               className={`${
-                viewedTask.error &&
-                "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100 hover:border-danger-600  hover:placeholder:text-danger-600"
-              } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300`}
+                viewedTask.error
+                  ? "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100 hover:border-danger-600  hover:placeholder:text-danger-600"
+                  : "border-opacity-25 border-primary-500"
+              }  bg-neutral-900  dark:bg-primary-300`}
               placeholder={
                 viewedTask.error ? viewedTask.error : "e.g. Take coffee break"
               }
               value={task.title}
+              autoFocus
               onChange={(e) => handleChange({ title: e.target.value })}
               name="title"
             />

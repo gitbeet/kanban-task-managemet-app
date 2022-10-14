@@ -66,7 +66,7 @@ export default function BoardDataProvider({ children }) {
             ...board,
             columns: [
               ...board.columns,
-              { name: columnName, tasks: [], id: uuid() },
+              { name: columnName, tasks: [], id: uuid(), error: "" },
             ],
           }
         : board;
@@ -88,6 +88,7 @@ export default function BoardDataProvider({ children }) {
       name: "",
       columns: [],
       error: "",
+      columnError: "",
     };
   }
 

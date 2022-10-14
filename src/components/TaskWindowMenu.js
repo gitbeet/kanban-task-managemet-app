@@ -13,6 +13,17 @@ export default function TaskWindowMenu({
   buttonText,
 }) {
   const { darkMode } = useDarkMode();
+
+  function editFunction() {
+    onEdit();
+    onClose();
+  }
+
+  function deleteFunction() {
+    onDelete();
+    onClose();
+  }
+
   return ReactDOM.createPortal(
     <>
       <div className={`${darkMode ? "dark z-[500] fixed" : " z-[500] fixed"}`}>
@@ -25,13 +36,13 @@ export default function TaskWindowMenu({
         >
           <div
             className="cursor-pointer text-primary-500 hover:text-primary-200 dark:hover:text-neutral-900  pl-3 pr-12 py-2 mr-3  font-bold capitalize whitespace-nowrap"
-            onClick={onEdit}
+            onClick={editFunction}
           >
             Edit {buttonText}
           </div>
           <button
             className="disabled:opacity-30 cursor-pointer text-danger-500 hover:text-danger-400 dark:hover:text-danger-600 pl-3 pr-12 py-2 mr-3  font-bold capitalize whitespace-nowrap"
-            onClick={onDelete}
+            onClick={deleteFunction}
             disabled={onDisable}
           >
             Delete {buttonText}

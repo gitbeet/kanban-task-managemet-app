@@ -27,9 +27,10 @@ export default function EditSubtask({
       <input
         // 95% because otherwise it cuts the close button
         className={`w-full ${
-          errorMessage &&
-          "placeholder:text-danger-500 placeholder:text-right border-danger-500 hover:border-danger-600   border-opacity-100  hover:placeholder:text-danger-600"
-        } border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w`}
+          errorMessage
+            ? "placeholder:text-danger-500 placeholder:text-right border-danger-500 hover:border-danger-600   border-opacity-100  hover:placeholder:text-danger-600"
+            : "border-opacity-25 border-primary-500"
+        }  bg-neutral-900  dark:bg-primary-300 w`}
         onChange={(e) => handleChangeSubtask({ title: e.target.value })}
         value={subtask.title}
         placeholder={errorMessage}
