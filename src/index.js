@@ -1,4 +1,4 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
 import BoardDataProvider from "./context/BoardDataContext";
@@ -10,13 +10,15 @@ import "./index.css";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  <BoardDataProvider>
-    <DndProvider backend={HTML5Backend}>
-      <PopUpProvider>
-        <DarkmodeProvider>
-          <App />
-        </DarkmodeProvider>
-      </PopUpProvider>
-    </DndProvider>
-  </BoardDataProvider>
+  <StrictMode>
+    <BoardDataProvider>
+      <DndProvider backend={HTML5Backend}>
+        <PopUpProvider>
+          <DarkmodeProvider>
+            <App />
+          </DarkmodeProvider>
+        </PopUpProvider>
+      </DndProvider>
+    </BoardDataProvider>
+  </StrictMode>
 );

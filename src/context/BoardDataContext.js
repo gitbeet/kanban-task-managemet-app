@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import data from "../data.json";
 import { v4 as uuid } from "uuid";
+import useLocalStorage from "../hooks/useLocalStorage";
 
 const dataWithId = data.boards.map((board) => {
   return {
@@ -35,8 +36,8 @@ export function useBoardData() {
 }
 
 export default function BoardDataProvider({ children }) {
-  const [boards, setBoards] = useState(dataWithId);
-  const [currentBoard, setCurrentBoard] = useState(dataWithId[0].id);
+  const [boards, setBoards] = useLocalStorage("boards", dataWithId);
+  const [currentBoard, setCurrentBoard] = useState(boards[0].id);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(spawnNewEmptyBoard());
 
@@ -48,16 +49,17 @@ export default function BoardDataProvider({ children }) {
   const [viewedStatus, setViewedStatus] = useState();
 
   useEffect(() => {
+    console.log(boards);
+  }, [boards]);
+
+  useEffect(() => {
+    if (!boards) return;
     setStatusList(
       boards
         .find((board) => board.id === currentBoard)
         .columns.map((column) => column.name)
     );
   }, [currentBoard, boards]);
-
-  // useEffect(() => {
-  //   console.log(viewedTask);
-  // });
 
   function handleColumnAdd(columnName) {
     let duplicateBoards = [...boards].map((board) => {

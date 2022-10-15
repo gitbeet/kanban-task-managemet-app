@@ -26,6 +26,7 @@ export default function Nav() {
     toggleEditBoardWindow();
     assignNewBoard(boards.find((board) => board.id === currentBoard));
   }
+  if (!boards) return <h1>loading</h1>;
   return (
     <div
       className={`w-full mx-auto flex items-center md:items-stretch justify-between px-4 py-5 md:py-0 md:px-0 shadow-md md:shadow-none dark:bg-primary-300 dark:text-neutral-900 ${
@@ -37,7 +38,7 @@ export default function Nav() {
       {!showSidebar && (
         <div
           onClick={toggleSidebar}
-          className="hidden fixed left-0 bottom-4 md:flex bg-primary-600 rounded-r-full py-4 px-6 cursor-pointer"
+          className="hidden fixed left-0 bottom-4 md:flex bg-primary-600 rounded-r-full py-4 px-6 cursor-pointer shadow-lg"
         >
           <svg width="16" height="11" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -97,7 +98,7 @@ export default function Nav() {
           }`}
         >
           <div className="truncate md:text-xl">
-            {boards.find((board) => board.id === currentBoard).name}
+            {boards?.find((board) => board.id === currentBoard).name}
           </div>
           <svg
             className="md:hidden"
@@ -117,7 +118,8 @@ export default function Nav() {
       <div className="flex space-x-2 md:py-6 md:px-6">
         <button
           disabled={
-            boards.find((board) => board.id === currentBoard).columns.length < 1
+            boards?.find((board) => board.id === currentBoard).columns.length <
+            1
           }
           onClick={openAddNewTaskWindow}
           className=" shadow-lg bg-primary-600 px-4 py-2 rounded-full hover:bg-primary-700 transition-all disabled:opacity-50 disabled:pointer-events-none  md:px-6"
@@ -137,13 +139,13 @@ export default function Nav() {
             />
           </svg>
         </button>
-        <div className="flex justify-center items-center pr-2 md:pr-8">
+        <div className="flex justify-center items-center md:pr-2">
           <EditDeleteMenu
             onClick={() => setShowMenu((prev) => !prev)}
             show={showMenu}
             onEdit={editFunction}
             onDelete={toggleBoardDeleteWindow}
-            onDisable={boards.length < 2}
+            onDisable={boards?.length < 2}
             onClose={() => setShowMenu((prev) => !prev)}
             backdropOpacity="20"
             buttonText="board"

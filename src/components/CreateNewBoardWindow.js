@@ -140,16 +140,16 @@ export default function CreateNewBoardWindow({
           </div>
           <div className="flex flex-col space-y-4 relative">
             <div className="flex flex-col space-y-4">
-              <span className="text-sm -mb-2">Board Columns</span>
-              <span
+              <p className="text-sm -mb-2">Board Columns</p>
+              <p
                 className={`${
                   !newBoard.columnError && "hidden"
                 } block text-sm text-danger-500 pt-2`}
               >
                 {newBoard.columnError}
-              </span>
+              </p>
             </div>
-            <div className="space-y-12">
+            <div className="space-y-10">
               {newBoard.columns.map((column) => {
                 return (
                   <DynamicInput

@@ -32,9 +32,10 @@ export default function BoardDisplayWindow() {
     });
   }
 
-  const currentBoardData = boards.find(
+  const currentBoardData = boards?.find(
     (board) => board.id === currentBoard
   ).columns;
+
   return (
     <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 w-full min-h-full overflow-auto ">
       {/* pseudo element to scroll left */}
