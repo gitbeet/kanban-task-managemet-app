@@ -1,13 +1,13 @@
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function Board({ board }) {
-  const { currentBoard, changeCurrentBoard, boards } = useBoardData();
+export default function Board({ boardId }) {
+  const { currentBoardId, changeCurrentBoard, boards } = useBoardData();
 
-  let current = currentBoard === board;
+  let current = currentBoardId === boardId;
 
   return (
     <div
-      onClick={() => changeCurrentBoard(board)}
+      onClick={() => changeCurrentBoard(boardId)}
       className={
         current
           ? "cursor-pointer bg-primary-600 text-neutral-900 flex items-center space-x-3 rounded-r-full pl-4 py-4 font-semibold md:pl-10"
@@ -25,7 +25,7 @@ export default function Board({ board }) {
           fill="currentColor"
         />
       </svg>
-      <p>{boards.find((b) => b.id === board).name}</p>
+      <p>{boards.find((b) => b.id === boardId).name}</p>
     </div>
   );
 }

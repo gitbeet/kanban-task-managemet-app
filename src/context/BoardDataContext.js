@@ -37,7 +37,7 @@ export function useBoardData() {
 
 export default function BoardDataProvider({ children }) {
   const [boards, setBoards] = useLocalStorage("boards", dataWithId);
-  const [currentBoard, setCurrentBoard] = useState(boards[0].id);
+  const [currentBoardId, setCurrentBoard] = useState(boards[0].id);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(spawnNewEmptyBoard());
 
@@ -49,21 +49,17 @@ export default function BoardDataProvider({ children }) {
   const [viewedStatus, setViewedStatus] = useState();
 
   useEffect(() => {
-    console.log(boards);
-  }, [boards]);
-
-  useEffect(() => {
     if (!boards) return;
     setStatusList(
       boards
-        .find((board) => board.id === currentBoard)
+        .find((board) => board.id === currentBoardId)
         .columns.map((column) => column.name)
     );
-  }, [currentBoard, boards]);
+  }, [currentBoardId, boards]);
 
   function handleColumnAdd(columnName) {
     let duplicateBoards = [...boards].map((board) => {
-      return board.id === currentBoard
+      return board.id === currentBoardId
         ? {
             ...board,
             columns: [
@@ -136,7 +132,7 @@ export default function BoardDataProvider({ children }) {
   function deleteTask() {
     setBoards((prev) => {
       return prev.map((board) => {
-        return board.id === currentBoard
+        return board.id === currentBoardId
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -157,8 +153,8 @@ export default function BoardDataProvider({ children }) {
 
   function deleteBoard() {
     if (boards.length < 2) return;
-    const boardToDelete = currentBoard;
-    const index = boards.findIndex((board) => board.id === currentBoard);
+    const boardToDelete = currentBoardId;
+    const index = boards.findIndex((board) => board.id === currentBoardId);
     setCurrentBoard(boards[index + 1]?.id || boards[index - 1].id);
     setBoards((prev) => prev.filter((board) => board.id !== boardToDelete));
   }
@@ -168,7 +164,7 @@ export default function BoardDataProvider({ children }) {
 
     if (type === "new") {
       let duplicateBoards = [...boards].map((board) => {
-        return board.id === currentBoard
+        return board.id === currentBoardId
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -186,7 +182,7 @@ export default function BoardDataProvider({ children }) {
     if (type === "edit") {
       let p =
         boards
-          .find((board) => board.id === currentBoard)
+          .find((board) => board.id === currentBoardId)
           .columns.find((column) => column.id === viewedTaskColumn)
           .tasks.find((task) => task.id === viewedTask.id).status ===
         viewedTask.status;
@@ -194,7 +190,7 @@ export default function BoardDataProvider({ children }) {
       if (p) {
         // if (viewedTask.status === viewedTaskColumn) {
         const duplicateBoards = [...boards].map((board) => {
-          return board.id === currentBoard
+          return board.id === currentBoardId
             ? {
                 ...board,
                 columns: board.columns.map((column) => {
@@ -216,7 +212,7 @@ export default function BoardDataProvider({ children }) {
       if (!p) {
         const duplicateBoards = [...boards]
           .map((board) => {
-            return board.id === currentBoard
+            return board.id === currentBoardId
               ? {
                   ...board,
                   columns: board.columns.map((column) => {
@@ -231,7 +227,7 @@ export default function BoardDataProvider({ children }) {
               : board;
           })
           .map((board) => {
-            return board.id === currentBoard
+            return board.id === currentBoardId
               ? {
                   ...board,
                   columns: board.columns.map((column) => {
@@ -265,10 +261,10 @@ export default function BoardDataProvider({ children }) {
     if (draggedTaskColumn === value) return;
     const duplicateTask = { ...draggedTask };
     duplicateTask.status = boards
-      .find((board) => board.id === currentBoard)
+      .find((board) => board.id === currentBoardId)
       .columns.find((column) => column.id === value).name;
     let duplicateBoards = [...boards].map((board) => {
-      return board.id === currentBoard
+      return board.id === currentBoardId
         ? {
             ...board,
             columns: board.columns.map((column) => {
@@ -281,7 +277,7 @@ export default function BoardDataProvider({ children }) {
     });
 
     duplicateBoards = [...duplicateBoards].map((board) => {
-      return board.id === currentBoard
+      return board.id === currentBoardId
         ? {
             ...board,
             columns: board.columns.map((column) => {
@@ -328,11 +324,11 @@ export default function BoardDataProvider({ children }) {
 
   function handleChangeTaskStatusClose() {
     let viewedStatusId = boards
-      .find((board) => board.id === currentBoard)
+      .find((board) => board.id === currentBoardId)
       .columns.find((column) => column.name === viewedStatus).id;
     if (viewedTaskColumn === viewedStatusId) {
       let duplicateBoards = [...boards].map((board) => {
-        return board.id === currentBoard
+        return board.id === currentBoardId
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -352,7 +348,7 @@ export default function BoardDataProvider({ children }) {
       setViewedTask(null);
     } else {
       let duplicateBoards = [...boards].map((board) => {
-        return board.id === currentBoard
+        return board.id === currentBoardId
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -367,7 +363,7 @@ export default function BoardDataProvider({ children }) {
           : board;
       });
       duplicateBoards = [...duplicateBoards].map((board) => {
-        return board.id === currentBoard
+        return board.id === currentBoardId
           ? {
               ...board,
               columns: board.columns.map((column) => {
@@ -396,7 +392,7 @@ export default function BoardDataProvider({ children }) {
   function editBoard() {
     setBoards((prev) => {
       return prev.map((board) => {
-        return board.id === currentBoard ? newBoard : board;
+        return board.id === currentBoardId ? newBoard : board;
       });
     });
   }
@@ -417,7 +413,7 @@ export default function BoardDataProvider({ children }) {
   return (
     <boardsContext.Provider
       value={{
-        currentBoard,
+        currentBoardId,
         boards,
         newBoard,
         changeCurrentBoard,

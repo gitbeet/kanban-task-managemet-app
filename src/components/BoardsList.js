@@ -4,7 +4,7 @@ import Board from "./Board";
 import { v4 as uuid } from "uuid";
 
 export default function BoardsList() {
-  const { boards, currentBoard, changeCurrentBoard } = useBoardData();
+  const { boards, currentBoardId, changeCurrentBoard } = useBoardData();
   const { toggleCreateNewBoardWindow, toggleSidebar } = usePopUp();
 
   function showCreateBoardWindow() {
@@ -17,9 +17,9 @@ export default function BoardsList() {
       {boards.map((board) => (
         <Board
           key={uuid()}
-          currentBoard={currentBoard}
+          currentBoardId={currentBoardId}
           changeCurrentBoard={changeCurrentBoard}
-          board={board.id}
+          boardId={board.id}
         />
       ))}
       <div

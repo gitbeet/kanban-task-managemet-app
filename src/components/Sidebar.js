@@ -7,7 +7,7 @@ import { usePopUp } from "../context/PopUpContext";
 import { useDarkMode } from "../context/DarkModeContext";
 
 export default function Sidebar() {
-  const { currentBoard, changeCurrentBoard, boards } = useBoardData();
+  const { currentBoardId, changeCurrentBoard, boards } = useBoardData();
   const { darkMode } = useDarkMode();
   const { toggleSidebar } = usePopUp();
   return (
@@ -21,7 +21,7 @@ export default function Sidebar() {
             </div>
             {/* BOARD LIST  */}
             <BoardsList
-              currentBoard={currentBoard}
+              currentBoardId={currentBoardId}
               changeCurrentBoard={changeCurrentBoard}
               boards={boards}
             />

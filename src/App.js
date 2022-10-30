@@ -34,7 +34,7 @@ function App() {
     viewedTask,
     deleteTask,
     deleteBoard,
-    currentBoard,
+    currentBoardId,
     createNewTask,
     createNewBoard,
     editBoard,
@@ -129,7 +129,7 @@ function App() {
         <DeleteWindow
           onDelete={deleteBoardFunc}
           onCancel={toggleBoardDeleteWindow}
-          name={currentBoard}
+          name={currentBoardId}
           type="board"
           message="? This action will remove all columns and tasks and cannot be reversed."
         />

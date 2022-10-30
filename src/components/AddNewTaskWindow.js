@@ -5,7 +5,6 @@ import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
-import { useEffect } from "react";
 import useKeyboardControl from "../utilities/useKeyboardControl";
 
 export default function AddNewTaskWindow({
@@ -22,23 +21,22 @@ export default function AddNewTaskWindow({
   useKeyboardControl(saveChanges, closeFunction);
 
   function handleSubtaskAdd() {
+    const emptySubtask = {
+      id: uuid(),
+      title: "",
+      isCompleted: false,
+      error: "",
+    };
     handleChangeNewTask({
-      subtasks: [
-        ...task.subtasks,
-        {
-          id: uuid(),
-          title: "",
-          isCompleted: false,
-          error: "",
-        },
-      ],
+      subtasks: [...task.subtasks, emptySubtask],
     });
   }
   // Check code
   function handleSubtaskDelete(id) {
     handleChangeNewTask({
-      subtasks: task.subtasks.filter((subtask, index) => index !== id),
+      subtasks: task.subtasks.filter((subtask) => subtask.id !== id),
     });
+    console.log("ima be deleteing");
   }
 
   function saveChanges() {

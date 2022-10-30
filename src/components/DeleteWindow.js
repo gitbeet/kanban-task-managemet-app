@@ -13,7 +13,8 @@ export default function DeleteWindow({
   message,
 }) {
   const { darkMode } = useDarkMode();
-  const { boards, viewedTask, viewedTaskColumn, currentBoard } = useBoardData();
+  const { boards, viewedTask, viewedTaskColumn, currentBoardId } =
+    useBoardData();
 
   useEffect(() => {
     function onKeyDown(e) {
@@ -29,7 +30,7 @@ export default function DeleteWindow({
     type === "board"
       ? boards.find((board) => board.id === name).name
       : boards
-          .find((board) => board.id === currentBoard)
+          .find((board) => board.id === currentBoardId)
           .columns.find((column) => column.id === viewedTaskColumn)
           .tasks.find((task) => task.id === viewedTask.id).title;
   console.log(viewedTaskColumn);

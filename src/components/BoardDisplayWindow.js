@@ -6,7 +6,7 @@ import Button from "./Button";
 import ScrollButtons from "./ScrollButtons";
 
 export default function BoardDisplayWindow() {
-  const { currentBoard, boards, handleColumnAdd } = useBoardData();
+  const { currentBoardId, boards, handleColumnAdd } = useBoardData();
   const [showAddNewColumnMenu, setShowAddNewColumnMenu] = useState();
 
   function toggleAddNewColumnMenu() {
@@ -33,7 +33,7 @@ export default function BoardDisplayWindow() {
   }
 
   const currentBoardData = boards?.find(
-    (board) => board.id === currentBoard
+    (board) => board.id === currentBoardId
   ).columns;
 
   return (

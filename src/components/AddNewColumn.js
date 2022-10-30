@@ -1,5 +1,5 @@
 import * as ReactDOM from "react-dom";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useBoardData } from "../context/BoardDataContext";
 import Button from "./Button";
@@ -8,7 +8,7 @@ import InputElement from "./InputElement";
 import useKeyboardControl from "../utilities/useKeyboardControl";
 
 export default function AddNewColumn({ handleColumnAdd, closeFunction }) {
-  const { currentBoard, boards } = useBoardData();
+  const { currentBoardId, boards } = useBoardData();
   const { darkMode } = useDarkMode();
   const [columnName, setColumnName] = useState("");
   const [error, setError] = useState("");
@@ -24,7 +24,7 @@ export default function AddNewColumn({ handleColumnAdd, closeFunction }) {
 
   function validateInput() {
     let checkForRepeatingColumn = [...boards]
-      .find((board) => board.id === currentBoard)
+      .find((board) => board.id === currentBoardId)
       .columns.findIndex((column) => column.name === columnName);
 
     if (columnName.length === 0) {

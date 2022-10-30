@@ -5,7 +5,7 @@ import { useDarkMode } from "../context/DarkModeContext";
 import EditDeleteMenu from "./EditDeleteMenu";
 
 export default function Nav() {
-  const { boards, currentBoard, emptyViewedTask, assignNewBoard } =
+  const { boards, currentBoardId, emptyViewedTask, assignNewBoard } =
     useBoardData();
   const {
     toggleSidebar,
@@ -24,7 +24,7 @@ export default function Nav() {
 
   function editFunction() {
     toggleEditBoardWindow();
-    assignNewBoard(boards.find((board) => board.id === currentBoard));
+    assignNewBoard(boards.find((board) => board.id === currentBoardId));
   }
   if (!boards) return <h1>loading</h1>;
   return (
@@ -98,7 +98,7 @@ export default function Nav() {
           }`}
         >
           <div className="truncate md:text-xl">
-            {boards?.find((board) => board.id === currentBoard).name}
+            {boards?.find((board) => board.id === currentBoardId).name}
           </div>
           <svg
             className="md:hidden"
@@ -118,8 +118,8 @@ export default function Nav() {
       <div className="flex md:space-x-2 md:py-6 md:px-6">
         <button
           disabled={
-            boards?.find((board) => board.id === currentBoard).columns.length <
-            1
+            boards?.find((board) => board.id === currentBoardId).columns
+              .length < 1
           }
           onClick={openAddNewTaskWindow}
           className=" shadow-lg bg-primary-600 px-4 py-2 rounded-full hover:bg-primary-700 transition-all disabled:opacity-50 disabled:pointer-events-none  md:px-6"

@@ -12,10 +12,10 @@ export default function Task({ task, column }) {
   }));
 
   const { openTaskViewWindow } = usePopUp();
-  const { boards, currentBoard, toggleDraggedTask } = useBoardData();
+  const { boards, currentBoardId, toggleDraggedTask } = useBoardData();
 
   const completedSubtasks = boards
-    .find((board) => board.id === currentBoard)
+    .find((board) => board.id === currentBoardId)
     .columns.find((col) => col.id === column)
     .tasks.find((t) => t.id === task.id)
     .subtasks.reduce((acc, subtask) => {
@@ -27,7 +27,7 @@ export default function Task({ task, column }) {
     }, 0);
 
   const totalSubtasks = boards
-    .find((board) => board.id === currentBoard)
+    .find((board) => board.id === currentBoardId)
     .columns.find((col) => col.id === column)
     .tasks.find((t) => t.id === task.id).subtasks.length;
 

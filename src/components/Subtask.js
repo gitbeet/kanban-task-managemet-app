@@ -23,7 +23,7 @@ export default function Subtask({ subtask, errorMessage }) {
         >
           <path
             stroke="#FFF"
-            stroke-width="2"
+            strokeWidth="2"
             fill="none"
             d="m1.276 3.066 2.756 2.756 5-5"
           />
