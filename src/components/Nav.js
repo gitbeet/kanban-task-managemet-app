@@ -38,7 +38,7 @@ export default function Nav() {
       {!showSidebar && (
         <div
           onClick={toggleSidebar}
-          className="hidden fixed left-0 bottom-4 md:flex bg-primary-600 rounded-r-full py-4 px-6 cursor-pointer shadow-lg"
+          className="hidden fixed left-0 bottom-4 md:flex bg-primary-600 hover-hover:hover:bg-primary-700 transition-all rounded-r-full py-4 px-6 cursor-pointer shadow-lg"
         >
           <svg width="16" height="11" xmlns="http://www.w3.org/2000/svg">
             <path
@@ -93,7 +93,7 @@ export default function Nav() {
         {/* BOARD NAME */}
         <div
           onClick={toggleSidebar}
-          className={`cursor-pointer flex items-center justify-between space-x-2 text-xl font-semibold pl-4 ${
+          className={`cursor-pointer flex items-center justify-between space-x-2 text-xl font-semibold  ${
             showSidebar && "md:pl-12"
           }`}
         >
@@ -115,7 +115,7 @@ export default function Nav() {
           </svg>
         </div>
       </div>
-      <div className="flex space-x-2 md:py-6 md:px-6">
+      <div className="flex md:space-x-2 md:py-6 md:px-6">
         <button
           disabled={
             boards?.find((board) => board.id === currentBoard).columns.length <

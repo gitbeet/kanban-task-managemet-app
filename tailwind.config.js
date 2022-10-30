@@ -29,6 +29,8 @@ module.exports = {
       sm: "375px",
       md: "768px",
       lg: "1440px",
+      // prettier-ignore
+      "hover-hover": { "raw": "(hover: hover)" },
     },
     extend: {},
   },

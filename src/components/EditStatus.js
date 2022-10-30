@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 
 export default function EditStatus({ type }) {
-  const { handleCangeNewTask, viewedTask, boards, currentBoard } =
+  const { handleChangeNewTask, viewedTask, boards, currentBoard } =
     useBoardData();
   const [open, setOpen] = useState(false);
 
@@ -16,7 +16,7 @@ export default function EditStatus({ type }) {
 
   useEffect(() => {
     if (type === "new") {
-      handleCangeNewTask({ status: statusList[0] });
+      handleChangeNewTask({ status: statusList[0] });
     }
   }, []);
 
@@ -25,7 +25,7 @@ export default function EditStatus({ type }) {
       <select
         onClick={() => setOpen((prev) => !prev)}
         className="w-[100%] border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w"
-        onChange={(e) => handleCangeNewTask({ status: e.target.value })}
+        onChange={(e) => handleChangeNewTask({ status: e.target.value })}
         value={viewedTask.status || statusList[0]}
       >
         {statusList.map((status, index) => (

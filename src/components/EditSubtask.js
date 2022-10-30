@@ -6,20 +6,20 @@ export default function EditSubtask({
   errorMessage = "",
   clearError,
 }) {
-  const { handleCangeNewTask, viewedTask } = useBoardData();
+  const { handleChangeNewTask, viewedTask } = useBoardData();
 
   function handleChangeSubtask(changes) {
     const updatedSubtasks = { ...viewedTask }.subtasks;
     const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
     updatedSubtasks[index] = { ...subtask, ...changes, error: "" };
-    handleCangeNewTask(updatedSubtasks);
+    handleChangeNewTask(updatedSubtasks);
   }
 
   function handleDeleteSubtask() {
     const updatedSubtasks = { ...viewedTask }.subtasks.filter(
       (subt) => subt.id !== subtask.id
     );
-    handleCangeNewTask({ subtasks: updatedSubtasks });
+    handleChangeNewTask({ subtasks: updatedSubtasks });
   }
 
   return (

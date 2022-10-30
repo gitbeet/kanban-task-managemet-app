@@ -127,7 +127,7 @@ export default function BoardDataProvider({ children }) {
     setviewedTaskColumn(column);
   }
 
-  function handleCangeNewTask(change) {
+  function handleChangeNewTask(change) {
     setViewedTask((prev) => {
       return { ...prev, ...change };
     });
@@ -430,7 +430,7 @@ export default function BoardDataProvider({ children }) {
         dropTask,
         toggleDraggedTask,
         draggedTask,
-        handleCangeNewTask,
+        handleChangeNewTask,
         createNewTask,
         assignViewedTaskAndColumn,
         viewedTaskColumn,

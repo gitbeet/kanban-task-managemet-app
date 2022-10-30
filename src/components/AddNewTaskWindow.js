@@ -6,6 +6,7 @@ import EditStatus from "./EditStatus";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
 import { useEffect } from "react";
+import useKeyboardControl from "../utilities/useKeyboardControl";
 
 export default function AddNewTaskWindow({
   buttonText,
@@ -16,23 +17,12 @@ export default function AddNewTaskWindow({
   createTaskFunc,
 }) {
   const { darkMode } = useDarkMode();
-  const { handleCangeNewTask, viewedTask } = useBoardData();
+  const { handleChangeNewTask, viewedTask } = useBoardData();
 
-  useEffect(() => {
-    function onKeyDown(e) {
-      if (e.key === "Enter") {
-        saveChanges();
-      }
-      if (e.key === "Escape") {
-        closeFunction();
-      }
-    }
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  });
+  useKeyboardControl(saveChanges, closeFunction);
 
   function handleSubtaskAdd() {
-    handleCangeNewTask({
+    handleChangeNewTask({
       subtasks: [
         ...task.subtasks,
         {
@@ -46,7 +36,7 @@ export default function AddNewTaskWindow({
   }
   // Check code
   function handleSubtaskDelete(id) {
-    handleCangeNewTask({
+    handleChangeNewTask({
       subtasks: task.subtasks.filter((subtask, index) => index !== id),
     });
   }
@@ -71,8 +61,8 @@ export default function AddNewTaskWindow({
       }),
     };
 
-    handleCangeNewTask({ error: temp.error });
-    handleCangeNewTask({ subtasks: [...temp.subtasks] });
+    handleChangeNewTask({ error: temp.error });
+    handleChangeNewTask({ subtasks: [...temp.subtasks] });
 
     if (
       temp.title.length === 0 ||
@@ -85,11 +75,10 @@ export default function AddNewTaskWindow({
     closeFunction();
   }
 
-  // CLEAR THE ERROR ON TYPING SO WHEN YOU DELETE THE TEXT THE OLD ERROR DOES NOT SHOW / LOOKS CLEANER
   function handleChange(change) {
-    handleCangeNewTask(change);
+    handleChangeNewTask(change);
     if (viewedTask.error) {
-      handleCangeNewTask({ error: "" });
+      handleChangeNewTask({ error: "" });
     }
   }
 
@@ -137,7 +126,7 @@ export default function AddNewTaskWindow({
             a little."
             rows={4}
             onChange={(e) =>
-              handleCangeNewTask({ description: e.target.value })
+              handleChangeNewTask({ description: e.target.value })
             }
             value={task.description}
             name="description"

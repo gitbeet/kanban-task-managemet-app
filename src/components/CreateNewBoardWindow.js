@@ -6,6 +6,7 @@ import Button from "./Button";
 import * as ReactDOM from "react-dom";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useEffect } from "react";
+import useKeyboardControl from "../utilities/useKeyboardControl";
 
 export default function CreateNewBoardWindow({
   header,
@@ -24,18 +25,7 @@ export default function CreateNewBoardWindow({
   } = useBoardData();
   const { columns } = newBoard;
 
-  useEffect(() => {
-    function onKeyDown(e) {
-      if (e.key === "Enter") {
-        saveChanges();
-      }
-      if (e.key === "Escape") {
-        closeFunction();
-      }
-    }
-    document.addEventListener("keydown", onKeyDown);
-    return () => document.removeEventListener("keydown", onKeyDown);
-  });
+  useKeyboardControl(saveChanges, closeFunction);
 
   // this works
   function handleColumnAdd() {

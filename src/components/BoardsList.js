@@ -24,7 +24,7 @@ export default function BoardsList() {
       ))}
       <div
         onClick={showCreateBoardWindow}
-        className="block cursor-pointer flex items-center space-x-3 py-2 pl-4 text-primary-600 md:pl-10 md:hidden"
+        className="cursor-pointer flex items-center space-x-3 py-2 pl-4 text-primary-600 hover-hover:hover:text-primary-700 transition-all md:pl-10 md:hidden"
       >
         <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -36,7 +36,7 @@ export default function BoardsList() {
       </div>
       <div
         onClick={toggleCreateNewBoardWindow}
-        className="hidden cursor-pointer  items-center space-x-3 py-2 pl-4 text-primary-600 md:pl-10 md:flex"
+        className="hidden cursor-pointer  items-center space-x-3 py-2 pl-4 text-primary-600 hover-hover:hover:text-primary-700 transition-all md:pl-10 md:flex"
       >
         <svg width="16" height="16" xmlns="http://www.w3.org/2000/svg">
           <path
