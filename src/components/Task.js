@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import { useMemo } from "react";
 import { useBoardData } from "../context/BoardDataContext";
 import { usePopUp } from "../context/PopUpContext";
 import { useDrag } from "react-dnd";

@@ -1,11 +1,6 @@
 import { useBoardData } from "../context/BoardDataContext";
 
-export default function EditSubtask({
-  type,
-  subtask,
-  errorMessage = "",
-  clearError,
-}) {
+export default function EditSubtask({ subtask, errorMessage = "" }) {
   const { handleChangeNewTask, viewedTask } = useBoardData();
 
   function handleChangeSubtask(changes) {

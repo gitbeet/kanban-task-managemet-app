@@ -1,4 +1,3 @@
-import React from "react";
 import Task from "./Task";
 import { v4 as uuid } from "uuid";
 import { useDrop } from "react-dnd";
@@ -14,11 +13,16 @@ export default function Column({ column }) {
     }),
   }));
 
+  // GENERATING A COLOR BETWEEN 170-230 HUE
+  const randomColor = `hsl(${Math.floor(
+    200 + Math.random() * 30 * (Math.random() < 0.5 ? 1 : -1)
+  )},100%,62%)`;
   return (
     <div ref={drop} className="space-y-6 w-[17rem]">
       <header className="flex items-center justify-start space-x-3 uppercase text-sm tracking-widest text-primary-500">
         <div
-          className={`w-4 h-4 ${`bg-[hsl(200,100%,62%)]`} rounded-full`}
+          style={{ backgroundColor: randomColor }}
+          className={"w-4 h-4 rounded-full"}
         ></div>
         <p className="font-bold">
           {column.name} ({column.tasks?.length || 0})

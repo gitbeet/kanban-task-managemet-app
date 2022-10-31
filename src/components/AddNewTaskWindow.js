@@ -31,13 +31,6 @@ export default function AddNewTaskWindow({
       subtasks: [...task.subtasks, emptySubtask],
     });
   }
-  // Check code
-  function handleSubtaskDelete(id) {
-    handleChangeNewTask({
-      subtasks: task.subtasks.filter((subtask) => subtask.id !== id),
-    });
-    console.log("ima be deleteing");
-  }
 
   function saveChanges() {
     let temp = { ...viewedTask };
@@ -137,15 +130,14 @@ export default function AddNewTaskWindow({
           </div>
           <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 mt-2 max-h-[11rem] overflow-auto px-4">
             {task.subtasks.map((subtask) => {
+              const errorMessage = viewedTask.subtasks.find(
+                (s) => s.id === subtask.id
+              ).error;
               return (
                 <EditSubtask
-                  handleSubtaskDelete={handleSubtaskDelete}
                   key={subtask.id}
                   subtask={subtask}
-                  type={type}
-                  errorMessage={
-                    viewedTask.subtasks.find((s) => s.id === subtask.id).error
-                  }
+                  errorMessage={errorMessage}
                 />
               );
             })}
@@ -153,7 +145,7 @@ export default function AddNewTaskWindow({
           <div className="flex flex-col">
             <Button
               onClick={handleSubtaskAdd}
-              text={"+Add New Subtask"}
+              text="+Add New Subtask"
               size="sm"
               type="secondary"
             />

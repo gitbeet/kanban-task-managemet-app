@@ -1,5 +1,3 @@
-import React, { useEffect } from "react";
-
 export default function Button({
   onClick,
   text,
@@ -8,19 +6,6 @@ export default function Button({
   disabled = false,
   submit = false,
 }) {
-  // useEffect(() => {
-  //   if (!submit) return;
-  //   function onKeyDown(e) {
-  //     if (e.key === "Enter") {
-  //       onClick();
-  //     }
-  //   }
-
-  //   document.addEventListener("keydown", onKeyDown);
-
-  //   return () => document.removeEventListener("keydown", onKeyDown);
-  // }, []);
-
   return (
     <button
       disabled={disabled}

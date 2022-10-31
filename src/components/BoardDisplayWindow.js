@@ -16,17 +16,17 @@ export default function BoardDisplayWindow() {
   const scrollToRightRef = useRef();
   const scrollToLeftRef = useRef();
 
-  function scrollToRight() {
-    if (!scrollToRightRef.current) return;
-    scrollToRightRef.current.scrollIntoView({
+  function scrollToLeft() {
+    if (!scrollToLeftRef.current) return;
+    scrollToLeftRef.current.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
   }
 
-  function scrollToLeft() {
-    if (!scrollToLeftRef.current) return;
-    scrollToLeftRef.current.scrollIntoView({
+  function scrollToRight() {
+    if (!scrollToRightRef.current) return;
+    scrollToRightRef.current.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
