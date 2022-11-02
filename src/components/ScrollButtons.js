@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import * as ReactDOM from "react-dom";
 import arrowRight from "../assets/icon-arrow-right.png";
 
-export default function ScrollButtons({ scrollToLeft, scrollToRight }) {
+const ScrollButtons = ({ scrollToLeft, scrollToRight }) => {
   // const [innerHeight, setInnerHeight] = useState();
   // useEffect(() => {
   //   function setHeight() {
@@ -43,4 +43,6 @@ export default function ScrollButtons({ scrollToLeft, scrollToRight }) {
     </div>,
     document.getElementById("root")
   );
-}
+};
+
+export default ScrollButtons;

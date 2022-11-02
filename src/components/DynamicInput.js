@@ -1,14 +1,16 @@
-export default function DynamicInput({
+import InputElement from "./InputElement";
+
+const DynamicInput = ({
   data,
   id,
   errorMessage,
   columnError,
   tempBoard,
   handleChange,
-}) {
+}) => {
   const { columns } = tempBoard;
 
-  function handleColumnChange(columnChange) {
+  const handleColumnChange = (columnChange) => {
     if (columnError) {
       handleChange({ columnError: "" });
     }
@@ -17,36 +19,32 @@ export default function DynamicInput({
     const index = newColumns.findIndex((i) => {
       return i.id === id;
     });
-    console.log("index", index);
     newColumns[index] = { ...newColumns[index], ...columnChange, error: "" };
-    console.log("columnChange", columnChange);
     handleChange({ columns: newColumns });
-  }
+  };
 
-  function handleColumnDelete() {
+  const handleColumnDelete = () => {
     handleChange({
       ...tempBoard,
       columns: columns.filter((column) => {
         return column.id !== id;
       }),
     });
-  }
+  };
 
   return (
     <div className="flex relative justify-between items-center space-x-2  bg-neutral-900 border-primary-450 dark:bg-primary-300 space-y-2">
-      <input
-        className={` ${
-          errorMessage ||
-          columnError === "Every column should have a unique name."
-            ? "placeholder:text-right border-opacity-100 border-danger-500 hover:border-danger-600"
-            : "border-opacity-25 border-primary-500"
-        } w-full bg-neutral-900 dark:bg-primary-300`}
-        onChange={(e) => handleColumnChange({ name: e.target.value })}
-        value={data}
-      />
-      <p className="text-sm text-danger-500 absolute top-full">
-        {errorMessage || columnError}
-      </p>
+      <div className="w-full">
+        <InputElement
+          type="input"
+          value={data}
+          onChange={(e) => handleColumnChange({ name: e.target.value })}
+          error={errorMessage || columnError}
+          label=""
+          name=""
+          placeholder=""
+        />
+      </div>
       <svg
         onClick={handleColumnDelete}
         className="cursor-pointer fill-[#828FA3] hover:fill-danger-500"
@@ -61,4 +59,6 @@ export default function DynamicInput({
       </svg>
     </div>
   );
-}
+};
+
+export default DynamicInput;

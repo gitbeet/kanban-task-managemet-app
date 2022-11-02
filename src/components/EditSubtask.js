@@ -1,37 +1,36 @@
-export default function EditSubtask({
+import InputElement from "./InputElement";
+
+const EditSubtask = ({
   handleChange,
   subtask,
   tempTask,
   errorMessage = "",
-}) {
-  function handleChangeSubtask(changes) {
+}) => {
+  const handleChangeSubtask = (changes) => {
     const updatedSubtasks = { ...tempTask }.subtasks;
     const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
     updatedSubtasks[index] = { ...subtask, ...changes, error: "" };
     handleChange(updatedSubtasks);
-  }
+  };
 
-  function handleDeleteSubtask() {
+  const handleDeleteSubtask = () => {
     const updatedSubtasks = { ...tempTask }.subtasks.filter(
       (subt) => subt.id !== subtask.id
     );
     handleChange({ subtasks: updatedSubtasks });
-  }
+  };
 
   return (
     <div className="flex justify-between items-center space-x-2">
-      <input
-        // 95% because otherwise it cuts the close button
-        className={`w-full ${
-          errorMessage
-            ? "placeholder:text-danger-500 placeholder:text-right border-danger-500 hover:border-danger-600   border-opacity-100  hover:placeholder:text-danger-600"
-            : "border-opacity-25 border-primary-500"
-        }  bg-neutral-900  dark:bg-primary-300 w`}
-        onChange={(e) => handleChangeSubtask({ title: e.target.value })}
-        value={subtask.title}
-        placeholder={errorMessage}
-      />
-
+      <div className="w-full">
+        <InputElement
+          value={subtask.title}
+          onChange={(e) => handleChangeSubtask({ title: e.target.value })}
+          label=""
+          name=""
+          error={errorMessage}
+        />
+      </div>
       <svg
         className="cursor-pointer fill-[#828FA3] hover:fill-danger-500"
         onClick={handleDeleteSubtask}
@@ -46,4 +45,6 @@ export default function EditSubtask({
       </svg>
     </div>
   );
-}
+};
+
+export default EditSubtask;

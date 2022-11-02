@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import TaskWindowMenu from "./TaskWindowMenu";
 
-export default function EditDeleteMenu({
+const EditDeleteMenu = ({
   onClick,
   show,
   onEdit,
@@ -10,7 +10,7 @@ export default function EditDeleteMenu({
   backdropOpacity,
   onDisable,
   buttonText,
-}) {
+}) => {
   const myRef = useRef();
 
   const [pos, setPos] = useState([]);
@@ -61,4 +61,6 @@ export default function EditDeleteMenu({
       )}
     </>
   );
-}
+};
+
+export default EditDeleteMenu;

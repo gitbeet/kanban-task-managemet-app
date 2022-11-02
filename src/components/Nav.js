@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useDarkMode } from "../context/DarkModeContext";
 import EditDeleteMenu from "./EditDeleteMenu";
 
-export default function Nav({
+const Nav = ({
   toggleSidebar,
   toggleAddNewTaskWindow,
   toggleBoardDeleteWindow,
@@ -12,19 +12,19 @@ export default function Nav({
   currentBoardId,
   emptyViewedTask,
   assignNewBoard,
-}) {
+}) => {
   const { darkMode } = useDarkMode();
   const [showMenu, setShowMenu] = useState(false);
 
-  function openAddNewTaskWindow() {
+  const openAddNewTaskWindow = () => {
     emptyViewedTask();
     toggleAddNewTaskWindow();
-  }
+  };
 
-  function editFunction() {
+  const editFunction = () => {
     toggleEditBoardWindow();
     assignNewBoard(boards.find((board) => board.id === currentBoardId));
-  }
+  };
   if (!boards) return <h1>loading</h1>;
   return (
     <div
@@ -153,4 +153,6 @@ export default function Nav({
       </div>
     </div>
   );
-}
+};
+
+export default Nav;

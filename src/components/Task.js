@@ -1,14 +1,15 @@
+import { useEffect } from "react";
 import { useMemo } from "react";
 import { useDrag } from "react-dnd";
 
-export default function Task({
+const Task = ({
   task,
   column,
   openTaskViewWindow,
   boards,
   currentBoardId,
   toggleDraggedTask,
-}) {
+}) => {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "task",
     collect: (monitor) => ({
@@ -39,6 +40,16 @@ export default function Task({
     }
   }, [isDragging]);
 
+  // useEffect(() => {
+  //   if (!isDragging) return;
+  //   function dragIt() {
+  //     toggleDraggedTask(task, column);
+  //   }
+  //   dragIt();
+
+  //   return () => dragIt();
+  // }, [isDragging, column, task, toggleDraggedTask]);
+
   return (
     <div
       ref={drag}
@@ -52,4 +63,6 @@ export default function Task({
       </p>
     </div>
   );
-}
+};
+
+export default Task;

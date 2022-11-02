@@ -1,48 +1,46 @@
 import * as ReactDOM from "react-dom";
 import Backdrop from "./Backdrop";
 import Subtask from "./Subtask";
-import { v4 as uuid } from "uuid";
 import CurrentStatus from "./CurrentStatus";
 import { useEffect, useState } from "react";
 import EditDeleteMenu from "./EditDeleteMenu";
 import { useDarkMode } from "../context/DarkModeContext";
 
-export default function TaskViewWindow({
+const TaskViewWindow = ({
   statusList,
   viewedTask,
   handleChangeTaskStatusClose,
   closeTaskViewWindow,
   openTaskEditWindow,
   toggleTaskDeleteWindow,
-}) {
+}) => {
   const { darkMode } = useDarkMode();
 
   const [showTaskWindowMenu, setShowTaskWindowMenu] = useState(false);
   const [tempTask, setTempTask] = useState(viewedTask);
 
-  function handleChange(changes) {
+  const handleChange = (changes) => {
     setTempTask((prev) => ({ ...prev, ...changes }));
-    console.log(tempTask);
-  }
+  };
 
   useEffect(() => {
-    function onKeyDown(e) {
+    const onKeyDown = (e) => {
       if (e.key === "Escape") {
         onClickBackdrop();
       }
-    }
+    };
     document.addEventListener("keydown", onKeyDown);
     return () => document.removeEventListener("keydown", onKeyDown);
   });
 
-  function onClickBackdrop() {
+  const onClickBackdrop = () => {
     closeTaskViewWindow();
     handleChangeTaskStatusClose(tempTask);
-  }
+  };
 
-  function toggleTaskWindowMenu() {
+  const toggleTaskWindowMenu = () => {
     setShowTaskWindowMenu((prev) => !prev);
-  }
+  };
 
   const completedSubtasks = viewedTask.subtasks.reduce((acc, s) => {
     if (s.isCompleted) {
@@ -107,4 +105,6 @@ export default function TaskViewWindow({
     </>,
     document.getElementById("menu")
   );
-}
+};
+
+export default TaskViewWindow;

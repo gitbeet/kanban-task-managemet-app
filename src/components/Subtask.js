@@ -1,12 +1,10 @@
-export default function Subtask({ subtask, handleChange, tempTask }) {
-  function toggleSubtaskComplete() {
+const Subtask = ({ subtask, handleChange, tempTask }) => {
+  const toggleSubtaskComplete = () => {
     const updatedSubtasks = [...tempTask.subtasks];
     const index = updatedSubtasks.findIndex((s) => s.id === subtask.id);
-    console.log(index);
     updatedSubtasks[index].isCompleted = !updatedSubtasks[index].isCompleted;
     handleChange({ subtasks: updatedSubtasks });
-    console.log(updatedSubtasks);
-  }
+  };
 
   return (
     <div
@@ -45,4 +43,6 @@ export default function Subtask({ subtask, handleChange, tempTask }) {
       </div>
     </div>
   );
-}
+};
+
+export default Subtask;

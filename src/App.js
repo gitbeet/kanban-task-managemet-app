@@ -10,6 +10,7 @@ import { useEffect, useState } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
 import { v4 as uuid } from "uuid";
 import data from "./data.json";
+import { generateColor } from "./utilities/generateColor";
 
 const dataWithId = data.boards.map((board) => {
   return {
@@ -20,6 +21,7 @@ const dataWithId = data.boards.map((board) => {
       return {
         ...column,
         error: "",
+        color: generateColor(),
         id: uuid(),
         tasks: column.tasks.map((task) => {
           return {
@@ -36,18 +38,17 @@ const dataWithId = data.boards.map((board) => {
   };
 });
 
-function App() {
+const App = () => {
   const [boards, setBoards] = useLocalStorage("boards", dataWithId);
   const [currentBoardId, setCurrentBoard] = useState(boards[0].id);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(spawnNewEmptyBoard());
 
-  const [draggedTask, setDraggedTask] = useState();
-  const [draggedTaskColumn, setDraggedTaskColumn] = useState();
+  const [draggedTask, setDraggedTask] = useState(null);
+  const [draggedTaskColumn, setDraggedTaskColumn] = useState(null);
 
   const [viewedTask, setViewedTask] = useState(null);
   const [viewedTaskColumnId, setviewedTaskColumnId] = useState(null);
-
   useEffect(() => {
     if (!boards) return;
     setStatusList(
@@ -64,7 +65,13 @@ function App() {
             ...board,
             columns: [
               ...board.columns,
-              { name: columnName, tasks: [], id: uuid(), error: "" },
+              {
+                name: columnName,
+                tasks: [],
+                id: uuid(),
+                error: "",
+                color: generateColor(),
+              },
             ],
           }
         : board;
@@ -244,18 +251,22 @@ function App() {
     setCurrentBoard(board);
   }
 
-  function dropTask(value) {
-    if (draggedTaskColumn === value) return;
+  function dropTask(columnIdToDropTaskOn) {
+    console.log("app", draggedTask, draggedTaskColumn);
+    console.log("hello?");
+    if (draggedTask == null) return;
+    if (draggedTaskColumn === columnIdToDropTaskOn) return;
     const duplicateTask = { ...draggedTask };
+    console.log(draggedTask);
     duplicateTask.status = boards
       .find((board) => board.id === currentBoardId)
-      .columns.find((column) => column.id === value).name;
+      .columns.find((column) => column.id === columnIdToDropTaskOn).name;
     let duplicateBoards = [...boards].map((board) => {
       return board.id === currentBoardId
         ? {
             ...board,
             columns: board.columns.map((column) => {
-              return column.id === value
+              return column.id === columnIdToDropTaskOn
                 ? { ...column, tasks: [...column.tasks, { ...duplicateTask }] }
                 : column;
             }),
@@ -281,12 +292,14 @@ function App() {
         : board;
     });
     setBoards(duplicateBoards);
-    toggleDraggedTask(null);
+    // toggleDraggedTask(null);
   }
 
   function toggleDraggedTask(task, column) {
     setDraggedTask(task);
     setDraggedTaskColumn(column);
+    console.log(task, column);
+    console.log("togglefunc", draggedTask, draggedTaskColumn);
   }
 
   function toggleSubtaskCompleted(id) {
@@ -594,6 +607,6 @@ function App() {
       )}
     </div>
   );
-}
+};
 
 export default App;

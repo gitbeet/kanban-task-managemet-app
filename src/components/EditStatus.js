@@ -1,26 +1,12 @@
 import { useEffect, useState } from "react";
 
-export default function EditStatus({
-  statusList,
-  type,
-  handleChange,
-  tempTask,
-  boards,
-  currentBoardId,
-}) {
+const EditStatus = ({ statusList, type, handleChange, tempTask }) => {
   const [open, setOpen] = useState(false);
   useEffect(() => {
     if (type === "new") {
       handleChange({ status: statusList[0] });
     }
   }, []);
-  // const statusList = [...boards]
-  //   .find((board) => {
-  //     return board.id === currentBoardId;
-  //   })
-  //   .columns.map((column) => {
-  //     return column.name;
-  //   });
 
   return (
     <div className="flex relative items-center">
@@ -52,4 +38,6 @@ export default function EditStatus({
       </svg>
     </div>
   );
-}
+};
+
+export default EditStatus;

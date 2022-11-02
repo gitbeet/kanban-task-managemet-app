@@ -4,13 +4,13 @@ import BoardsList from "./BoardsList";
 import ToggleTheme from "./ToggleTheme";
 import { useDarkMode } from "../context/DarkModeContext";
 
-export default function Sidebar({
+const Sidebar = ({
   toggleSidebar,
   toggleCreateNewBoardWindow,
   currentBoardId,
   changeCurrentBoard,
   boards,
-}) {
+}) => {
   const { darkMode } = useDarkMode();
   return (
     <>
@@ -57,4 +57,6 @@ export default function Sidebar({
       </div>
     </>
   );
-}
+};
+
+export default Sidebar;

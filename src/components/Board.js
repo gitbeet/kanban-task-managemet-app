@@ -1,22 +1,17 @@
-export default function Board({
-  boardId,
-  currentBoardId,
-  changeCurrentBoard,
-  boards,
-}) {
-  let current = currentBoardId === boardId;
+const Board = ({ boardId, currentBoardId, changeCurrentBoard, boards }) => {
+  const isBoardCurrent = currentBoardId === boardId;
 
   return (
     <div
       onClick={() => changeCurrentBoard(boardId)}
       className={
-        current
+        isBoardCurrent
           ? "cursor-pointer bg-primary-600 text-neutral-900 flex items-center space-x-3 rounded-r-full pl-4 py-4 font-semibold md:pl-10"
           : "cursor-pointer bg-neutral-900 text-primary-500 dark:bg-primary-300 dark:text-primary-500 flex items-center space-x-3 pl-4  py-4 font-semibold md:pl-10"
       }
     >
       <svg
-        className={current ? "board-icon-current" : ""}
+        className={isBoardCurrent ? "board-icon-current" : ""}
         width="16"
         height="16"
         xmlns="http://www.w3.org/2000/svg"
@@ -29,4 +24,6 @@ export default function Board({
       <p>{boards.find((b) => b.id === boardId).name}</p>
     </div>
   );
-}
+};
+
+export default Board;

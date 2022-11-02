@@ -4,7 +4,7 @@ import * as ReactDOM from "react-dom";
 import { useDarkMode } from "../context/DarkModeContext";
 import { useEffect } from "react";
 
-export default function DeleteWindow({
+const DeleteWindow = ({
   boards,
   viewedTask,
   viewedTaskColumnId,
@@ -14,7 +14,7 @@ export default function DeleteWindow({
   name,
   type,
   message,
-}) {
+}) => {
   const { darkMode } = useDarkMode();
   useEffect(() => {
     function onKeyDown(e) {
@@ -33,7 +33,6 @@ export default function DeleteWindow({
           .find((board) => board.id === currentBoardId)
           .columns.find((column) => column.id === viewedTaskColumnId)
           .tasks.find((task) => task.id === viewedTask.id).title;
-  console.log(viewedTaskColumnId);
   return ReactDOM.createPortal(
     <>
       <div className={darkMode ? "dark fixed z-[800]" : " fixed z-[800]"}>
@@ -71,4 +70,6 @@ export default function DeleteWindow({
     </>,
     document.getElementById("menu")
   );
-}
+};
+
+export default DeleteWindow;

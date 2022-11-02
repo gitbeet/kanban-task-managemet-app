@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function CurrentStatus({ tempTask, statusList, handleChange }) {
+const CurrentStatus = ({ tempTask, statusList, handleChange }) => {
   const [open, setOpen] = useState();
 
   return (
@@ -33,4 +33,6 @@ export default function CurrentStatus({ tempTask, statusList, handleChange }) {
       </svg>
     </div>
   );
-}
+};
+
+export default CurrentStatus;

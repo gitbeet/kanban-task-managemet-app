@@ -6,8 +6,10 @@ import * as ReactDOM from "react-dom";
 import { useDarkMode } from "../context/DarkModeContext";
 import useKeyboardControl from "../utilities/useKeyboardControl";
 import { useState } from "react";
+import { generateColor } from "../utilities/generateColor";
+import InputElement from "./InputElement";
 
-export default function CreateNewBoardWindow({
+const CreateNewBoardWindow = ({
   newBoard,
   changeCurrentBoard,
   assignNewBoard,
@@ -15,7 +17,7 @@ export default function CreateNewBoardWindow({
   closeFunction,
   buttonText,
   submitFunction,
-}) {
+}) => {
   const { darkMode } = useDarkMode();
   const [tempBoard, setTempBoard] = useState(newBoard);
 
@@ -23,7 +25,7 @@ export default function CreateNewBoardWindow({
 
   useKeyboardControl(saveChanges, closeFunction);
 
-  function spawnNewEmptyBoard() {
+  const spawnNewEmptyBoard = () => {
     return {
       id: uuid(),
       name: "",
@@ -31,17 +33,20 @@ export default function CreateNewBoardWindow({
       error: "",
       columnError: "",
     };
-  }
+  };
 
   // this works
-  function handleColumnAdd() {
+  const handleColumnAdd = () => {
     handleChange({
       ...tempBoard,
-      columns: [...columns, { id: uuid(), name: "", tasks: [], error: "" }],
+      columns: [
+        ...columns,
+        { id: uuid(), name: "", tasks: [], error: "", color: generateColor() },
+      ],
     });
-  }
+  };
 
-  function saveChanges() {
+  const saveChanges = () => {
     let temp = { ...tempBoard };
 
     if (temp.name.length === 0) {
@@ -50,7 +55,7 @@ export default function CreateNewBoardWindow({
 
     if (
       temp.columns.length !==
-      new Set([...temp.columns.map((col) => col.name)]).size
+      new Set([...temp.columns.map((col) => col.name.toLowerCase())]).size
     ) {
       temp.columnError = "Every column should have a unique name.";
     }
@@ -70,12 +75,6 @@ export default function CreateNewBoardWindow({
     handleChange({ columnError: temp.columnError });
     handleChange({ columns: temp.columns });
 
-    console.log(
-      temp.columns.length,
-      new Set([...temp.columns.map((col) => col.name)]).size,
-      temp.columnError
-    );
-
     if (
       temp.error ||
       temp.columns.findIndex((column) => column.error.length > 0) !== -1 ||
@@ -86,9 +85,9 @@ export default function CreateNewBoardWindow({
 
     submitFunction(tempBoard);
     changeCurrentBoard(tempBoard.id);
-  }
+  };
 
-  function handleChange(changes) {
+  const handleChange = (changes) => {
     if (tempBoard.error) {
       setTempBoard((prev) => {
         return { ...prev, error: "" };
@@ -97,13 +96,12 @@ export default function CreateNewBoardWindow({
     setTempBoard((prev) => {
       return { ...prev, ...changes };
     });
-    console.log(tempBoard);
-  }
+  };
 
-  function onClose() {
+  const onClose = () => {
     closeFunction();
     assignNewBoard(spawnNewEmptyBoard());
-  }
+  };
 
   let zIndexWindow = buttonText === "Save Changes" ? "z-[700]" : "z-[300]";
 
@@ -120,24 +118,17 @@ export default function CreateNewBoardWindow({
           <div className="text-xl font-bold">{header}</div>
 
           <div className="space-y-2 relative">
-            <label htmlFor="name" className="text-sm text-neutral-900">
-              Board Name
-            </label>
-            <input
-              name="name"
-              className={`${
-                tempBoard.error
-                  ? "placeholder:text-right border-opacity-100 border-danger-500 hover:border-danger-600"
-                  : "border-opacity-25 border-primary-500"
-              } bg-neutral-900 dark:bg-primary-300 w-full`}
+            <InputElement
               value={tempBoard.name}
               onChange={(e) =>
                 handleChange({ [e.target.name]: e.target.value })
               }
+              error={tempBoard.error}
+              label="Board Name"
+              name="name"
+              placeholder=""
+              autoFocus={true}
             />
-            <p className="text-sm text-danger-500 absolute top-full">
-              {tempBoard.error}
-            </p>
           </div>
           <div className="flex flex-col space-y-4 relative">
             <div className="flex flex-col space-y-4">
@@ -194,4 +185,6 @@ export default function CreateNewBoardWindow({
     </>,
     document.getElementById("menu")
   );
-}
+};
+
+export default CreateNewBoardWindow;

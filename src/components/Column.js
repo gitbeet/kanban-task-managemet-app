@@ -1,15 +1,14 @@
 import Task from "./Task";
-import { v4 as uuid } from "uuid";
 import { useDrop } from "react-dnd";
 
-export default function Column({
+const Column = ({
   column,
   openTaskViewWindow,
   dropTask,
   toggleDraggedTask,
   currentBoardId,
   boards,
-}) {
+}) => {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
     drop: () => dropTask(column.id),
@@ -18,15 +17,11 @@ export default function Column({
     }),
   }));
 
-  // GENERATING A COLOR BETWEEN 170-230 HUE
-  const randomColor = `hsl(${Math.floor(
-    200 + Math.random() * 30 * (Math.random() < 0.5 ? 1 : -1)
-  )},100%,62%)`;
   return (
     <div ref={drop} className="space-y-6 w-[17rem]">
       <header className="flex items-center justify-start space-x-3 uppercase text-sm tracking-widest text-primary-500">
         <div
-          style={{ backgroundColor: randomColor }}
+          style={{ backgroundColor: column.color }}
           className={"w-4 h-4 rounded-full"}
         ></div>
         <p className="font-bold">
@@ -47,4 +42,6 @@ export default function Column({
       ))}
     </div>
   );
-}
+};
+
+export default Column;

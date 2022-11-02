@@ -6,8 +6,9 @@ import { v4 as uuid } from "uuid";
 import Button from "./Button";
 import useKeyboardControl from "../utilities/useKeyboardControl";
 import { useState } from "react";
+import InputElement from "./InputElement";
 
-export default function AddNewTaskWindow({
+const AddNewTaskWindow = ({
   statusList,
   viewedTask,
   boards,
@@ -17,15 +18,13 @@ export default function AddNewTaskWindow({
   header,
   closeFunction,
   createTaskFunc,
-}) {
+}) => {
   useKeyboardControl(saveChanges, closeFunction);
   const { darkMode } = useDarkMode();
 
   const [tempTask, setTempTask] = useState(viewedTask);
 
-  console.log(tempTask);
-
-  function handleChange(changes) {
+  const handleChange = (changes) => {
     if (tempTask.error) {
       setTempTask((prev) => {
         return { ...prev, error: "" };
@@ -34,9 +33,9 @@ export default function AddNewTaskWindow({
     setTempTask((prev) => {
       return { ...prev, ...changes };
     });
-  }
+  };
 
-  function handleSubtaskAdd() {
+  const handleSubtaskAdd = () => {
     const emptySubtask = {
       id: uuid(),
       title: "",
@@ -46,9 +45,9 @@ export default function AddNewTaskWindow({
     handleChange({
       subtasks: [...tempTask.subtasks, emptySubtask],
     });
-  }
+  };
 
-  function saveChanges() {
+  const saveChanges = () => {
     let temp = { ...tempTask };
 
     if (temp.title.length === 0) {
@@ -70,60 +69,36 @@ export default function AddNewTaskWindow({
     ) {
       return;
     }
-    console.log(
-      temp.subtasks.findIndex((subtask) => subtask.title.length === 0) !== -1
-    );
 
     createTaskFunc(type, tempTask);
     closeFunction();
-  }
+  };
 
   return (
     <div className={darkMode ? "dark overflow-auto " : "overflow-auto  "}>
-      {/* title */}
       <div className="scrollbar-thin scrollbar-thumb-primary-600 scrollbar-track-neutral-900 max-h-[90vh] overflow-auto space-y-8 w-[min(90%,350px)] md:w-[450px]  flex-col fixed z-[300] bg-neutral-900 p-6  left-[50%]  top-[50vh] -translate-y-1/2  -translate-x-1/2 shadow-md rounded-md dark:bg-primary-300 dark:text-neutral-900">
         <div className="font-semibold text-lg">{header}</div>
         <div className="flex flex-col space-y-2">
-          <label
-            className="text-primary-500 text-xs opacity-75 font-bold dark:text-neutral-900 dark:opacity-100"
-            htmlFor="title"
-          >
-            Title
-          </label>
-          <div className="relative flex flex-col">
-            <input
-              className={`${
-                tempTask.error
-                  ? "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100 hover:border-danger-600  hover:placeholder:text-danger-600"
-                  : "border-opacity-25 border-primary-500"
-              }  bg-neutral-900  dark:bg-primary-300`}
-              placeholder={
-                tempTask.error ? tempTask.error : "e.g. Take coffee break"
-              }
-              autoFocus
-              value={tempTask.title}
-              onChange={(e) => handleChange({ title: e.target.value })}
-              name="title"
-            />
-          </div>
+          <InputElement
+            value={tempTask.title}
+            onChange={(e) => handleChange({ title: e.target.value })}
+            error={tempTask.error}
+            label="Title"
+            name="title"
+            placeholder="e.g. Take coffee break"
+            autoFocus={true}
+          />
         </div>
-        {/* description */}
         <div className="flex flex-col space-y-2">
-          <label
-            className="text-primary-500 text-xs opacity-75 font-bold dark:text-neutral-900 dark:opacity-100"
-            htmlFor="description"
-          >
-            Description
-          </label>
-          <textarea
-            className="resize-none border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w"
-            placeholder="e.g. It’s always good to take a break. This 
-            15 minute break will  recharge the batteries 
-            a little."
-            rows={4}
-            onChange={(e) => handleChange({ description: e.target.value })}
+          <InputElement
+            type="textarea"
             value={tempTask.description}
+            onChange={(e) => handleChange({ description: e.target.value })}
+            error=""
+            label="Description"
             name="description"
+            placeholder={`e.g. It’s always good to take a break.This 15 minute break will recharge the batteries a little.`}
+            autoFocus={false}
           />
         </div>
         {/* subtasks */}
@@ -131,7 +106,7 @@ export default function AddNewTaskWindow({
           <div className="text-primary-500 text-xs opacity-75 font-bold dark:text-neutral-900 dark:opacity-100">
             Subtasks
           </div>
-          <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 mt-2 max-h-[11rem] overflow-auto px-4">
+          <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-10 mt-2 max-h-[11rem] overflow-auto px-4">
             {tempTask.subtasks.map((subtask) => {
               return (
                 <EditSubtask
@@ -177,4 +152,6 @@ export default function AddNewTaskWindow({
       </div>
     </div>
   );
-}
+};
+
+export default AddNewTaskWindow;

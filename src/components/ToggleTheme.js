@@ -1,7 +1,7 @@
 import { useDarkMode } from "../context/DarkModeContext";
 import "../css/ToggleTheme.css";
 
-export default function ToggleTheme() {
+const ToggleTheme = () => {
   const { darkMode, toggleDarkMode } = useDarkMode();
 
   return (
@@ -32,4 +32,6 @@ export default function ToggleTheme() {
       </svg>
     </div>
   );
-}
+};
+
+export default ToggleTheme;

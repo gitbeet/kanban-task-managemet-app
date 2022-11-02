@@ -1,14 +1,14 @@
 import { v4 as uuid } from "uuid";
 import Column from "./Column";
 
-export default function ColumnsList({
+const ColumnsList = ({
   board,
   openTaskViewWindow,
   dropTask,
   boards,
   currentBoardId,
   toggleDraggedTask,
-}) {
+}) => {
   return (
     <div className="grid grid-flow-col space-x-6">
       {board.map((column) => (
@@ -24,4 +24,6 @@ export default function ColumnsList({
       ))}
     </div>
   );
-}
+};
+
+export default ColumnsList;

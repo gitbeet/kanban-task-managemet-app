@@ -1,17 +1,17 @@
 import Board from "./Board";
 import { v4 as uuid } from "uuid";
 
-export default function BoardsList({
+const BoardsList = ({
   boards,
   currentBoardId,
   changeCurrentBoard,
   toggleCreateNewBoardWindow,
   toggleSidebar,
-}) {
-  function showCreateBoardWindow() {
+}) => {
+  const showCreateBoardWindow = () => {
     toggleCreateNewBoardWindow();
     toggleSidebar();
-  }
+  };
 
   return (
     <div className="w-full pr-4 space-y-2">
@@ -50,4 +50,6 @@ export default function BoardsList({
       </div>
     </div>
   );
-}
+};
+
+export default BoardsList;

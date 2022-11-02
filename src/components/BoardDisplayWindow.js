@@ -4,38 +4,38 @@ import ColumnsList from "./ColumnsList";
 import Button from "./Button";
 import ScrollButtons from "./ScrollButtons";
 
-export default function BoardDisplayWindow({
+const BoardDisplayWindow = ({
   dropTask,
   openTaskViewWindow,
   currentBoardId,
   boards,
   handleColumnAdd,
   toggleDraggedTask,
-}) {
+}) => {
   const [showAddNewColumnMenu, setShowAddNewColumnMenu] = useState();
 
-  function toggleAddNewColumnMenu() {
+  const toggleAddNewColumnMenu = () => {
     setShowAddNewColumnMenu((prev) => !prev);
-  }
+  };
 
   const scrollToRightRef = useRef();
   const scrollToLeftRef = useRef();
 
-  function scrollToLeft() {
+  const scrollToLeft = () => {
     if (!scrollToLeftRef.current) return;
     scrollToLeftRef.current.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
-  }
+  };
 
-  function scrollToRight() {
+  const scrollToRight = () => {
     if (!scrollToRightRef.current) return;
     scrollToRightRef.current.scrollIntoView({
       behavior: "smooth",
       block: "end",
     });
-  }
+  };
 
   const currentBoardData = boards?.find(
     (board) => board.id === currentBoardId
@@ -105,4 +105,6 @@ export default function BoardDisplayWindow({
       </div>
     </div>
   );
-}
+};
+
+export default BoardDisplayWindow;

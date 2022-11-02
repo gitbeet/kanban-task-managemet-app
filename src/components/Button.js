@@ -1,11 +1,4 @@
-export default function Button({
-  onClick,
-  text,
-  type,
-  size,
-  disabled = false,
-  submit = false,
-}) {
+const Button = ({ onClick, text, type, size, disabled = false }) => {
   return (
     <button
       disabled={disabled}
@@ -40,4 +33,6 @@ export default function Button({
       {text}
     </button>
   );
-}
+};
+
+export default Button;

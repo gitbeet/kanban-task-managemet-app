@@ -6,29 +6,31 @@ import Backdrop from "./Backdrop";
 import InputElement from "./InputElement";
 import useKeyboardControl from "../utilities/useKeyboardControl";
 
-export default function AddNewColumn({
+const AddNewColumn = ({
   handleColumnAdd,
   closeFunction,
   currentBoardId,
   boards,
-}) {
+}) => {
   const { darkMode } = useDarkMode();
   const [columnName, setColumnName] = useState("");
   const [error, setError] = useState("");
 
   useKeyboardControl(createColumn, closeFunction);
 
-  function handleChange(changes) {
+  const handleChange = (changes) => {
     if (error) {
       setError("");
     }
     setColumnName(changes);
-  }
+  };
 
-  function validateInput() {
+  const validateInput = () => {
     let checkForRepeatingColumn = [...boards]
       .find((board) => board.id === currentBoardId)
-      .columns.findIndex((column) => column.name === columnName);
+      .columns.findIndex(
+        (column) => column.name.toLowerCase() === columnName.toLowerCase()
+      );
 
     if (columnName.length === 0) {
       setError("Can't be empty.");
@@ -40,13 +42,13 @@ export default function AddNewColumn({
       return false;
     }
     return true;
-  }
+  };
 
-  function createColumn() {
+  const createColumn = () => {
     if (!validateInput()) return;
     handleColumnAdd(columnName);
     closeFunction();
-  }
+  };
 
   const menuContent = (
     <div className={darkMode && "dark"}>
@@ -54,14 +56,14 @@ export default function AddNewColumn({
         <h2>Add a Column</h2>
         <InputElement
           value={columnName}
-          onChange={handleChange}
+          onChange={(e) => handleChange(e.target.value)}
           placeholder="e.g. Todo,Doing, etc."
           autoFocus={true}
           error={error}
           label="Column Name"
           name="name"
         />
-        <div className="pt-6">
+        <div className="pt-10">
           <Button
             type="primary"
             size="sm"
@@ -78,4 +80,6 @@ export default function AddNewColumn({
   );
 
   return ReactDOM.createPortal(menuContent, document.getElementById("menu"));
-}
+};
+
+export default AddNewColumn;

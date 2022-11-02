@@ -2,7 +2,7 @@ import Backdrop from "./Backdrop";
 import * as ReactDOM from "react-dom";
 import { useDarkMode } from "../context/DarkModeContext";
 
-export default function TaskWindowMenu({
+const TaskWindowMenu = ({
   onEdit,
   onDelete,
   onClose,
@@ -11,18 +11,18 @@ export default function TaskWindowMenu({
   backdropOpacity,
   position,
   buttonText,
-}) {
+}) => {
   const { darkMode } = useDarkMode();
 
-  function editFunction() {
+  const editFunction = () => {
     onEdit();
     onClose();
-  }
+  };
 
-  function deleteFunction() {
+  const deleteFunction = () => {
     onDelete();
     onClose();
-  }
+  };
 
   return ReactDOM.createPortal(
     <>
@@ -57,4 +57,6 @@ export default function TaskWindowMenu({
     </>,
     document.getElementById("menu")
   );
-}
+};
+
+export default TaskWindowMenu;
