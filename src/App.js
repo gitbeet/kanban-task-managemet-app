@@ -47,7 +47,6 @@ function App() {
 
   const [viewedTask, setViewedTask] = useState(null);
   const [viewedTaskColumnId, setviewedTaskColumnId] = useState(null);
-  const [viewedStatus, setViewedStatus] = useState();
 
   useEffect(() => {
     if (!boards) return;
@@ -71,10 +70,6 @@ function App() {
         : board;
     });
     setBoards(duplicateBoards);
-  }
-
-  function assignViewedStatus(status) {
-    setViewedStatus(status);
   }
 
   function assignNewBoard(board) {
@@ -307,13 +302,6 @@ function App() {
     });
   }
 
-  function handleChangeTaskStatus(value) {
-    setViewedStatus(value);
-    setViewedTask((prev) => {
-      return { ...prev, status: value };
-    });
-  }
-
   function handleChangeTaskStatusClose(taskToChange) {
     let viewedStatusId = boards
       .find((board) => board.id === currentBoardId)
@@ -383,23 +371,23 @@ function App() {
     });
   }
 
-  function editBoard() {
+  function editBoard(EditedBoard) {
     setBoards((prev) => {
       return prev.map((board) => {
-        return board.id === currentBoardId ? newBoard : board;
+        return board.id === currentBoardId ? EditedBoard : board;
       });
     });
   }
 
-  function createNewBoard() {
+  function createNewBoard(boardToAdd) {
     if (
-      newBoard.columns.length !==
-      new Set(newBoard.columns.map((column) => column.name)).size
+      boardToAdd.columns.length !==
+      new Set(boardToAdd.columns.map((column) => column.name)).size
     )
       return;
 
     setBoards((prev) => {
-      return [...prev, { ...newBoard }];
+      return [...prev, { ...boardToAdd }];
     });
     setNewBoard(spawnNewEmptyBoard());
   }
@@ -449,7 +437,6 @@ function App() {
 
   function openTaskViewWindow(task, column) {
     assignViewedTaskAndColumn(task, column);
-    assignViewedStatus(task.status);
     setShowTaskViewWindow(true);
   }
 
@@ -470,13 +457,13 @@ function App() {
     toggleBoardDeleteWindow();
   }
 
-  function SaveEditBoardChanges() {
-    editBoard();
+  function SaveEditBoardChanges(EditedBoard) {
+    editBoard(EditedBoard);
     toggleEditBoardWindow();
   }
 
-  function saveAndCloseAddNewBoardWindow() {
-    createNewBoard();
+  function saveAndCloseAddNewBoardWindow(boardToAdd) {
+    createNewBoard(boardToAdd);
     toggleCreateNewBoardWindow();
   }
 
@@ -550,7 +537,6 @@ function App() {
       )}
       {showTaskViewWindow && (
         <TaskViewWindow
-          handleChangeTaskStatus={handleChangeTaskStatus}
           statusList={statusList}
           toggleSubtaskCompleted={toggleSubtaskCompleted}
           closeTaskViewWindow={closeTaskViewWindow}

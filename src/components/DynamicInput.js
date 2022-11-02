@@ -3,14 +3,14 @@ export default function DynamicInput({
   id,
   errorMessage,
   columnError,
-  handleChangeNewBoard,
-  newBoard,
+  tempBoard,
+  handleChange,
 }) {
-  const { columns } = newBoard;
+  const { columns } = tempBoard;
 
   function handleColumnChange(columnChange) {
     if (columnError) {
-      handleChangeNewBoard({ columnError: "" });
+      handleChange({ columnError: "" });
     }
 
     const newColumns = [...columns];
@@ -20,12 +20,12 @@ export default function DynamicInput({
     console.log("index", index);
     newColumns[index] = { ...newColumns[index], ...columnChange, error: "" };
     console.log("columnChange", columnChange);
-    handleChangeNewBoard({ columns: newColumns });
+    handleChange({ columns: newColumns });
   }
 
   function handleColumnDelete() {
-    handleChangeNewBoard({
-      ...newBoard,
+    handleChange({
+      ...tempBoard,
       columns: columns.filter((column) => {
         return column.id !== id;
       }),
@@ -45,7 +45,7 @@ export default function DynamicInput({
         value={data}
       />
       <p className="text-sm text-danger-500 absolute top-full">
-        {errorMessage}
+        {errorMessage || columnError}
       </p>
       <svg
         onClick={handleColumnDelete}

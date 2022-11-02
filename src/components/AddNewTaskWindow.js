@@ -34,8 +34,6 @@ export default function AddNewTaskWindow({
     setTempTask((prev) => {
       return { ...prev, ...changes };
     });
-
-    console.log(tempTask);
   }
 
   function handleSubtaskAdd() {

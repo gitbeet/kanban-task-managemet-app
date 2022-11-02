@@ -5,35 +5,44 @@ import Button from "./Button";
 import * as ReactDOM from "react-dom";
 import { useDarkMode } from "../context/DarkModeContext";
 import useKeyboardControl from "../utilities/useKeyboardControl";
+import { useState } from "react";
 
 export default function CreateNewBoardWindow({
   newBoard,
-  handleChangeNewBoard,
   changeCurrentBoard,
   assignNewBoard,
-  spawnNewEmptyBoard,
   header,
   closeFunction,
   buttonText,
   submitFunction,
-  disabled = false,
 }) {
   const { darkMode } = useDarkMode();
+  const [tempBoard, setTempBoard] = useState(newBoard);
 
-  const { columns } = newBoard;
+  const { columns } = tempBoard;
 
   useKeyboardControl(saveChanges, closeFunction);
 
+  function spawnNewEmptyBoard() {
+    return {
+      id: uuid(),
+      name: "",
+      columns: [],
+      error: "",
+      columnError: "",
+    };
+  }
+
   // this works
   function handleColumnAdd() {
-    handleChangeNewBoard({
-      ...newBoard,
+    handleChange({
+      ...tempBoard,
       columns: [...columns, { id: uuid(), name: "", tasks: [], error: "" }],
     });
   }
 
   function saveChanges() {
-    let temp = { ...newBoard };
+    let temp = { ...tempBoard };
 
     if (temp.name.length === 0) {
       temp.error = "Can't be empty.";
@@ -57,9 +66,9 @@ export default function CreateNewBoardWindow({
       }),
     };
 
-    handleChangeNewBoard({ error: temp.error });
-    handleChangeNewBoard({ columnError: temp.columnError });
-    handleChangeNewBoard({ columns: temp.columns });
+    handleChange({ error: temp.error });
+    handleChange({ columnError: temp.columnError });
+    handleChange({ columns: temp.columns });
 
     console.log(
       temp.columns.length,
@@ -75,15 +84,20 @@ export default function CreateNewBoardWindow({
       return;
     }
 
-    submitFunction();
-    changeCurrentBoard(newBoard.id);
+    submitFunction(tempBoard);
+    changeCurrentBoard(tempBoard.id);
   }
 
   function handleChange(changes) {
-    handleChangeNewBoard(changes);
-    if (newBoard.error) {
-      handleChangeNewBoard({ error: "" });
+    if (tempBoard.error) {
+      setTempBoard((prev) => {
+        return { ...prev, error: "" };
+      });
     }
+    setTempBoard((prev) => {
+      return { ...prev, ...changes };
+    });
+    console.log(tempBoard);
   }
 
   function onClose() {
@@ -112,17 +126,17 @@ export default function CreateNewBoardWindow({
             <input
               name="name"
               className={`${
-                newBoard.error
+                tempBoard.error
                   ? "placeholder:text-right border-opacity-100 border-danger-500 hover:border-danger-600"
                   : "border-opacity-25 border-primary-500"
               } bg-neutral-900 dark:bg-primary-300 w-full`}
-              value={newBoard.name}
+              value={tempBoard.name}
               onChange={(e) =>
                 handleChange({ [e.target.name]: e.target.value })
               }
             />
             <p className="text-sm text-danger-500 absolute top-full">
-              {newBoard.error}
+              {tempBoard.error}
             </p>
           </div>
           <div className="flex flex-col space-y-4 relative">
@@ -130,26 +144,23 @@ export default function CreateNewBoardWindow({
               <p className="text-sm -mb-2">Board Columns</p>
               <p
                 className={`${
-                  !newBoard.columnError && "hidden"
+                  !tempBoard.handleChange && "hidden"
                 } block text-sm text-danger-500 pt-2`}
               >
-                {newBoard.columnError}
+                {tempBoard.columnError}
               </p>
             </div>
             <div className="space-y-10">
-              {newBoard.columns.map((column) => {
+              {tempBoard.columns.map((column) => {
                 return (
                   <DynamicInput
-                    handleChangeNewBoard={handleChangeNewBoard}
-                    newBoard={newBoard}
+                    handleChange={handleChange}
+                    tempBoard={tempBoard}
                     key={column.id}
                     id={column.id}
                     data={column.name}
-                    handleChangeFunc={handleChangeNewBoard}
-                    errorMessage={
-                      newBoard.columns.find((c) => c.id === column.id).error
-                    }
-                    columnError={newBoard.columnError}
+                    errorMessage={column.error}
+                    columnError={tempBoard.columnError}
                   />
                 );
               })}
