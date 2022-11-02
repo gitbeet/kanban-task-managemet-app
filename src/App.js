@@ -365,12 +365,6 @@ function App() {
     }
   }
 
-  function handleChangeNewBoard(changes) {
-    setNewBoard((prev) => {
-      return { ...prev, ...changes };
-    });
-  }
-
   function editBoard(EditedBoard) {
     setBoards((prev) => {
       return prev.map((board) => {
@@ -511,7 +505,6 @@ function App() {
       {showCreateNewBoardWindow && (
         <CreateNewBoardWindow
           newBoard={newBoard}
-          handleChangeNewBoard={handleChangeNewBoard}
           changeCurrentBoard={changeCurrentBoard}
           assignNewBoard={assignNewBoard}
           spawnNewEmptyBoard={spawnNewEmptyBoard}
@@ -525,7 +518,6 @@ function App() {
       {showEditBoardWindow && (
         <CreateNewBoardWindow
           newBoard={newBoard}
-          handleChangeNewBoard={handleChangeNewBoard}
           changeCurrentBoard={changeCurrentBoard}
           assignNewBoard={assignNewBoard}
           spawnNewEmptyBoard={spawnNewEmptyBoard}

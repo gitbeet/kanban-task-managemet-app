@@ -17,7 +17,7 @@ export default function BoardsList({
     <div className="w-full pr-4 space-y-2">
       {boards.map((board) => (
         <Board
-          key={uuid()}
+          key={board.id}
           currentBoardId={currentBoardId}
           changeCurrentBoard={changeCurrentBoard}
           boards={boards}

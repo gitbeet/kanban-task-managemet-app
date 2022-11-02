@@ -38,7 +38,7 @@ export default function Column({
           boards={boards}
           currentBoardId={currentBoardId}
           toggleDraggedTask={toggleDraggedTask}
-          key={uuid()}
+          key={task.id}
           id={index}
           task={task}
           column={column.id}

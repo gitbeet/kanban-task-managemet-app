@@ -14,7 +14,7 @@ export default function ColumnsList({
       {board.map((column) => (
         <Column
           dropTask={dropTask}
-          key={uuid()}
+          key={column.id}
           column={column}
           openTaskViewWindow={openTaskViewWindow}
           boards={boards}

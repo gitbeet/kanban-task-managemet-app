@@ -84,7 +84,7 @@ export default function TaskViewWindow({
               {tempTask.subtasks.map((subtask) => (
                 <Subtask
                   tempTask={tempTask}
-                  key={uuid()}
+                  key={subtask.id}
                   subtask={subtask}
                   handleChange={handleChange}
                 />
