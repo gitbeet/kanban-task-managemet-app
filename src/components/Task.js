@@ -1,18 +1,20 @@
 import { useMemo } from "react";
-import { useBoardData } from "../context/BoardDataContext";
-import { usePopUp } from "../context/PopUpContext";
 import { useDrag } from "react-dnd";
 
-export default function Task({ task, column }) {
+export default function Task({
+  task,
+  column,
+  openTaskViewWindow,
+  boards,
+  currentBoardId,
+  toggleDraggedTask,
+}) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: "task",
     collect: (monitor) => ({
       isDragging: !!monitor.isDragging(),
     }),
   }));
-
-  const { openTaskViewWindow } = usePopUp();
-  const { boards, currentBoardId, toggleDraggedTask } = useBoardData();
 
   const completedSubtasks = boards
     .find((board) => board.id === currentBoardId)

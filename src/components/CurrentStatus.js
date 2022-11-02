@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { useBoardData } from "../context/BoardDataContext";
 
-export default function CurrentStatus() {
-  const { viewedTask, handleChangeTaskStatus, statusList } = useBoardData();
-
+export default function CurrentStatus({
+  viewedTask,
+  handleChangeTaskStatus,
+  statusList,
+}) {
   const [open, setOpen] = useState();
 
   return (

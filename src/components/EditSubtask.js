@@ -1,20 +1,21 @@
-import { useBoardData } from "../context/BoardDataContext";
-
-export default function EditSubtask({ subtask, errorMessage = "" }) {
-  const { handleChangeNewTask, viewedTask } = useBoardData();
-
+export default function EditSubtask({
+  handleChange,
+  subtask,
+  tempTask,
+  errorMessage = "",
+}) {
   function handleChangeSubtask(changes) {
-    const updatedSubtasks = { ...viewedTask }.subtasks;
+    const updatedSubtasks = { ...tempTask }.subtasks;
     const index = updatedSubtasks.findIndex((subt) => subt.id === subtask.id);
     updatedSubtasks[index] = { ...subtask, ...changes, error: "" };
-    handleChangeNewTask(updatedSubtasks);
+    handleChange(updatedSubtasks);
   }
 
   function handleDeleteSubtask() {
-    const updatedSubtasks = { ...viewedTask }.subtasks.filter(
+    const updatedSubtasks = { ...tempTask }.subtasks.filter(
       (subt) => subt.id !== subtask.id
     );
-    handleChangeNewTask({ subtasks: updatedSubtasks });
+    handleChange({ subtasks: updatedSubtasks });
   }
 
   return (

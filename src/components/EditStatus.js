@@ -1,32 +1,34 @@
 import { useEffect, useState } from "react";
-import { useBoardData } from "../context/BoardDataContext";
 
-export default function EditStatus({ type }) {
-  const { handleChangeNewTask, viewedTask, boards, currentBoardId } =
-    useBoardData();
+export default function EditStatus({
+  statusList,
+  type,
+  handleChange,
+  tempTask,
+  boards,
+  currentBoardId,
+}) {
   const [open, setOpen] = useState(false);
-
-  const statusList = [...boards]
-    .find((board) => {
-      return board.id === currentBoardId;
-    })
-    .columns.map((column) => {
-      return column.name;
-    });
-
   useEffect(() => {
     if (type === "new") {
-      handleChangeNewTask({ status: statusList[0] });
+      handleChange({ status: statusList[0] });
     }
   }, []);
+  // const statusList = [...boards]
+  //   .find((board) => {
+  //     return board.id === currentBoardId;
+  //   })
+  //   .columns.map((column) => {
+  //     return column.name;
+  //   });
 
   return (
     <div className="flex relative items-center">
       <select
         onClick={() => setOpen((prev) => !prev)}
         className="w-[100%] border-opacity-25 border-primary-500 bg-neutral-900  dark:bg-primary-300 w"
-        onChange={(e) => handleChangeNewTask({ status: e.target.value })}
-        value={viewedTask.status || statusList[0]}
+        onChange={(e) => handleChange({ status: e.target.value })}
+        value={tempTask.status || statusList[0]}
       >
         {statusList.map((status, index) => (
           <option key={index}>{status}</option>

@@ -1,19 +1,24 @@
 import * as ReactDOM from "react-dom";
-import { usePopUp } from "../context/PopUpContext";
 import Backdrop from "./Backdrop";
 import Subtask from "./Subtask";
 import { v4 as uuid } from "uuid";
-import { useBoardData } from "../context/BoardDataContext";
 import CurrentStatus from "./CurrentStatus";
 import { useEffect, useState } from "react";
 import EditDeleteMenu from "./EditDeleteMenu";
 import { useDarkMode } from "../context/DarkModeContext";
 
-export default function TaskViewWindow() {
+export default function TaskViewWindow({
+  handleChangeTaskStatus,
+  statusList,
+  toggleSubtaskCompleted,
+  viewedTask,
+  handleChangeTaskStatusClose,
+  closeTaskViewWindow,
+  openTaskEditWindow,
+  toggleTaskDeleteWindow,
+}) {
   const { darkMode } = useDarkMode();
-  const { closeTaskViewWindow, openTaskEditWindow, toggleTaskDeleteWindow } =
-    usePopUp();
-  const { viewedTask, handleChangeTaskStatusClose } = useBoardData();
+
   const { title, description } = viewedTask;
 
   const [showTaskWindowMenu, setShowTaskWindowMenu] = useState(false);
@@ -76,6 +81,7 @@ export default function TaskViewWindow() {
             <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 max-h-[15rem] overflow-auto px-4">
               {viewedTask.subtasks.map((subtask) => (
                 <Subtask
+                  toggleSubtaskCompleted={toggleSubtaskCompleted}
                   key={uuid()}
                   taskTitle={title}
                   taskDescription={description}
@@ -87,7 +93,11 @@ export default function TaskViewWindow() {
           <div className="font-bold text-sm text-primary-500 dark:text-neutral-900">
             Current Status
           </div>
-          <CurrentStatus />
+          <CurrentStatus
+            viewedTask={viewedTask}
+            handleChangeTaskStatus={handleChangeTaskStatus}
+            statusList={statusList}
+          />
         </div>
       </div>
       <div className="fixed z-[300]">

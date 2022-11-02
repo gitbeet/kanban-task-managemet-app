@@ -1,10 +1,15 @@
 import Task from "./Task";
 import { v4 as uuid } from "uuid";
 import { useDrop } from "react-dnd";
-import { useBoardData } from "../context/BoardDataContext";
 
-export default function Column({ column }) {
-  const { dropTask } = useBoardData();
+export default function Column({
+  column,
+  openTaskViewWindow,
+  dropTask,
+  toggleDraggedTask,
+  currentBoardId,
+  boards,
+}) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: "task",
     drop: () => dropTask(column.id),
@@ -29,7 +34,16 @@ export default function Column({ column }) {
         </p>
       </header>
       {column.tasks?.map((task, index) => (
-        <Task key={uuid()} id={index} task={task} column={column.id} />
+        <Task
+          boards={boards}
+          currentBoardId={currentBoardId}
+          toggleDraggedTask={toggleDraggedTask}
+          key={uuid()}
+          id={index}
+          task={task}
+          column={column.id}
+          openTaskViewWindow={openTaskViewWindow}
+        />
       ))}
     </div>
   );

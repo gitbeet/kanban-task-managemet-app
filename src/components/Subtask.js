@@ -1,8 +1,8 @@
-import { useBoardData } from "../context/BoardDataContext";
-
-export default function Subtask({ subtask, errorMessage }) {
-  const { toggleSubtaskCompleted } = useBoardData();
-  console.log(errorMessage);
+export default function Subtask({
+  subtask,
+  errorMessage,
+  toggleSubtaskCompleted,
+}) {
   return (
     <div
       onClick={() => toggleSubtaskCompleted(subtask.id)}

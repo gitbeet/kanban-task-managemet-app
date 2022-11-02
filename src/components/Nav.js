@@ -1,19 +1,18 @@
 import { useState } from "react";
-import { useBoardData } from "../context/BoardDataContext";
-import { usePopUp } from "../context/PopUpContext";
 import { useDarkMode } from "../context/DarkModeContext";
 import EditDeleteMenu from "./EditDeleteMenu";
 
-export default function Nav() {
-  const { boards, currentBoardId, emptyViewedTask, assignNewBoard } =
-    useBoardData();
-  const {
-    toggleSidebar,
-    toggleAddNewTaskWindow,
-    toggleBoardDeleteWindow,
-    toggleEditBoardWindow,
-    showSidebar,
-  } = usePopUp();
+export default function Nav({
+  toggleSidebar,
+  toggleAddNewTaskWindow,
+  toggleBoardDeleteWindow,
+  toggleEditBoardWindow,
+  showSidebar,
+  boards,
+  currentBoardId,
+  emptyViewedTask,
+  assignNewBoard,
+}) {
   const { darkMode } = useDarkMode();
   const [showMenu, setShowMenu] = useState(false);
 

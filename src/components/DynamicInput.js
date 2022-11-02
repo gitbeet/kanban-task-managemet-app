@@ -1,8 +1,11 @@
-import { useBoardData } from "../context/BoardDataContext";
-
-export default function DynamicInput({ data, id, errorMessage, columnError }) {
-  const { handleChangeNewBoard, newBoard } = useBoardData();
-
+export default function DynamicInput({
+  data,
+  id,
+  errorMessage,
+  columnError,
+  handleChangeNewBoard,
+  newBoard,
+}) {
   const { columns } = newBoard;
 
   function handleColumnChange(columnChange) {

@@ -1,24 +1,42 @@
 import { useDarkMode } from "../context/DarkModeContext";
-import { useBoardData } from "../context/BoardDataContext";
 import Backdrop from "./Backdrop";
 import EditSubtask from "./EditSubtask";
 import EditStatus from "./EditStatus";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
 import useKeyboardControl from "../utilities/useKeyboardControl";
+import { useState } from "react";
 
 export default function AddNewTaskWindow({
+  statusList,
+  viewedTask,
+  boards,
+  currentBoardId,
   buttonText,
   type,
   header,
-  task,
   closeFunction,
   createTaskFunc,
 }) {
-  const { darkMode } = useDarkMode();
-  const { handleChangeNewTask, viewedTask } = useBoardData();
-
   useKeyboardControl(saveChanges, closeFunction);
+  const { darkMode } = useDarkMode();
+
+  const [tempTask, setTempTask] = useState(viewedTask);
+
+  console.log(tempTask);
+
+  function handleChange(changes) {
+    if (tempTask.error) {
+      setTempTask((prev) => {
+        return { ...prev, error: "" };
+      });
+    }
+    setTempTask((prev) => {
+      return { ...prev, ...changes };
+    });
+
+    console.log(tempTask);
+  }
 
   function handleSubtaskAdd() {
     const emptySubtask = {
@@ -27,50 +45,38 @@ export default function AddNewTaskWindow({
       isCompleted: false,
       error: "",
     };
-    handleChangeNewTask({
-      subtasks: [...task.subtasks, emptySubtask],
+    handleChange({
+      subtasks: [...tempTask.subtasks, emptySubtask],
     });
   }
 
   function saveChanges() {
-    let temp = { ...viewedTask };
-
-    if (temp.title.length === 0) {
-      temp.error = "Can't be empty.";
+    if (tempTask.title.length === 0) {
+      setTempTask((prev) => {
+        return { ...prev, error: "Can't be empty." };
+      });
     }
 
-    temp = {
-      ...temp,
-      subtasks: temp.subtasks.map((s) => {
-        if (s.title.length === 0) {
-          console.log("its empty");
-          return { ...s, error: "Can't be empty." };
-        } else {
-          console.log("its not");
-          return s;
-        }
-      }),
-    };
-
-    handleChangeNewTask({ error: temp.error });
-    handleChangeNewTask({ subtasks: [...temp.subtasks] });
+    setTempTask((prev) => {
+      return {
+        ...prev,
+        subtasks: prev.subtasks.map((subtask) => {
+          return subtask.title.length === 0
+            ? { ...subtask, error: "Can't be empty." }
+            : subtask;
+        }),
+      };
+    });
 
     if (
-      temp.title.length === 0 ||
-      temp.subtasks.findIndex((subtask) => subtask.error.length > 0) !== -1
+      tempTask.title.length === 0 ||
+      tempTask.subtasks.findIndex((subtask) => subtask.error.length > 0) !== -1
     ) {
       return;
     }
 
-    createTaskFunc(type);
+    createTaskFunc(type, tempTask);
     closeFunction();
-  }
-
-  function handleChange(change) {
-    handleChangeNewTask(change);
-    if (viewedTask.error) {
-      handleChangeNewTask({ error: "" });
-    }
   }
 
   return (
@@ -88,15 +94,15 @@ export default function AddNewTaskWindow({
           <div className="relative flex flex-col">
             <input
               className={`${
-                viewedTask.error
+                tempTask.error
                   ? "placeholder:text-danger-500 placeholder:text-right border-danger-500 border-opacity-100 hover:border-danger-600  hover:placeholder:text-danger-600"
                   : "border-opacity-25 border-primary-500"
               }  bg-neutral-900  dark:bg-primary-300`}
               placeholder={
-                viewedTask.error ? viewedTask.error : "e.g. Take coffee break"
+                tempTask.error ? tempTask.error : "e.g. Take coffee break"
               }
-              value={task.title}
               autoFocus
+              value={tempTask.title}
               onChange={(e) => handleChange({ title: e.target.value })}
               name="title"
             />
@@ -116,10 +122,8 @@ export default function AddNewTaskWindow({
             15 minute break will  recharge the batteries 
             a little."
             rows={4}
-            onChange={(e) =>
-              handleChangeNewTask({ description: e.target.value })
-            }
-            value={task.description}
+            onChange={(e) => handleChange({ description: e.target.value })}
+            value={tempTask.description}
             name="description"
           />
         </div>
@@ -129,12 +133,14 @@ export default function AddNewTaskWindow({
             Subtasks
           </div>
           <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 mt-2 max-h-[11rem] overflow-auto px-4">
-            {task.subtasks.map((subtask) => {
-              const errorMessage = viewedTask.subtasks.find(
+            {tempTask.subtasks.map((subtask) => {
+              const errorMessage = tempTask.subtasks.find(
                 (s) => s.id === subtask.id
               ).error;
               return (
                 <EditSubtask
+                  handleChange={handleChange}
+                  tempTask={tempTask}
                   key={subtask.id}
                   subtask={subtask}
                   errorMessage={errorMessage}
@@ -153,7 +159,14 @@ export default function AddNewTaskWindow({
         </div>
         {/* status + create button */}
         <div className="flex flex-col space-y-6">
-          <EditStatus type={type} />
+          <EditStatus
+            statusList={statusList}
+            type={type}
+            handleChange={handleChange}
+            tempTask={tempTask}
+            boards={boards}
+            currentBoardId={currentBoardId}
+          />
           <Button
             onClick={saveChanges}
             text={buttonText}

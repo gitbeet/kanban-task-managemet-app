@@ -1,14 +1,17 @@
 import * as ReactDOM from "react-dom";
 import { useState } from "react";
 import { useDarkMode } from "../context/DarkModeContext";
-import { useBoardData } from "../context/BoardDataContext";
 import Button from "./Button";
 import Backdrop from "./Backdrop";
 import InputElement from "./InputElement";
 import useKeyboardControl from "../utilities/useKeyboardControl";
 
-export default function AddNewColumn({ handleColumnAdd, closeFunction }) {
-  const { currentBoardId, boards } = useBoardData();
+export default function AddNewColumn({
+  handleColumnAdd,
+  closeFunction,
+  currentBoardId,
+  boards,
+}) {
   const { darkMode } = useDarkMode();
   const [columnName, setColumnName] = useState("");
   const [error, setError] = useState("");

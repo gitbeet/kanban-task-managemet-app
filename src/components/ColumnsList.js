@@ -1,12 +1,26 @@
 import { v4 as uuid } from "uuid";
 import Column from "./Column";
 
-export default function ColumnsList({ board }) {
+export default function ColumnsList({
+  board,
+  openTaskViewWindow,
+  dropTask,
+  boards,
+  currentBoardId,
+  toggleDraggedTask,
+}) {
   return (
     <div className="grid grid-flow-col space-x-6">
-      {/* <div className="flex space-x-6"> */}
       {board.map((column) => (
-        <Column key={uuid()} column={column} />
+        <Column
+          dropTask={dropTask}
+          key={uuid()}
+          column={column}
+          openTaskViewWindow={openTaskViewWindow}
+          boards={boards}
+          currentBoardId={currentBoardId}
+          toggleDraggedTask={toggleDraggedTask}
+        />
       ))}
     </div>
   );

@@ -1,8 +1,9 @@
-import { useBoardData } from "../context/BoardDataContext";
-
-export default function Board({ boardId }) {
-  const { currentBoardId, changeCurrentBoard, boards } = useBoardData();
-
+export default function Board({
+  boardId,
+  currentBoardId,
+  changeCurrentBoard,
+  boards,
+}) {
   let current = currentBoardId === boardId;
 
   return (

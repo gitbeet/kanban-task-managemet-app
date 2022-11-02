@@ -1,12 +1,13 @@
-import { useBoardData } from "../context/BoardDataContext";
-import { usePopUp } from "../context/PopUpContext";
 import Board from "./Board";
 import { v4 as uuid } from "uuid";
 
-export default function BoardsList() {
-  const { boards, currentBoardId, changeCurrentBoard } = useBoardData();
-  const { toggleCreateNewBoardWindow, toggleSidebar } = usePopUp();
-
+export default function BoardsList({
+  boards,
+  currentBoardId,
+  changeCurrentBoard,
+  toggleCreateNewBoardWindow,
+  toggleSidebar,
+}) {
   function showCreateBoardWindow() {
     toggleCreateNewBoardWindow();
     toggleSidebar();
@@ -19,6 +20,7 @@ export default function BoardsList() {
           key={uuid()}
           currentBoardId={currentBoardId}
           changeCurrentBoard={changeCurrentBoard}
+          boards={boards}
           boardId={board.id}
         />
       ))}

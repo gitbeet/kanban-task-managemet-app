@@ -2,14 +2,16 @@ import React from "react";
 import Backdrop from "./Backdrop";
 import BoardsList from "./BoardsList";
 import ToggleTheme from "./ToggleTheme";
-import { useBoardData } from "../context/BoardDataContext";
-import { usePopUp } from "../context/PopUpContext";
 import { useDarkMode } from "../context/DarkModeContext";
 
-export default function Sidebar() {
-  const { currentBoardId, changeCurrentBoard, boards } = useBoardData();
+export default function Sidebar({
+  toggleSidebar,
+  toggleCreateNewBoardWindow,
+  currentBoardId,
+  changeCurrentBoard,
+  boards,
+}) {
   const { darkMode } = useDarkMode();
-  const { toggleSidebar } = usePopUp();
   return (
     <>
       <div className={darkMode ? "dark " : " "}>
@@ -21,9 +23,11 @@ export default function Sidebar() {
             </div>
             {/* BOARD LIST  */}
             <BoardsList
+              boards={boards}
               currentBoardId={currentBoardId}
               changeCurrentBoard={changeCurrentBoard}
-              boards={boards}
+              toggleSidebar={toggleSidebar}
+              toggleCreateNewBoardWindow={toggleCreateNewBoardWindow}
             />
           </div>
           {/* THEME CHANGE */}

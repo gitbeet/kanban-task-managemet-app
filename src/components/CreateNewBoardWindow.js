@@ -1,14 +1,17 @@
 import Backdrop from "./Backdrop";
-import { useBoardData } from "../context/BoardDataContext";
 import DynamicInput from "./DynamicInput";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
 import * as ReactDOM from "react-dom";
 import { useDarkMode } from "../context/DarkModeContext";
-import { useEffect } from "react";
 import useKeyboardControl from "../utilities/useKeyboardControl";
 
 export default function CreateNewBoardWindow({
+  newBoard,
+  handleChangeNewBoard,
+  changeCurrentBoard,
+  assignNewBoard,
+  spawnNewEmptyBoard,
   header,
   closeFunction,
   buttonText,
@@ -16,13 +19,7 @@ export default function CreateNewBoardWindow({
   disabled = false,
 }) {
   const { darkMode } = useDarkMode();
-  const {
-    newBoard,
-    handleChangeNewBoard,
-    changeCurrentBoard,
-    assignNewBoard,
-    spawnNewEmptyBoard,
-  } = useBoardData();
+
   const { columns } = newBoard;
 
   useKeyboardControl(saveChanges, closeFunction);
@@ -143,6 +140,8 @@ export default function CreateNewBoardWindow({
               {newBoard.columns.map((column) => {
                 return (
                   <DynamicInput
+                    handleChangeNewBoard={handleChangeNewBoard}
+                    newBoard={newBoard}
                     key={column.id}
                     id={column.id}
                     data={column.name}

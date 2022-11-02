@@ -2,10 +2,13 @@ import Backdrop from "./Backdrop";
 import Button from "./Button";
 import * as ReactDOM from "react-dom";
 import { useDarkMode } from "../context/DarkModeContext";
-import { useBoardData } from "../context/BoardDataContext";
 import { useEffect } from "react";
 
 export default function DeleteWindow({
+  boards,
+  viewedTask,
+  viewedTaskColumn,
+  currentBoardId,
   onDelete,
   onCancel,
   name,
@@ -13,9 +16,6 @@ export default function DeleteWindow({
   message,
 }) {
   const { darkMode } = useDarkMode();
-  const { boards, viewedTask, viewedTaskColumn, currentBoardId } =
-    useBoardData();
-
   useEffect(() => {
     function onKeyDown(e) {
       if (e.key === "Escape") {

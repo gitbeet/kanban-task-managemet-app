@@ -1,12 +1,17 @@
 import { useRef, useState } from "react";
-import { useBoardData } from "../context/BoardDataContext";
 import AddNewColumn from "./AddNewColumn";
 import ColumnsList from "./ColumnsList";
 import Button from "./Button";
 import ScrollButtons from "./ScrollButtons";
 
-export default function BoardDisplayWindow() {
-  const { currentBoardId, boards, handleColumnAdd } = useBoardData();
+export default function BoardDisplayWindow({
+  dropTask,
+  openTaskViewWindow,
+  currentBoardId,
+  boards,
+  handleColumnAdd,
+  toggleDraggedTask,
+}) {
   const [showAddNewColumnMenu, setShowAddNewColumnMenu] = useState();
 
   function toggleAddNewColumnMenu() {
@@ -48,7 +53,14 @@ export default function BoardDisplayWindow() {
         {currentBoardData.length > 0 && (
           <div className="flex min-h-full  justify-start items-stretch">
             {/* boards */}
-            <ColumnsList board={currentBoardData} />
+            <ColumnsList
+              boards={boards}
+              currentBoardId={currentBoardId}
+              toggleDraggedTask={toggleDraggedTask}
+              dropTask={dropTask}
+              board={currentBoardData}
+              openTaskViewWindow={openTaskViewWindow}
+            />
             {/* ADD COL MENU  */}
             <div
               onClick={toggleAddNewColumnMenu}
@@ -83,6 +95,8 @@ export default function BoardDisplayWindow() {
         {showAddNewColumnMenu && (
           <>
             <AddNewColumn
+              currentBoardId={currentBoardId}
+              boards={boards}
               handleColumnAdd={handleColumnAdd}
               closeFunction={toggleAddNewColumnMenu}
             />
