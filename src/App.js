@@ -58,7 +58,7 @@ const App = () => {
     );
   }, [currentBoardId, boards]);
 
-  function handleColumnAdd(columnName) {
+  const handleColumnAdd = (columnName) => {
     let duplicateBoards = [...boards].map((board) => {
       return board.id === currentBoardId
         ? {
@@ -77,13 +77,13 @@ const App = () => {
         : board;
     });
     setBoards(duplicateBoards);
-  }
+  };
 
-  function assignNewBoard(board) {
+  const assignNewBoard = (board) => {
     setNewBoard(board);
-  }
+  };
 
-  function spawnNewEmptyBoard() {
+  const spawnNewEmptyBoard = () => {
     return {
       id: uuid(),
       name: "",
@@ -91,9 +91,9 @@ const App = () => {
       error: "",
       columnError: "",
     };
-  }
+  };
 
-  function spawnNewEmptyTask() {
+  const spawnNewEmptyTask = () => {
     return {
       id: uuid(),
       title: "",
@@ -115,24 +115,24 @@ const App = () => {
         },
       ],
     };
-  }
+  };
 
-  function emptyViewedTask() {
+  const emptyViewedTask = () => {
     setViewedTask(spawnNewEmptyTask());
-  }
+  };
 
-  function assignViewedTaskAndColumn(task, column) {
+  const assignViewedTaskAndColumn = (task, column) => {
     setViewedTask(task);
     setviewedTaskColumnId(column);
-  }
+  };
 
-  function handleChangeNewTask(change) {
+  const handleChangeNewTask = (change) => {
     setViewedTask((prev) => {
       return { ...prev, ...change };
     });
-  }
+  };
 
-  function deleteTask() {
+  const deleteTask = () => {
     setBoards((prev) => {
       return prev.map((board) => {
         return board.id === currentBoardId
@@ -152,17 +152,17 @@ const App = () => {
           : board;
       });
     });
-  }
+  };
 
-  function deleteBoard() {
+  const deleteBoard = () => {
     if (boards.length < 2) return;
     const boardToDelete = currentBoardId;
     const index = boards.findIndex((board) => board.id === currentBoardId);
     setCurrentBoard(boards[index + 1]?.id || boards[index - 1].id);
     setBoards((prev) => prev.filter((board) => board.id !== boardToDelete));
-  }
+  };
 
-  function createNewTask(type, taskToAdd) {
+  const createNewTask = (type, taskToAdd) => {
     if (type === "new") {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoardId
@@ -245,13 +245,13 @@ const App = () => {
         setBoards(duplicateBoards);
       }
     }
-  }
+  };
 
-  function changeCurrentBoard(board) {
+  const changeCurrentBoard = (board) => {
     setCurrentBoard(board);
-  }
+  };
 
-  function dropTask(columnIdToDropTaskOn) {
+  const dropTask = (columnIdToDropTaskOn) => {
     console.log("app", draggedTask, draggedTaskColumn);
     console.log("hello?");
     if (draggedTask == null) return;
@@ -293,16 +293,16 @@ const App = () => {
     });
     setBoards(duplicateBoards);
     // toggleDraggedTask(null);
-  }
+  };
 
-  function toggleDraggedTask(task, column) {
+  const toggleDraggedTask = (task, column) => {
     setDraggedTask(task);
     setDraggedTaskColumn(column);
     console.log(task, column);
     console.log("togglefunc", draggedTask, draggedTaskColumn);
-  }
+  };
 
-  function toggleSubtaskCompleted(id) {
+  const toggleSubtaskCompleted = (id) => {
     setViewedTask((prev) => {
       return {
         ...prev,
@@ -313,9 +313,9 @@ const App = () => {
         }),
       };
     });
-  }
+  };
 
-  function handleChangeTaskStatusClose(taskToChange) {
+  const handleChangeTaskStatusClose = (taskToChange) => {
     let viewedStatusId = boards
       .find((board) => board.id === currentBoardId)
       .columns.find((column) => column.name === taskToChange.status).id;
@@ -376,17 +376,17 @@ const App = () => {
       });
       setBoards(duplicateBoards);
     }
-  }
+  };
 
-  function editBoard(EditedBoard) {
+  const editBoard = (EditedBoard) => {
     setBoards((prev) => {
       return prev.map((board) => {
         return board.id === currentBoardId ? EditedBoard : board;
       });
     });
-  }
+  };
 
-  function createNewBoard(boardToAdd) {
+  const createNewBoard = (boardToAdd) => {
     if (
       boardToAdd.columns.length !==
       new Set(boardToAdd.columns.map((column) => column.name)).size
@@ -397,7 +397,7 @@ const App = () => {
       return [...prev, { ...boardToAdd }];
     });
     setNewBoard(spawnNewEmptyBoard());
-  }
+  };
 
   const [showSidebar, setShowSidebar] = useState(false);
   const [showCreateNewBoardWindow, setShowCreateNewBoardWindow] =
@@ -409,70 +409,70 @@ const App = () => {
   const [showBoardDeleteWindow, setShowBoardDeleteWindow] = useState(false);
   const [showEditBoardWindow, setShowEditBoardWindow] = useState(false);
 
-  function toggleEditBoardWindow() {
+  const toggleEditBoardWindow = () => {
     setShowEditBoardWindow((prev) => !prev);
-  }
+  };
 
-  function toggleBoardDeleteWindow() {
+  const toggleBoardDeleteWindow = () => {
     setShowBoardDeleteWindow((prev) => !prev);
-  }
+  };
 
-  function toggleTaskDeleteWindow() {
+  const toggleTaskDeleteWindow = () => {
     setShowTaskDeleteWindow((prev) => !prev);
-  }
+  };
 
-  function openTaskEditWindow() {
+  const openTaskEditWindow = () => {
     setShowTaskEditWindow(true);
     setShowTaskViewWindow(false);
-  }
+  };
 
-  function closeTaskEditWindow() {
+  const closeTaskEditWindow = () => {
     setShowTaskEditWindow(false);
-  }
+  };
 
-  function toggleAddNewTaskWindow() {
+  const toggleAddNewTaskWindow = () => {
     setShowAddNewTaskWindow((prev) => !prev);
-  }
+  };
 
-  function toggleSidebar() {
+  const toggleSidebar = () => {
     setShowSidebar((prev) => !prev);
-  }
+  };
 
-  function toggleCreateNewBoardWindow() {
+  const toggleCreateNewBoardWindow = () => {
     setShowCreateNewBoardWindow((prev) => !prev);
-  }
+  };
 
-  function openTaskViewWindow(task, column) {
+  const openTaskViewWindow = (task, column) => {
     assignViewedTaskAndColumn(task, column);
     setShowTaskViewWindow(true);
-  }
+  };
 
-  function closeTaskViewWindow() {
+  const closeTaskViewWindow = () => {
     setShowTaskViewWindow(false);
-  }
+  };
 
   const { darkMode } = useDarkMode();
 
-  function deleteTaskFunc() {
+  const deleteTaskFunc = () => {
     deleteTask();
     toggleTaskDeleteWindow();
     closeTaskViewWindow();
-  }
+  };
 
-  function deleteBoardFunc() {
+  const deleteBoardFunc = () => {
     deleteBoard();
     toggleBoardDeleteWindow();
-  }
+  };
 
-  function SaveEditBoardChanges(EditedBoard) {
+  const SaveEditBoardChanges = (EditedBoard) => {
     editBoard(EditedBoard);
     toggleEditBoardWindow();
-  }
+  };
 
-  function saveAndCloseAddNewBoardWindow(boardToAdd) {
+  const saveAndCloseAddNewBoardWindow = (boardToAdd) => {
     createNewBoard(boardToAdd);
     toggleCreateNewBoardWindow();
-  }
+  };
 
   return (
     <div

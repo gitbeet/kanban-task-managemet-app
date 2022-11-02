@@ -11,9 +11,9 @@ export function useDarkMode() {
 export default function DarkmodeProvider({ children }) {
   const [darkMode, setDarkMode] = useState(true);
 
-  function toggleDarkMode() {
+  const toggleDarkMode = () => {
     setDarkMode((prev) => !prev);
-  }
+  };
 
   return (
     <darkModeContext.Provider value={{ darkMode, toggleDarkMode }}>
