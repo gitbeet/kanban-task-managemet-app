@@ -51,29 +51,30 @@ export default function AddNewTaskWindow({
   }
 
   function saveChanges() {
-    if (tempTask.title.length === 0) {
-      setTempTask((prev) => {
-        return { ...prev, error: "Can't be empty." };
-      });
+    let temp = { ...tempTask };
+
+    if (temp.title.length === 0) {
+      temp.error = "Can't be empty.";
     }
 
-    setTempTask((prev) => {
-      return {
-        ...prev,
-        subtasks: prev.subtasks.map((subtask) => {
-          return subtask.title.length === 0
-            ? { ...subtask, error: "Can't be empty." }
-            : subtask;
-        }),
-      };
+    const tempSubtasks = temp.subtasks.map((subtask) => {
+      return subtask.title.length === 0
+        ? { ...subtask, error: "Can't be empty" }
+        : subtask;
     });
 
+    temp.subtasks = tempSubtasks;
+    setTempTask(temp);
+
     if (
-      tempTask.title.length === 0 ||
-      tempTask.subtasks.findIndex((subtask) => subtask.error.length > 0) !== -1
+      temp.title.length === 0 ||
+      temp.subtasks.findIndex((subtask) => subtask.title.length === 0) !== -1
     ) {
       return;
     }
+    console.log(
+      temp.subtasks.findIndex((subtask) => subtask.title.length === 0) !== -1
+    );
 
     createTaskFunc(type, tempTask);
     closeFunction();
@@ -134,16 +135,13 @@ export default function AddNewTaskWindow({
           </div>
           <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 mt-2 max-h-[11rem] overflow-auto px-4">
             {tempTask.subtasks.map((subtask) => {
-              const errorMessage = tempTask.subtasks.find(
-                (s) => s.id === subtask.id
-              ).error;
               return (
                 <EditSubtask
                   handleChange={handleChange}
                   tempTask={tempTask}
                   key={subtask.id}
                   subtask={subtask}
-                  errorMessage={errorMessage}
+                  errorMessage={subtask.error}
                 />
               );
             })}
