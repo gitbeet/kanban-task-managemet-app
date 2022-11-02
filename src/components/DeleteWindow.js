@@ -7,7 +7,7 @@ import { useEffect } from "react";
 export default function DeleteWindow({
   boards,
   viewedTask,
-  viewedTaskColumn,
+  viewedTaskColumnId,
   currentBoardId,
   onDelete,
   onCancel,
@@ -31,9 +31,9 @@ export default function DeleteWindow({
       ? boards.find((board) => board.id === name).name
       : boards
           .find((board) => board.id === currentBoardId)
-          .columns.find((column) => column.id === viewedTaskColumn)
+          .columns.find((column) => column.id === viewedTaskColumnId)
           .tasks.find((task) => task.id === viewedTask.id).title;
-  console.log(viewedTaskColumn);
+  console.log(viewedTaskColumnId);
   return ReactDOM.createPortal(
     <>
       <div className={darkMode ? "dark fixed z-[800]" : " fixed z-[800]"}>

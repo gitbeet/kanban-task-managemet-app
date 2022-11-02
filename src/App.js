@@ -46,7 +46,7 @@ function App() {
   const [draggedTaskColumn, setDraggedTaskColumn] = useState();
 
   const [viewedTask, setViewedTask] = useState(null);
-  const [viewedTaskColumn, setviewedTaskColumn] = useState(null);
+  const [viewedTaskColumnId, setviewedTaskColumnId] = useState(null);
   const [viewedStatus, setViewedStatus] = useState();
 
   useEffect(() => {
@@ -121,7 +121,7 @@ function App() {
 
   function assignViewedTaskAndColumn(task, column) {
     setViewedTask(task);
-    setviewedTaskColumn(column);
+    setviewedTaskColumnId(column);
   }
 
   function handleChangeNewTask(change) {
@@ -137,7 +137,7 @@ function App() {
           ? {
               ...board,
               columns: board.columns.map((column) => {
-                return column.id === viewedTaskColumn
+                return column.id === viewedTaskColumnId
                   ? {
                       ...column,
                       tasks: column.tasks.filter(
@@ -182,7 +182,7 @@ function App() {
       let isTaskStillInTheSameColumn =
         boards
           .find((board) => board.id === currentBoardId)
-          .columns.find((column) => column.id === viewedTaskColumn)
+          .columns.find((column) => column.id === viewedTaskColumnId)
           .tasks.find((task) => task.id === taskToAdd.id).status ===
         taskToAdd.status;
       if (isTaskStillInTheSameColumn) {
@@ -227,7 +227,7 @@ function App() {
               ? {
                   ...board,
                   columns: board.columns.map((column) => {
-                    return column.id === viewedTaskColumn
+                    return column.id === viewedTaskColumnId
                       ? {
                           ...column,
                           tasks: column.tasks.filter((task) => {
@@ -247,10 +247,6 @@ function App() {
 
   function changeCurrentBoard(board) {
     setCurrentBoard(board);
-  }
-
-  function assignDraggedTask(task) {
-    setDraggedTask(task);
   }
 
   function dropTask(value) {
@@ -318,11 +314,11 @@ function App() {
     });
   }
 
-  function handleChangeTaskStatusClose() {
+  function handleChangeTaskStatusClose(taskToChange) {
     let viewedStatusId = boards
       .find((board) => board.id === currentBoardId)
-      .columns.find((column) => column.name === viewedStatus).id;
-    if (viewedTaskColumn === viewedStatusId) {
+      .columns.find((column) => column.name === taskToChange.status).id;
+    if (viewedTaskColumnId === viewedStatusId) {
       let duplicateBoards = [...boards].map((board) => {
         return board.id === currentBoardId
           ? {
@@ -332,7 +328,9 @@ function App() {
                   ? {
                       ...column,
                       tasks: column.tasks.map((task) => {
-                        return task.id === viewedTask.id ? viewedTask : task;
+                        return task.id === taskToChange.id
+                          ? taskToChange
+                          : task;
                       }),
                     }
                   : column;
@@ -351,7 +349,7 @@ function App() {
                 return column.id === viewedStatusId
                   ? {
                       ...column,
-                      tasks: [...column.tasks, viewedTask],
+                      tasks: [...column.tasks, taskToChange],
                     }
                   : column;
               }),
@@ -363,11 +361,11 @@ function App() {
           ? {
               ...board,
               columns: board.columns.map((column) => {
-                return column.id === viewedTaskColumn
+                return column.id === viewedTaskColumnId
                   ? {
                       ...column,
                       tasks: column.tasks.filter(
-                        (task) => task.id !== viewedTask.id
+                        (task) => task.id !== taskToChange.id
                       ),
                     }
                   : column;
@@ -594,7 +592,7 @@ function App() {
         <DeleteWindow
           boards={boards}
           viewedTask={viewedTask}
-          viewedTaskColumn={viewedTaskColumn}
+          viewedTaskColumnId={viewedTaskColumnId}
           currentBoardId={currentBoardId}
           onDelete={deleteTaskFunc}
           onCancel={toggleTaskDeleteWindow}
@@ -607,7 +605,7 @@ function App() {
         <DeleteWindow
           boards={boards}
           viewedTask={viewedTask}
-          viewedTaskColumn={viewedTaskColumn}
+          viewedTaskColumnId={viewedTaskColumnId}
           currentBoardId={currentBoardId}
           onDelete={deleteBoardFunc}
           onCancel={toggleBoardDeleteWindow}

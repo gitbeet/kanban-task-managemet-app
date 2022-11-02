@@ -8,9 +8,7 @@ import EditDeleteMenu from "./EditDeleteMenu";
 import { useDarkMode } from "../context/DarkModeContext";
 
 export default function TaskViewWindow({
-  handleChangeTaskStatus,
   statusList,
-  toggleSubtaskCompleted,
   viewedTask,
   handleChangeTaskStatusClose,
   closeTaskViewWindow,
@@ -19,9 +17,13 @@ export default function TaskViewWindow({
 }) {
   const { darkMode } = useDarkMode();
 
-  const { title, description } = viewedTask;
-
   const [showTaskWindowMenu, setShowTaskWindowMenu] = useState(false);
+  const [tempTask, setTempTask] = useState(viewedTask);
+
+  function handleChange(changes) {
+    setTempTask((prev) => ({ ...prev, ...changes }));
+    console.log(tempTask);
+  }
 
   useEffect(() => {
     function onKeyDown(e) {
@@ -35,7 +37,7 @@ export default function TaskViewWindow({
 
   function onClickBackdrop() {
     closeTaskViewWindow();
-    handleChangeTaskStatusClose();
+    handleChangeTaskStatusClose(tempTask);
   }
 
   function toggleTaskWindowMenu() {
@@ -79,13 +81,12 @@ export default function TaskViewWindow({
               of {totalSubtasks})
             </p>
             <div className="scrollbar-thin scrollbar-track-neutral-900 scrollbar-thumb-primary-600 space-y-4 max-h-[15rem] overflow-auto px-4">
-              {viewedTask.subtasks.map((subtask) => (
+              {tempTask.subtasks.map((subtask) => (
                 <Subtask
-                  toggleSubtaskCompleted={toggleSubtaskCompleted}
+                  tempTask={tempTask}
                   key={uuid()}
-                  taskTitle={title}
-                  taskDescription={description}
                   subtask={subtask}
+                  handleChange={handleChange}
                 />
               ))}
             </div>
@@ -94,8 +95,8 @@ export default function TaskViewWindow({
             Current Status
           </div>
           <CurrentStatus
-            viewedTask={viewedTask}
-            handleChangeTaskStatus={handleChangeTaskStatus}
+            tempTask={tempTask}
+            handleChange={handleChange}
             statusList={statusList}
           />
         </div>

@@ -1,11 +1,16 @@
-export default function Subtask({
-  subtask,
-  errorMessage,
-  toggleSubtaskCompleted,
-}) {
+export default function Subtask({ subtask, handleChange, tempTask }) {
+  function toggleSubtaskComplete() {
+    const updatedSubtasks = [...tempTask.subtasks];
+    const index = updatedSubtasks.findIndex((s) => s.id === subtask.id);
+    console.log(index);
+    updatedSubtasks[index].isCompleted = !updatedSubtasks[index].isCompleted;
+    handleChange({ subtasks: updatedSubtasks });
+    console.log(updatedSubtasks);
+  }
+
   return (
     <div
-      onClick={() => toggleSubtaskCompleted(subtask.id)}
+      onClick={toggleSubtaskComplete}
       className="cursor-pointer flex justify-start items-center space-x-6 p-4 rounded-sm bg-neutral-700 hover:bg-primary-600 hover:bg-opacity-25 dark:bg-primary-200 dark:hover:bg-primary-600 dark:hover:bg-opacity-25"
     >
       <div

@@ -1,10 +1,6 @@
 import { useState } from "react";
 
-export default function CurrentStatus({
-  viewedTask,
-  handleChangeTaskStatus,
-  statusList,
-}) {
+export default function CurrentStatus({ tempTask, statusList, handleChange }) {
   const [open, setOpen] = useState();
 
   return (
@@ -12,8 +8,8 @@ export default function CurrentStatus({
       <select
         onClick={() => setOpen((prev) => !prev)}
         className="w-full"
-        value={viewedTask.status}
-        onChange={(e) => handleChangeTaskStatus(e.target.value)}
+        value={tempTask.status}
+        onChange={(e) => handleChange({ status: e.target.value })}
       >
         {statusList.map((status, index) => (
           <option key={index}>{status}</option>
