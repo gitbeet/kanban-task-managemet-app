@@ -52,8 +52,8 @@ const Sidebar = ({
           </div>
         </div>
       </div>
-      <div className="md:hidden">
-        <Backdrop clickFunction={toggleSidebar} zIndex="200" />
+      <div className="md:hidden  z-[200]">
+        <Backdrop clickFunction={toggleSidebar} />
       </div>
     </>
   );

@@ -34,7 +34,7 @@ const EditColumn = ({
 
   return (
     <div className="flex relative justify-between items-center space-x-2  bg-neutral-900 border-primary-450 dark:bg-primary-300 space-y-2">
-      <div className="w-full">
+      <div className="w-[90%]">
         <InputElement
           type="input"
           value={data}
@@ -47,7 +47,7 @@ const EditColumn = ({
       </div>
       <svg
         onClick={handleColumnDelete}
-        className="cursor-pointer fill-[#828FA3] hover:fill-danger-500"
+        className="cursor-pointer  fill-[#828FA3] hover:fill-danger-500"
         width="15"
         height="15"
         xmlns="http://www.w3.org/2000/svg"

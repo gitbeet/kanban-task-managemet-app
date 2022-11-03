@@ -21,7 +21,9 @@ const Board = ({ boardId, currentBoardId, changeCurrentBoard, boards }) => {
           fill="currentColor"
         />
       </svg>
-      <p>{boards.find((b) => b.id === boardId).name}</p>
+      <p className="truncate w-[13rem] md:w-[11rem] pr-6">
+        {boards.find((b) => b.id === boardId).name}
+      </p>
     </div>
   );
 };

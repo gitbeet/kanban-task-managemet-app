@@ -92,11 +92,11 @@ const Nav = ({
         {/* BOARD NAME */}
         <div
           onClick={toggleSidebar}
-          className={`cursor-pointer flex items-center justify-between space-x-2 text-xl font-semibold  ${
+          className={`cursor-pointer min-w-[5rem] max-w-[15rem] flex items-center justify-between space-x-2 text-xl font-semibold  ${
             showSidebar && "md:pl-12"
           }`}
         >
-          <div className="truncate md:text-xl">
+          <div className="truncate  md:text-xl">
             {boards?.find((board) => board.id === currentBoardId).name}
           </div>
           <svg

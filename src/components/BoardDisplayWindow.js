@@ -84,19 +84,17 @@ const BoardDisplayWindow = ({
           </div>
         )}
         {currentBoardData.length === 0 && (
-          <>
-            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2  w-[22rem] flex flex-col items-center p-4 space-y-4 text-primary-100 dark:text-neutral-900">
-              <h2 className="text-center text-primary-500 font-bold">
-                This board is empty. Create a new column to get started.
-              </h2>
-              <Button
-                type="primary"
-                size="lg"
-                text="+Add New Column"
-                onClick={toggleAddNewColumnMenu}
-              />
-            </div>
-          </>
+          <div className="fixed z-0 left-1/2 top-[50vh] -translate-x-1/2 -translate-y-full  w-[22rem] flex flex-col items-center p-4 space-y-4 text-primary-100 dark:text-neutral-900">
+            <h2 className="text-center text-primary-500 font-bold">
+              This board is empty. Create a new column to get started.
+            </h2>
+            <Button
+              type="primary"
+              size="lg"
+              text="+Add New Column"
+              onClick={toggleAddNewColumnMenu}
+            />
+          </div>
         )}
         {showAddNewColumnMenu && (
           <>

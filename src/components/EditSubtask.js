@@ -22,7 +22,7 @@ const EditSubtask = ({
 
   return (
     <div className="flex justify-between items-center space-x-2">
-      <div className="w-full">
+      <div className="w-[90%] md:min-w-[92%]">
         <InputElement
           value={subtask.title}
           onChange={(e) => handleChangeSubtask({ title: e.target.value })}
@@ -32,7 +32,7 @@ const EditSubtask = ({
         />
       </div>
       <svg
-        className="cursor-pointer fill-[#828FA3] hover:fill-danger-500"
+        className="cursor-pointer fill-[#828FA3] hover:fill-danger-500 w-full "
         onClick={handleDeleteSubtask}
         width="15"
         height="15"
