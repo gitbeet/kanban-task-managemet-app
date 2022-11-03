@@ -11,6 +11,9 @@ const BoardDisplayWindow = ({
   boards,
   handleColumnAdd,
   toggleDraggedTask,
+  debugFunc,
+  draggedTask,
+  draggedTaskColumn,
 }) => {
   const [showAddNewColumnMenu, setShowAddNewColumnMenu] = useState();
 
@@ -54,12 +57,15 @@ const BoardDisplayWindow = ({
           <div className="flex min-h-full  justify-start items-stretch">
             {/* boards */}
             <ColumnsList
+              debugFunc={debugFunc}
               boards={boards}
               currentBoardId={currentBoardId}
               toggleDraggedTask={toggleDraggedTask}
               dropTask={dropTask}
               board={currentBoardData}
               openTaskViewWindow={openTaskViewWindow}
+              draggedTask={draggedTask}
+              draggedTaskColumn={draggedTaskColumn}
             />
             {/* ADD COL MENU  */}
             <div

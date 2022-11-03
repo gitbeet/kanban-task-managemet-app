@@ -8,14 +8,17 @@ const Column = ({
   toggleDraggedTask,
   currentBoardId,
   boards,
+  debugFunc,
+  draggedTask,
+  draggedTaskColumn,
 }) => {
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: "task",
-    drop: () => dropTask(column.id),
-    collect: (monitor) => ({
-      isOver: !!monitor.isOver(),
+  const [, drop] = useDrop(
+    () => ({
+      accept: "task",
+      drop: () => dropTask(column.id),
     }),
-  }));
+    [draggedTask, draggedTaskColumn]
+  );
 
   return (
     <div ref={drop} className="space-y-6 w-[17rem]">
@@ -30,6 +33,7 @@ const Column = ({
       </header>
       {column.tasks?.map((task, index) => (
         <Task
+          debugFunc={debugFunc}
           boards={boards}
           currentBoardId={currentBoardId}
           toggleDraggedTask={toggleDraggedTask}

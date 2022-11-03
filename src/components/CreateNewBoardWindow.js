@@ -1,5 +1,5 @@
 import Backdrop from "./Backdrop";
-import DynamicInput from "./DynamicInput";
+import EditColumn from "./EditColumn";
 import { v4 as uuid } from "uuid";
 import Button from "./Button";
 import * as ReactDOM from "react-dom";
@@ -144,7 +144,7 @@ const CreateNewBoardWindow = ({
             <div className="space-y-10">
               {tempBoard.columns.map((column) => {
                 return (
-                  <DynamicInput
+                  <EditColumn
                     handleChange={handleChange}
                     tempBoard={tempBoard}
                     key={column.id}

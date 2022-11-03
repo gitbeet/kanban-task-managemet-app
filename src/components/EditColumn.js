@@ -1,6 +1,6 @@
 import InputElement from "./InputElement";
 
-const DynamicInput = ({
+const EditColumn = ({
   data,
   id,
   errorMessage,
@@ -61,4 +61,4 @@ const DynamicInput = ({
   );
 };
 
-export default DynamicInput;
+export default EditColumn;

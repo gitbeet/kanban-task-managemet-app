@@ -11,6 +11,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 import { v4 as uuid } from "uuid";
 import data from "./data.json";
 import { generateColor } from "./utilities/generateColor";
+import Button from "./components/Button";
 
 const dataWithId = data.boards.map((board) => {
   return {
@@ -39,7 +40,9 @@ const dataWithId = data.boards.map((board) => {
 });
 
 const App = () => {
-  const [boards, setBoards] = useLocalStorage("boards", dataWithId);
+  // const [boards, setBoards] = useLocalStorage("boards", dataWithId);
+  const [boards, setBoards] = useState(dataWithId);
+
   const [currentBoardId, setCurrentBoard] = useState(boards[0].id);
   const [statusList, setStatusList] = useState();
   const [newBoard, setNewBoard] = useState(spawnNewEmptyBoard());
@@ -49,6 +52,7 @@ const App = () => {
 
   const [viewedTask, setViewedTask] = useState(null);
   const [viewedTaskColumnId, setviewedTaskColumnId] = useState(null);
+
   useEffect(() => {
     if (!boards) return;
     setStatusList(
@@ -83,7 +87,7 @@ const App = () => {
     setNewBoard(board);
   };
 
-  const spawnNewEmptyBoard = () => {
+  function spawnNewEmptyBoard() {
     return {
       id: uuid(),
       name: "",
@@ -91,7 +95,7 @@ const App = () => {
       error: "",
       columnError: "",
     };
-  };
+  }
 
   const spawnNewEmptyTask = () => {
     return {
@@ -251,13 +255,17 @@ const App = () => {
     setCurrentBoard(board);
   };
 
-  const dropTask = (columnIdToDropTaskOn) => {
-    console.log("app", draggedTask, draggedTaskColumn);
-    console.log("hello?");
-    if (draggedTask == null) return;
+  function debugFunc() {
+    console.log(draggedTask, draggedTaskColumn);
+  }
+
+  function dropTask(columnIdToDropTaskOn) {
+    console.log(draggedTask, draggedTaskColumn);
+    if (draggedTask == null) {
+      return;
+    }
     if (draggedTaskColumn === columnIdToDropTaskOn) return;
     const duplicateTask = { ...draggedTask };
-    console.log(draggedTask);
     duplicateTask.status = boards
       .find((board) => board.id === currentBoardId)
       .columns.find((column) => column.id === columnIdToDropTaskOn).name;
@@ -292,14 +300,12 @@ const App = () => {
         : board;
     });
     setBoards(duplicateBoards);
-    // toggleDraggedTask(null);
-  };
+    toggleDraggedTask(null, null);
+  }
 
   const toggleDraggedTask = (task, column) => {
-    setDraggedTask(task);
-    setDraggedTaskColumn(column);
-    console.log(task, column);
-    console.log("togglefunc", draggedTask, draggedTaskColumn);
+    setDraggedTask((prev) => (prev = task));
+    setDraggedTaskColumn((prev) => (prev = column));
   };
 
   const toggleSubtaskCompleted = (id) => {
@@ -504,13 +510,17 @@ const App = () => {
               toggleCreateNewBoardWindow={toggleCreateNewBoardWindow}
             />
           )}
+
           <BoardDisplayWindow
+            debugFunc={debugFunc}
             toggleDraggedTask={toggleDraggedTask}
             dropTask={dropTask}
             currentBoardId={currentBoardId}
             boards={boards}
             handleColumnAdd={handleColumnAdd}
             openTaskViewWindow={openTaskViewWindow}
+            draggedTask={draggedTask}
+            draggedTaskColumn={draggedTaskColumn}
           />
         </div>
       </div>

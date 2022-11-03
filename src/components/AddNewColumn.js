@@ -16,8 +16,6 @@ const AddNewColumn = ({
   const [columnName, setColumnName] = useState("");
   const [error, setError] = useState("");
 
-  useKeyboardControl(createColumn, closeFunction);
-
   const handleChange = (changes) => {
     if (error) {
       setError("");
@@ -49,6 +47,8 @@ const AddNewColumn = ({
     handleColumnAdd(columnName);
     closeFunction();
   };
+
+  useKeyboardControl(createColumn, closeFunction);
 
   const menuContent = (
     <div className={darkMode && "dark"}>

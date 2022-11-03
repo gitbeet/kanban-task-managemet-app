@@ -8,11 +8,15 @@ const ColumnsList = ({
   boards,
   currentBoardId,
   toggleDraggedTask,
+  debugFunc,
+  draggedTask,
+  draggedTaskColumn,
 }) => {
   return (
     <div className="grid grid-flow-col space-x-6">
       {board.map((column) => (
         <Column
+          debugFunc={debugFunc}
           dropTask={dropTask}
           key={column.id}
           column={column}
@@ -20,6 +24,8 @@ const ColumnsList = ({
           boards={boards}
           currentBoardId={currentBoardId}
           toggleDraggedTask={toggleDraggedTask}
+          draggedTask={draggedTask}
+          draggedTaskColumn={draggedTaskColumn}
         />
       ))}
     </div>
