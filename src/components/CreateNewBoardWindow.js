@@ -23,8 +23,6 @@ const CreateNewBoardWindow = ({
 
   const { columns } = tempBoard;
 
-  useKeyboardControl(saveChanges, closeFunction);
-
   const spawnNewEmptyBoard = () => {
     return {
       id: uuid(),
@@ -102,6 +100,8 @@ const CreateNewBoardWindow = ({
     closeFunction();
     assignNewBoard(spawnNewEmptyBoard());
   };
+
+  useKeyboardControl(saveChanges, closeFunction);
 
   let zIndexWindow = buttonText === "Save Changes" ? "z-[700]" : "z-[300]";
 

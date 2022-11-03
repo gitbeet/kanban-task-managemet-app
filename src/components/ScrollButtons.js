@@ -18,7 +18,7 @@ const ScrollButtons = ({ scrollToLeft, scrollToRight }) => {
 
   return ReactDOM.createPortal(
     <div
-      className={`fixed w-fit z-[0] top-[85vh]  left-1/2 -translate-x-1/2 space-x-8  flex items-center justify-center md:left-[calc(100%-8rem)]`}
+      className={`fixed w-fit z-[0] top-[65vh]   space-y-4 flex flex-col items-center justify-center left-[calc(100%-4rem)]`}
     >
       <div
         onClick={scrollToLeft}

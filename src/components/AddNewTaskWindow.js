@@ -19,33 +19,9 @@ const AddNewTaskWindow = ({
   closeFunction,
   createTaskFunc,
 }) => {
-  useKeyboardControl(saveChanges, closeFunction);
   const { darkMode } = useDarkMode();
 
   const [tempTask, setTempTask] = useState(viewedTask);
-
-  const handleChange = (changes) => {
-    if (tempTask.error) {
-      setTempTask((prev) => {
-        return { ...prev, error: "" };
-      });
-    }
-    setTempTask((prev) => {
-      return { ...prev, ...changes };
-    });
-  };
-
-  const handleSubtaskAdd = () => {
-    const emptySubtask = {
-      id: uuid(),
-      title: "",
-      isCompleted: false,
-      error: "",
-    };
-    handleChange({
-      subtasks: [...tempTask.subtasks, emptySubtask],
-    });
-  };
 
   const saveChanges = () => {
     let temp = { ...tempTask };
@@ -73,6 +49,31 @@ const AddNewTaskWindow = ({
     createTaskFunc(type, tempTask);
     closeFunction();
   };
+
+  const handleChange = (changes) => {
+    if (tempTask.error) {
+      setTempTask((prev) => {
+        return { ...prev, error: "" };
+      });
+    }
+    setTempTask((prev) => {
+      return { ...prev, ...changes };
+    });
+  };
+
+  const handleSubtaskAdd = () => {
+    const emptySubtask = {
+      id: uuid(),
+      title: "",
+      isCompleted: false,
+      error: "",
+    };
+    handleChange({
+      subtasks: [...tempTask.subtasks, emptySubtask],
+    });
+  };
+
+  useKeyboardControl(saveChanges, closeFunction);
 
   return (
     <div className={darkMode ? "dark overflow-auto " : "overflow-auto  "}>
