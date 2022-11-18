@@ -19,8 +19,8 @@ const ToggleTheme = () => {
         <div
           className={
             darkMode
-              ? "toggle-theme-button-circle circle-right bg-neutral-900"
-              : "toggle-theme-button-circle circle-left bg-neutral-900"
+              ? "toggle-theme-button-circle circle-right bg-neutral-900 transition-all"
+              : "toggle-theme-button-circle circle-left bg-neutral-900 transition-all"
           }
         ></div>
       </div>
