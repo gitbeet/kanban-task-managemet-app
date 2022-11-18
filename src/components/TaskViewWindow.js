@@ -57,7 +57,7 @@ const TaskViewWindow = ({
       <div className={darkMode ? "dark z-[400] fixed" : " z-[400] fixed"}>
         <div className="fixed max-h-[90vh]  w-[min(90%,350px)] overflow-auto md:w-[450px] bg-neutral-900 dark:bg-primary-300 text-primary-200 dark:text-neutral-900 rounded-md left-1/2 top-[50vh] -translate-y-1/2 -translate-x-1/2 p-6 space-y-6">
           <div className="flex justify-between items-center">
-            <header className="font-bold text-md leading-6">
+            <header className="font-bold text-md leading-6 truncate  max-w-[80%] overflow-hidden">
               {viewedTask.title}
             </header>
             <EditDeleteMenu

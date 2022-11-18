@@ -39,6 +39,7 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/line-clamp": "^0.4.2",
     "autoprefixer": "^10.4.12",
     "postcss": "^8.4.17",
     "tailwind-scrollbar": "^2.1.0-preview.0",
